@@ -15,7 +15,7 @@
 
         if ($result) {
             $_SESSION['UserId'] = $id;
-            echo "<script>alert('{$_SESSION}');</script>";
+            echo "<script>alert('{$_SESSION['UserId']}');</script>";
             echo "<script>location.replace('index.php');</script>";
         } else {
             echo "<script>alert('Unregistered User!')</script>";
