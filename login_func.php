@@ -4,6 +4,10 @@
 
         $db_conn = new mysqli('localhost', 'jingyu', '1234', 'test');
 
+        if (!$db_conn) {
+            die("DB서버 연결 실패 : ".mysqli_connect_error());
+        }
+
         $id = mysqli_real_escape_string($db_conn, $_POST['UserId']);
         $pw = mysqli_real_escape_string($db_conn, $_POST['Password']);
 
