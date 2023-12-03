@@ -18,8 +18,9 @@
     $title = mysqli_real_escape_string($conn, $_POST['title']);
     $body = mysqli_real_escape_string($conn, $_POST['body']);
     $user_id = $_SESSION['loginId'];
+    $today = date("Y-m-d");
 
-    $insert_sql = "insert into board (title, body, user_id) values ('$title', '$body', '$user_id')";
+    $insert_sql = "insert into board (title, body, user_id, date) values ('$title', '$body', '$user_id', '$today')";
 
     if (mysqli_query($conn, $insert_sql)) {
         echo "<script>alert('작성이 완료되었습니다.');</script>";
