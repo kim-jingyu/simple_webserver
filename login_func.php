@@ -17,7 +17,6 @@
     
         $sql = "SELECT * FROM member WHERE user_id = '$id' and user_pw = '$encoded_pw';";
     
-        // $result = mysqli_fetch_array(mysqli_query($db_conn, $sql));
         $result = mysqli_fetch_array(mysqli_query($db_conn, $sql));
 
         if ($result) {

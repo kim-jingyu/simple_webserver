@@ -20,12 +20,13 @@
             $id = $_SESSION['loginId'];
         }
     ?>
-    <div class="welcom">
-        <h2><?php echo "어서오세요. $id"; ?>님!</h2>    
-        <button type="button" class="btn" onclick="location.href='logout.php'">
-            로그아웃
-        </button>
-    </div>
+    <h2><?php echo "어서오세요. $id"; ?>님!</h2>
+    <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">
+        로그아웃
+    </button>
+    <form action="board.php">
+        <p><input type="submit" value="메뉴"></p>
+    </form>
 </body>
 
 </html>
