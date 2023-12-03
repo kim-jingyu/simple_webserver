@@ -14,7 +14,7 @@
 			user_level varchar(20),
 			user_info varchar(50)
 			CONSTRAINT member_PK PRIMARY KEY(idx)
-		);"
+	);";
 
 	$result = mysqli_query($db_conn, $sql);
 

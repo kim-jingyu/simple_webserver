@@ -1,16 +1,14 @@
 <?php
+	require 'db_info.php';
+
 	$id = $_POST['UserId'];
 	$password = $_POST['Password'];
 	$username = $_POST['UserName'];
 	$userinfo = $_POST['UserInfo'];
 
 	if ($id != NULL and $password != NULL and $username != NULL) {
-		define('DB_SERVER', 'localhost');
-		define('DB_USERNAME', 'jingyu');
-		define('DB_PASSWORD', '1234');
-		define('DB_NAME', 'test');
 
-		$db_conn = mysqli_connect(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
+		$db_conn = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 		
 		$encoded_pw = md5($password);
 
@@ -30,4 +28,6 @@
 		echo "<script>alert('Input ID and Password and Username')</script>";
 		echo "<script>window.location.href='signup.php';</script>";
 	}
+
+	exit();
 ?>

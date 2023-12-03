@@ -13,11 +13,11 @@
 <body>
     <?php
         session_start();
-        if (!isset($_SESSION['UserId'])) {
+        if (!isset($_SESSION['loginId'])) {
             header("location:login.html");
             exit;
         } else {
-            $id = $_SESSION['UserId'];
+            $id = $_SESSION['loginId'];
         }
     ?>
     <div class="welcom">
