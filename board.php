@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>게시판</h1>
+    <form action="" method="post">
+        <input type="text" name="search" placeholder="검색">
+        <input type="submit" value="검색">
+    </form>
     <?php
         require 'db_info.php';
 
@@ -23,7 +27,9 @@
             exit();
         }
 
-        $select_sql = "select id, user_id, title from board";
+        $search_word = mysqli_real_escape_string($conn, $_POST['search']);
+
+        $select_sql = "select * from board where title like '%$search_word%'";
         $result = mysqli_query($conn, $select_sql);
         
         if (mysqli_num_rows($result)) {
