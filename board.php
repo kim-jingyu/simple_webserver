@@ -23,12 +23,12 @@
             exit();
         }
 
-        $select_sql = "select idx, user_id, title from board";
+        $select_sql = "select id, user_id, title from board";
         $result = mysqli_query($conn, $select_sql);
         
         if (mysqli_num_rows($result)) {
             while ($row = mysqli_fetch_array($result)) {
-                echo '<p>'.$row['idx'].'. <a href="board_view.php?id='.$row['idx'].'">'.$row['title'].'</a> 작성자 : '.$row['user_id'].'</p>';
+                echo '<p>'.$row['id'].'. <a href="board_view.php?id='.$row['id'].'">'.$row['title'].'</a> 작성자 : '.$row['user_id'].'</p>';
             }
         } else {
             echo "게시물이 없습니다.";

@@ -16,7 +16,7 @@
 
     $board_id = $_GET['id'];
 
-    $select_sql = "select title, body, user_id, date from board where idx = '$board_id'";
+    $select_sql = "select title, body, user_id, date from board where id = '$board_id'";
     $result = mysqli_query($conn, $select_sql);
 
     if (mysqli_num_rows($result)) {

@@ -19,7 +19,7 @@
         $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
         $board_id = $_POST['board_id'];
-        $select_sql = "select * from board where idx = '$board_id'";
+        $select_sql = "select * from board where id = '$board_id'";
         $result = mysqli_query($conn, $select_sql);
 
         if (mysqli_num_rows($result)) {
