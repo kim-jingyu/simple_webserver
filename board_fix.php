@@ -27,6 +27,7 @@
             $title = $row['title'];
             $body = $row['body'];
         }
+        mysqli_close($conn);
     ?>
 
     <h1>게시글 수정</h1>
