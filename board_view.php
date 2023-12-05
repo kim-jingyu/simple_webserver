@@ -16,7 +16,7 @@
 
     $board_id = $_GET['id'];
 
-    $select_sql = "select title, body, user_id, date from board where id = '$board_id'";
+    $select_sql = "select * from board where id = '$board_id'";
     $result = mysqli_query($conn, $select_sql);
 
     if (mysqli_num_rows($result)) {
@@ -25,6 +25,11 @@
         echo '<p>타이틀: '.$row['title'].'</p>';
         echo '<p>글 내용: '.$row['body'].'</p>';
         echo '<p>작성일: '.$row['date'].'</p>';
+        if (isset($row['file_name'])) {
+            $file_name = explode('_', $row['file_name'])[1];
+            $file_path = '';
+            echo '<p>파일명: '.$file_name.'</p>';
+        }
 
         $login_id = $_SESSION['loginId'];
 

@@ -29,7 +29,6 @@
 
         // 검색
         $search_word = mysqli_real_escape_string($conn, $_GET['search']);
-        echo "<script>console.log('$search_word');</script>";
 
         // 페이징
         $num_per_page = 5;
@@ -38,7 +37,6 @@
         $total_result = $conn -> query($total_count_sql);
         $total_row = $total_result -> fetch_assoc();
         $total_cnt = $total_row['cnt'];
-        echo "<script>console.log('$total_cnt');</script>";
         $total_pages = ceil($total_cnt / $num_per_page);
 
         // 현재 페이지 번호
