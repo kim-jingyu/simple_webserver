@@ -43,11 +43,15 @@
         // 현재 페이지 번호
         $page_now = $_GET['page'] ? intval($_GET['page']) : 1;
 
+        // 현재 페이지 블록 번호
+        $block_now = floor(($page_now - 1) / 5) * 5;
+        echo "<script>console.log('$block_now');</script>";
+
         // 각 페이지 시작 인덱스
         $start = ($page_now - 1) * $num_per_page;
 
         $select_sql = "select * from board where title like '%$search_word%' order by id asc";
-        $select_sql .= $search_word ? " limit 0, $num_per_page" : " limit $start, $num_per_page";
+        $select_sql .= $search_word ? " limit $start, $num_per_page" : " limit 0, $num_per_page";
         $result = mysqli_query($conn, $select_sql);
         
         if (mysqli_num_rows($result)) {
@@ -55,7 +59,16 @@
                 echo '<p>'.$row['id'].'. <a href="board_view.php?id='.$row['id'].'">'.$row['title'].'</a> 작성자 : '.$row['user_id'].'</p>';
             }
             echo '<p> [ ';
-            for ($page_num = 1; $page_num <= $total_pages; $page_num++) {
+            // 이전 페이지 블록이 있으며, 이전 페이지 블록 링크 출력
+            if ($block_now > 1) {
+                $prev_block_start = $block_now - 5;
+                if ($prev_block_start == 0) {
+                    $prev_block_start = 1;
+                }
+                echo '<a href="?page='.$prev_block_start.'&search='.$search_word.'">이전 페이지</a>';
+            }
+
+            for ($page_num = $block_now + 1; $page_num <= min($block_now + 5, $total_pages); $page_num++) {
                 if ($page_num == $page_now) {
                     echo $page_num;
                 } else {
@@ -63,6 +76,13 @@
                 }
                 echo ' ';
             }
+
+            // 다음 페이지 블록이 있으며, 다음 페이지 블록 링크 출력
+            if ($block_now + 5 < $total_pages) {
+                $next_block_start = $block_now + 6;
+                echo '<a href="?page='.$next_block_start.'&search='.$search_word.'">다음 페이지</a>';
+            }
+
             echo ' ]</p>';
         } else {
             echo "게시물이 없습니다.";
