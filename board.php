@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>게시판</h1>
-    <form action="" method="post">
+    <form action="" method="get">
         <input type="text" name="search" placeholder="검색">
         <input type="submit" value="검색">
     </form>
@@ -28,7 +28,8 @@
         }
 
         // 검색
-        $search_word = mysqli_real_escape_string($conn, $_POST['search']);
+        $search_word = mysqli_real_escape_string($conn, $_GET['search']);
+        echo "<script>console.log('$search_word');</script>";
 
         // 페이징
         $num_per_page = 5;
@@ -58,16 +59,11 @@
                 if ($page_num == $page_now) {
                     echo $page_num;
                 } else {
-                    echo '<a href="?page='.$page_num.'">'.$page_num.'</a>';
+                    echo '<a href="?page='.$page_num.'&search='.$search_word.'">'.$page_num.'</a>';
                 }
                 echo ' ';
             }
             echo ' ]</p>';
-            if ($search_word) {
-                echo '<form action="" method="post">
-                        <input type="hidden" name="search" value="'.$search_word.'">
-                    </form>';
-            }
         } else {
             echo "게시물이 없습니다.";
         }
