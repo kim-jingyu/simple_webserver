@@ -38,6 +38,7 @@
         $total_result = $conn -> query($total_count_sql);
         $total_row = $total_result -> fetch_assoc();
         $total_cnt = $total_row['cnt'];
+        echo "<script>console.log('$total_cnt');</script>";
         $total_pages = ceil($total_cnt / $num_per_page);
 
         // 현재 페이지 번호
@@ -45,13 +46,12 @@
 
         // 현재 페이지 블록 번호
         $block_now = floor(($page_now - 1) / 5) * 5;
-        echo "<script>console.log('$block_now');</script>";
 
         // 각 페이지 시작 인덱스
         $start = ($page_now - 1) * $num_per_page;
 
         $select_sql = "select * from board where title like '%$search_word%' order by id asc";
-        $select_sql .= $search_word ? " limit $start, $num_per_page" : " limit 0, $num_per_page";
+        $select_sql .= " limit $start, $num_per_page";
         $result = mysqli_query($conn, $select_sql);
         
         if (mysqli_num_rows($result)) {
