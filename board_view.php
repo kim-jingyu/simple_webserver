@@ -27,8 +27,8 @@
         echo '<p>작성일: '.$row['date'].'</p>';
         if (isset($row['file_name'])) {
             $file_name = explode('_', $row['file_name'])[1];
-            $file_path = '';
-            echo '<p>파일명: '.$file_name.'</p>';
+            $file_path = '/path/upload/'.$stored_file_name;
+            echo '<p>파일명: <a href="/file_download.php?file='.$row['file_name'].'">'.$file_name.'</p>';
         }
 
         $login_id = $_SESSION['loginId'];
