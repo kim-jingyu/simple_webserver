@@ -17,8 +17,22 @@
     $board_id = $conn -> real_escape_string($_GET['id']);
 
     // 조회수 기능
-    $update_sql = "update board set views = views + 1 where id = $board_id";
-    $conn -> query($update_sql);
+    $last_view_time_per_board = 'last_view_time_of_'.$board_id;
+
+    if (!isset($_SESSION[$last_view_time_per_board])) {
+        $_SESSION[$last_view_time_per_board] = time();
+        $update_sql = "update board set views = views + 1 where id = $board_id";
+        $conn -> query($update_sql);
+    } else {
+        $last_view_time = $_SESSION[$last_view_time_per_board];
+        $current_time = time();
+        $gap_time = $current_time - $last_view_time;
+        if ($gap_time > 5) {
+            $update_sql = "update board set views = views + 1 where id = $board_id";
+            $conn -> query($update_sql);
+            $_SESSION[$last_view_time_per_board] = $current_time;
+        }
+    }
 
     $select_sql = "select * from board where id = '$board_id'";
     $select_result = mysqli_query($conn, $select_sql);
