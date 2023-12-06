@@ -1,5 +1,5 @@
 <?php
-    require 'db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
     if (isset($_POST['UserId']) && isset($_POST['Password'])) {
         session_start();
@@ -22,7 +22,7 @@
         if ($result) {
             session_regenerate_id();    // ID 자동 갱신
             $_SESSION['loginId'] = $result['user_id'];
-            echo "<script>location.replace('index.php');</script>";
+            echo "<script>location.replace('/index.php');</script>";
         } else {
             $_SESSION['loginError'] = "로그인 실패!";
             echo "<script>location.replace('login.html');</script>";

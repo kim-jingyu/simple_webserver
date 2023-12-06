@@ -1,10 +1,10 @@
 <?php
-    include 'db_info.php';
+    include $_SERVER['DOCUMENT_ROOT'].'/db_info.php';
 
     session_start();
 
     if (!isset($_SESSION['loginId'])) {
-        header("location:login.html");
+        header("location:/login/login.html");
         exit();
     }
 

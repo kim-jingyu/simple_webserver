@@ -1,5 +1,5 @@
 <?php
-	require 'db_info.php';
+	require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
 	$db_conn = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
@@ -12,7 +12,7 @@
 
 	if ($id == NULL or $password == NULL or $username == NULL) {
 		echo "<script>alert('ID, Password, Username 칸을 입력해주세요.')</script>";
-		echo "<script>window.location.href='signup.html';</script>";
+		echo "<script>window.location.href='/signup/signup.html';</script>";
 	}
 	
 	$address = trim(mysqli_real_escape_string($db_conn, $_POST['address']));
@@ -23,7 +23,7 @@
 	$select_result = mysqli_num_rows(mysqli_query($db_conn, $select_sql));
 	if ($select_result > 0) {
 		echo "<script>alert('ID가 중복됩니다!')</script>";
-		echo "<script>window.location.href='signup.html';</script>";
+		echo "<script>window.location.href='/signup/signup.html';</script>";
 		exit();
 	}
 
@@ -33,10 +33,10 @@
 
 	if ($insert_result) {
 		echo "<script>alert('SignUp Succeeded!')</script>";
-		echo "<script>window.location.href='index.php';</script>";
+		echo "<script>window.location.href='/index.php';</script>";
 	} else {
 		echo "<script>alert('SignUp Fail!')</script>";
-		echo "<script>window.location.href='signup.html';</script>";
+		echo "<script>window.location.href='/signup/signup.html';</script>";
 	}
 	mysqli_close($db_conn);
 

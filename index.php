@@ -14,17 +14,17 @@
     <?php
         session_start();
         if (!isset($_SESSION['loginId'])) {
-            header("location:login.html");
+            header("location:/login/login.html");
             exit;
         } else {
             $id = $_SESSION['loginId'];
         }
     ?>
     <h2><?php echo "어서오세요. $id"; ?>님!</h2>
-    <button type="button" class="btn btn-secondary" onclick="location.href='logout.php'">
+    <button type="button" class="btn btn-secondary" onclick="location.href='/logout/logout.php'">
         로그아웃
     </button>
-    <form action="board.php">
+    <form action="/board/board.php">
         <p><input type="submit" value="메뉴"></p>
     </form>
 </body>

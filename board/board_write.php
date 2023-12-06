@@ -12,7 +12,7 @@
         session_start();
 
         if (!isset($_SESSION['loginId'])) {
-            header("location:login.html");
+            header("location:/login/login.html");
             exit();
         }
     ?>

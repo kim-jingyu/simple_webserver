@@ -7,12 +7,12 @@
 </head>
 <body>
     <?php
-        require 'db_info.php';
+        require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
         
         session_start();
 
         if (!isset($_SESSION['loginId'])) {
-            header('location:login.html');
+            header('location:/login/login.html');
             exit();
         }
 
@@ -31,9 +31,10 @@
     ?>
 
     <h1>게시글 수정</h1>
-    <form action="board_write_func.php" method="post">
+    <form action="board_write_func.php" method="post" enctype="multipart/form-data">
         <p><input type="text" name="title" maxlength="20" value="<?php echo "$title"; ?>" placeholder="게시글 제목 입력. 최대 20자" required></p>
         <p><textarea type="text" name="body" rows="20" cols="40" maxlength="100" placeholder="게시글 본문 입력. 최대 100자" required><?php echo "$body"; ?></textarea></p>
+        <p><input type="file" name="file"></p>
         <p><input type="submit" value="게시글 수정"></p>
         <input type='hidden' name='board_id' value='<?php echo "$board_id"; ?>'>
     </form>

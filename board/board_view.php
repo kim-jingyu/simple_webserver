@@ -1,5 +1,5 @@
 <?php
-    require 'db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -10,7 +10,7 @@
     session_start();
 
     if (!isset($_SESSION['loginId'])) {
-        header("location:login.html");
+        header("location:/login/login.html");
         exit();
     }
 
@@ -28,7 +28,7 @@
         if (isset($row['file_name'])) {
             $file_name = explode('_', $row['file_name'])[1];
             $file_path = '/path/upload/'.$stored_file_name;
-            echo '<p>파일명: <a href="/file_download.php?file='.$row['file_name'].'">'.$file_name.'</p>';
+            echo '<p>파일명: <a href="/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</p>';
         }
 
         $login_id = $_SESSION['loginId'];

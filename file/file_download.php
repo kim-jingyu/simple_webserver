@@ -13,7 +13,7 @@
             header('Pragma: public');
             header('Content-Length: '.filesize($file_path));
             readfile($file_path);
-            exit();
+            exit;
         } else {
             echo "<script>alert('파일이 존재하지 않습니다!');</script>";
         }

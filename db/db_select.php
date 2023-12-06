@@ -10,15 +10,11 @@
         echo "<script>alert('DB connected!')</script>";
     }
 
-	$sql = "SELECT * FROM member where user_id = 'test' # user_pw = 'b';";
+	$sql = "SELECT * FROM member where user_id = 'test';";
 	
 	$result = mysqli_query($db_conn, $sql);
     
-	if ($result) {
-        echo "<script>alert('{$result}')</script>";
-        // echo "<script>window.location.href='index.php';</script>";
-    } else {
-        echo "<script>alert('This ID already exists')</script>";
-        // echo "<script>window.location.href='signup.php';</script>";
+    while ($row = $result -> fetch_assoc()) {
+        echo "<script>alert('{$row['user_id']}')</script>";
     }
 ?>

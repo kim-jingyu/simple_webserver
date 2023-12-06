@@ -12,7 +12,7 @@
         <input type="submit" value="검색">
     </form>
     <?php
-        require 'db_info.php';
+        require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
         $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -23,7 +23,7 @@
         session_start();
 
         if (!isset($_SESSION['loginId'])) {
-            header("location:login.html");
+            header("location:/login/login.html");
             exit();
         }
 

@@ -1,10 +1,10 @@
 <?php
-    require 'db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
     session_start();
 
     if (!isset($_SESSION['loginId'])) {
-        header('location:login.html');
+        header('location:/login/login.html');
         exit();
     }
 
@@ -27,28 +27,27 @@
         $file_size = $_FILES['file']['size'];
         $file_error = $_FILES['file']['error'];
         $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif', 'text/plain', 'application/zip', 'applicatoin/msword', 'application/pdf'];
-    }
+    
+        $timestamp = time();
+        $stored_file_name = $timestamp.'_'.$file_name;
+        $stored_file_name = $conn -> real_escape_string($stored_file_name);
 
-    $timestamp = time();
-    $stored_file_name = $timestamp.'_'.$file_name;
-    $stored_file_name = $conn -> real_escape_string($stored_file_name);
-
-    if ($file_error == UPLOAD_ERR_OK) {
-        $file_mime_type = mime_content_type($file_temp_name);
-        if (in_array($file_mime_type, $allowed_mime_types)) {
-            $upload_path = '/path/upload/'.$stored_file_name;
-            echo "<script>alert('$upload_path');</script>";
-                
-            if (move_uploaded_file($file_temp_name, $upload_path)) {
-                echo "<script>alert('파일 업로드 성공!');</script>";
+        if ($file_error == UPLOAD_ERR_OK) {
+            $file_mime_type = mime_content_type($file_temp_name);
+            if (in_array($file_mime_type, $allowed_mime_types)) {
+                $upload_path = '/path/upload/'.$stored_file_name;
+                    
+                if (move_uploaded_file($file_temp_name, $upload_path)) {
+                    echo "<script>alert('파일 업로드 성공!');</script>";
+                } else {
+                    echo "<script>alert('파일 업로드 실패!');</script>";
+                }
             } else {
-                echo "<script>alert('파일 업로드 실패!');</script>";
+                echo "<script>alert('잘못된 파일 형식입니다!');</script>";
             }
         } else {
-            echo "<script>alert('잘못된 파일 형식입니다!');</script>";
+            echo "<script>alert('파일 업로드에 실패했습니다!');</script>";
         }
-    } else {
-        echo "<script>alert('파일 업로드에 실패했습니다!');</script>";
     }
 
     $board_id = $_POST['board_id'] ? $_POST['board_id'] : null ;
