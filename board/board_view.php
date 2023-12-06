@@ -14,13 +14,18 @@
         exit();
     }
 
-    $board_id = $_GET['id'];
+    $board_id = $conn -> real_escape_string($_GET['id']);
+
+    // 조회수 기능
+    $update_sql = "update board set views = views + 1 where id = $board_id";
+    $conn -> query($update_sql);
 
     $select_sql = "select * from board where id = '$board_id'";
-    $result = mysqli_query($conn, $select_sql);
+    $select_result = mysqli_query($conn, $select_sql);
 
-    if (mysqli_num_rows($result)) {
-        $row = mysqli_fetch_assoc($result) ;
+    if (mysqli_num_rows($select_result)) {
+        $row = $select_result -> fetch_assoc();
+        echo '<p>조회수: '.$row['views'].'</p>';
         echo '<p>USER ID: '.$row['user_id'].'</p>';
         echo '<p>타이틀: '.$row['title'].'</p>';
         echo '<p>글 내용: '.$row['body'].'</p>';
