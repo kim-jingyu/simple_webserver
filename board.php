@@ -48,8 +48,7 @@
         // 각 페이지 시작 인덱스
         $start = ($page_now - 1) * $num_per_page;
 
-        $select_sql = "select * from board where title like '%$search_word%' order by id asc";
-        $select_sql .= " limit $start, $num_per_page";
+        $select_sql = "select * from board where title like '%$search_word%' order by id asc limit $start, $num_per_page";
         $result = mysqli_query($conn, $select_sql);
         
         if (mysqli_num_rows($result)) {
