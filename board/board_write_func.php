@@ -68,7 +68,7 @@
     if ($board_id) {
         $sql = "update board set title = '$title', body = '$body', user_id = '$user_id', date = '$today', file_name = '$stored_file_name' where id = '$board_id'";
     } else {
-        $sql = "insert into board (title, body, user_id, date, file_name) values ('$title', '$body', '$user_id', '$today', '$stored_file_name')";
+        $sql = "insert into board (title, body, user_id, date, file_name, views) values ('$title', '$body', '$user_id', '$today', '$stored_file_name', 0)";
     }
     $result = mysqli_query($conn, $sql);
 
