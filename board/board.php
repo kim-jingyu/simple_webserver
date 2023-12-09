@@ -16,12 +16,6 @@
     <?php
         require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
-        $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-        if (mysqli_connect_errno()) {
-            die('데이터베이스 오류 발생.'.mysqli_connect_error());
-        }
-
         session_start();
 
         if (!isset($_SESSION['loginId'])) {
@@ -29,8 +23,14 @@
             exit();
         }
 
+        $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
+
+        if (mysqli_connect_errno()) {
+            die('데이터베이스 오류 발생.'.mysqli_connect_error());
+        }
+
         // 검색
-        $search_word = mysqli_real_escape_string($conn, $_GET['search']);
+        $search_word = $conn -> real_escape_string(filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS));
         // 날짜 검색
         $date_value = $conn -> real_escape_string($_GET['date_value']);
 
@@ -44,7 +44,7 @@
         $total_pages = ceil($total_cnt / $num_per_page);
 
         // 현재 페이지 번호
-        $page_now = $_GET['page'] ? intval($_GET['page']) : 1;
+        $page_now = $_GET['page'] ? $conn -> real_escape_string(filter_var(strip_tags(intval($_GET['page'])), FILTER_SANITIZE_SPECIAL_CHARS))  : 1;
 
         // 현재 페이지 블록 번호
         $block_now = floor(($page_now - 1) / 5) * 5;

@@ -1,4 +1,5 @@
 <?php
+    ini_set('display_erros', 1);
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
     session_start();
@@ -21,11 +22,12 @@
         exit();
     }
 
-    if (!empty($_FILES['file'])) {
-        $file_name = $_FILES['file']['name'];
-        $file_temp_name = $_FILES['file']['tmp_name'];
-        $file_size = $_FILES['file']['size'];
-        $file_error = $_FILES['file']['error'];
+    $file = $_FILES['file'];
+    if ($file['size'] != 0) {
+        $file_name = $file['name'];
+        $file_temp_name = $file['tmp_name'];
+        $file_size = $file['size'];
+        $file_error = $file['error'];
         $allowed_mime_types = ['image/jpeg', 'image/png', 'image/gif', 'text/plain', 'application/zip', 'applicatoin/msword', 'application/pdf'];
         $allowed_extensions = ['jpg', 'png', 'gif', 'txt', 'zip', 'word', 'pdf'];
 
@@ -73,9 +75,9 @@
         }           
     }
 
-    $board_id = $_POST['board_id'] ? $_POST['board_id'] : null ;
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $body = mysqli_real_escape_string($conn, $_POST['body']);
+    $board_id = $_POST['board_id'] ? $conn -> real_escape_string(filter_var(strip_tags($_POST['board_id']), FILTER_SANITIZE_SPECIAL_CHARS)) : null ;
+    $title = $conn -> real_escape_string(filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS));
+    $body = $conn -> real_escape_string(filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS));
     $user_id = $_SESSION['loginId'];
     $today = date("Y-m-d");
 

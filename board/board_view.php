@@ -14,7 +14,7 @@
         exit();
     }
 
-    $board_id = $conn -> real_escape_string($_GET['id']);
+    $board_id = $conn -> real_escape_string(filter_var(strip_tags($_GET['id']), FILTER_SANITIZE_SPECIAL_CHARS));
 
     // 조회수 기능
     $last_view_time_per_board = 'last_view_time_of_'.$board_id;
@@ -45,7 +45,7 @@
         echo '<p>글 내용: '.$row['body'].'</p>';
         echo '<p>작성일: '.$row['date_value'].'</p>';
         if (isset($row['file_name'])) {
-            $file_name = explode('_', $row['file_name'])[1];
+            $file_name = implode('_', array_slice(explode('_', $row['file_name']), 1));
             $file_path = '/path/upload/'.$stored_file_name;
             echo '<p>파일명: <a href="/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</p>';
         }
@@ -53,11 +53,11 @@
         $login_id = $_SESSION['loginId'];
 
         if ($row['user_id'] == $login_id) {
-            echo "<form action='board_fix.php' method='post'>
+            echo "<form action='board_fix.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
                     <button type='submit'>게시물 수정</button>
                 </form>
-                <form action='board_delete.php' method='post'>
+                <form action='board_delete.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
                     <button type='submit'>게시글 삭제</button>
                 </form>

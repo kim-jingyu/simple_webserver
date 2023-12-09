@@ -1,5 +1,5 @@
 <?php
-    $file_name = $_GET['file'];
+    $file_name = filter_var(strip_tags($_GET['file']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     if (isset($file_name)) {
         $file_path = '/path/upload/'.$file_name;
