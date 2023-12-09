@@ -1,5 +1,5 @@
 <?php
-    include $_SERVER['DOCUMENT_ROOT'].'/db_info.php';
+    include $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
     session_start();
 
