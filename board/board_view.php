@@ -43,7 +43,7 @@
         echo '<p>USER ID: '.$row['user_id'].'</p>';
         echo '<p>타이틀: '.$row['title'].'</p>';
         echo '<p>글 내용: '.$row['body'].'</p>';
-        echo '<p>작성일: '.$row['date'].'</p>';
+        echo '<p>작성일: '.$row['date_value'].'</p>';
         if (isset($row['file_name'])) {
             $file_name = explode('_', $row['file_name'])[1];
             $file_path = '/path/upload/'.$stored_file_name;
