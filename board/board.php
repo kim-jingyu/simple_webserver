@@ -58,7 +58,7 @@
         
         if (mysqli_num_rows($result)) {
             while ($row = mysqli_fetch_array($result)) {
-                echo '<p>'.$row['id'].'. <a href="board_view.php?id='.$row['id'].'">'.$row['title'].'</a> 작성자 : '.$row['user_id'].' ,조회수 : '.$row['views'].'</p>';
+                echo '<p>'.$row['id'].'. <a href="board_view.php?id='.$row['id'].'">'.$row['title'].'</a> 작성자 : '.$row['user_id'].' ,조회수 : '.$row['views'].' ,좋아요 개수 : '.$row['likes'].'</p>';
             }
             echo '<p> [ ';
             // 이전 페이지 블록이 있으며, 이전 페이지 블록 링크 출력

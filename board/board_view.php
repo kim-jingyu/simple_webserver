@@ -40,6 +40,7 @@
     if (mysqli_num_rows($select_result)) {
         $row = $select_result -> fetch_assoc();
         echo '<p>조회수: '.$row['views'].'</p>';
+        echo '<p>좋아요 개수: '.$row['likes'].' 개</p>';
         echo '<p>USER ID: '.$row['user_id'].'</p>';
         echo '<p>타이틀: '.$row['title'].'</p>';
         echo '<p>글 내용: '.$row['body'].'</p>';
@@ -55,11 +56,15 @@
         if ($row['user_id'] == $login_id) {
             echo "<form action='board_fix.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
-                    <button type='submit'>게시물 수정</button>
+                    <p><button type='submit'>게시물 수정</button></p>
                 </form>
                 <form action='board_delete.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
-                    <button type='submit'>게시글 삭제</button>
+                    <p><button type='submit'>게시글 삭제</button></p>
+                </form>
+                <form action='board_like.php' method='post'>
+                    <input type='hidden' name='board_id' value='".$board_id."'>
+                    <p><button type='submit'>좋아요!</button></p>
                 </form>
                 <form action='board.php'>
                     <input type='submit' value='뒤로'> 
