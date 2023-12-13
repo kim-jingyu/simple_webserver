@@ -15,9 +15,7 @@
     }
 
     $old_id = $_POST['OldId'];
-    echo "<script>alert('{$old_id}');</script>";
     $new_id = $_POST['NewId'];
-    echo "<script>alert('{$new_id}');</script>";
 
     $update_sql = "update member set user_id = '$new_id' where user_id = '$old_id'";
     $result = $conn -> query($update_sql);

@@ -7,8 +7,8 @@
         die('데이터베이스 오류발생!'.mysqli_connect_error());
     }
 
-    $old_pw = md5($_POST['oldPw']);
-    $new_pw = md5($_POST['newPw']);
+    $old_pw = md5($_POST['OldPw']);
+    $new_pw = md5($_POST['NewPw']);
 
     $update_sql = "update member set user_pw = '$new_pw' where user_pw = '$old_pw'";
     $result = $conn -> query($update_sql);
@@ -18,7 +18,7 @@
     } else {
         echo "<script>alert('PW 수정에 실패했습니다!');</script>";
     }
-    header("location:/mypage/mypage.php");
+    echo "<script>location.replace('/mypage/mypage.php');</script>";
 
     $conn -> close();
     exit();
