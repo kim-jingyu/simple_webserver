@@ -27,6 +27,9 @@
     <form action="/board/board.php">
         <p><input type="submit" value="메뉴"></p>
     </form>
+    <form action="/mypage/mypage.php">
+        <p><input type="submit" value="마이페이지"></p>
+    </form>
 </body>
 
 </html>
