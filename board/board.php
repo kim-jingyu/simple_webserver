@@ -8,10 +8,17 @@
 <body>
     <h1>게시판</h1>
     <form action="" method="get">
-        <input type="text" name="search" placeholder="검색">
+        <input type="text" name="search" value="<?php echo $_GET['search']; ?>" placeholder="검색">
         <input type="submit" value="검색">
+        <select name="sort" onchange="this.form.submit()">
+            <option value=""  <?php if(isset($_GET['sort'])) {echo "disabled"; } ?>>정렬 옵션</option>
+            <option value="author" <?php if($_GET['sort'] == 'author') {echo "selected"; } ?>>작성자순</option>
+            <option value="date" <?php if($_GET['sort'] == 'date') {echo "selected"; } ?>>날짜순</option>
+            <option value="views" <?php if($_GET['sort'] == 'views') {echo "selected"; } ?>>조회수순</option>
+            <option value="likes" <?php if($_GET['sort'] == 'likes') {echo "selected"; } ?>>추천순</option>
+        </select>
         <label for="date_value">날짜:</lable>
-        <input type="date" id="date_value" name="date_value">
+        <input type="date" id="date_value" name="date_value" value="<?php echo $_GET['date_value'] ?>">
     </form>
     <?php
         require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
@@ -51,8 +58,26 @@
 
         // 각 페이지 시작 인덱스
         $start = ($page_now - 1) * $num_per_page;
+
+        $select_sql = "select * from board where title like '%$search_word%' and date_value like '%$date_value%'";
+
+        if (isset($_GET['sort'])) {
+            $sort = $conn -> real_escape_string(filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS));
+            if ($sort == 'author') {
+                $select_sql .= " order by user_id desc";
+            } else if ($sort == 'date') {
+                $select_sql .= " order by date_value desc";
+            } else if ($sort == 'views') {
+                $select_sql .= " order by views desc";
+            } else if ($sort == 'likes') {
+                $select_sql .= " order by likes desc";
+            } else {
+                $select_sql .= " order by id asc";
+            }
+        }
        
-        $select_sql = "select * from board where title like '%$search_word%' and date_value like '%$date_value%' order by id asc limit $start, $num_per_page";
+        $select_sql .= " limit $start, $num_per_page";
+        
         $result = mysqli_query($conn, $select_sql);
         
         
