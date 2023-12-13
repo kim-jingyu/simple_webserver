@@ -32,11 +32,11 @@
     <form action="change_id.php" method="post">
         <fieldset>
             <legend>아이디 수정</legend>
-            <label for="oldId">기존 ID:</label>
-            <input type="text" name="oldId" id="oldId" value="<?php echo $login_id ?>" readonly>
+            <label for="OldId">기존 ID:</label>
+            <input type="text" name="OldId" id="OldId" value="<?php echo $login_id ?>" readonly>
             <br><br>
-            <label for="newId">바꿀 ID:</label>
-            <input type="text" name="newId" id="newId" placeholder="바꿀 ID" required>
+            <label for="NewId">바꿀 ID:</label>
+            <input type="text" name="NewId" id="NewId" placeholder="바꿀 ID" required>
             <br><br>
             <input type="submit" value="아이디 수정">
         </fieldset>
@@ -44,11 +44,11 @@
     <form action="change_pw.php" method="post">
         <fieldset>
             <legend>비밀번호 수정</legend>
-            <label for="oldPw">기존 PW:</label>
-            <input type="text" name="oldPw" placeholder="기존 PW" required>
+            <label for="OldPw">기존 PW:</label>
+            <input type="text" name="OldPw" id="OldPw" placeholder="기존 PW" required>
             <br><br>
-            <label for="newPw">바꿀 PW:</label>
-            <input type="text" name="newPw" placeholder="바꿀 PW" required>
+            <label for="NewPw">바꿀 PW:</label>
+            <input type="text" name="NewPw" id="NewPw" placeholder="바꿀 PW" required>
             <br><br>
             <input type="submit" value="비밀번호 수정">
         </fieldset>
