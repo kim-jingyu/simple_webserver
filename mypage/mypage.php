@@ -53,6 +53,9 @@
             <input type="submit" value="비밀번호 수정">
         </fieldset>
     </form>
+    <form action="/index.php">
+        <p><input type="submit" value="뒤로"></p>
+    </form>
     <form action="/logout/logout.php">
         <input type="submit" value="로그아웃">
     </form>

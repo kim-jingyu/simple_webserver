@@ -118,6 +118,9 @@
     <form action="board_write.php" method="post">
         <p><input type="submit" name="writeBoard" value="게시글 작성"></p>
     </form>
+    <form action="/index.php">
+        <p><input type="submit" value="뒤로"></p>
+    </form>
 </body>
 
 </html>
