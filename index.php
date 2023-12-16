@@ -12,13 +12,12 @@
 
 <body>
     <?php
-        session_start();
-        if (!isset($_SESSION['loginId'])) {
+        if (!isset($_COOKIE['JWT'])) {
             header("location:/login/login.html");
             exit;
-        } else {
-            $id = $_SESSION['loginId'];
         }
+        require_once("/jwt/jwt.php");
+        $id = getToken($_COOKIE['JWT']['user']);
     ?>
     <h2><?php echo "어서오세요. $id"; ?>님!</h2>
     <button type="button" class="btn btn-secondary" onclick="location.href='/logout/logout.php'">

@@ -1,7 +1,6 @@
 <?php
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-
-    session_start();
+    require_once '/jwt/jwt.php';
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -19,8 +18,8 @@
     $result = mysqli_fetch_array(mysqli_query($conn, $sql));
 
     if ($result) {
-        session_regenerate_id();    // ID 자동 갱신
-        $_SESSION['loginId'] = $result['user_id'];
+        $jwt = createToken($id, $user_name);
+        setcookie('JWT', $jwt, time() + 30 * 60);
         echo "<script>location.replace('/index.php');</script>";
     } else {
         $_SESSION['loginError'] = "로그인 실패!";
