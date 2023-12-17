@@ -1,11 +1,10 @@
 <?php
     ini_set('display_erros', 1);
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
 
-    session_start();
-
-    if (!isset($_SESSION['loginId'])) {
-        header('location:/login/login.html');
+    if (!isset($_COOKIE['JWT'])) {
+        header("location:/login/login.html");
         exit();
     }
 
@@ -78,13 +77,13 @@
     $board_id = $_POST['board_id'] ? $conn -> real_escape_string(filter_var(strip_tags($_POST['board_id']), FILTER_SANITIZE_SPECIAL_CHARS)) : null ;
     $title = $conn -> real_escape_string(filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS));
     $body = $conn -> real_escape_string(filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS));
-    $user_id = $_SESSION['loginId'];
+    $user_id = getToken($_COOKIE['JWT'])['user'];
     $today = date("Y-m-d");
 
     if ($board_id) {
         $sql = "update board set title = '$title', body = '$body', user_id = '$user_id', date_value = '$today', file_name = '$stored_file_name' where id = '$board_id'";
     } else {
-        $sql = "insert into board (title, body, user_id, date_value, file_name, views) values ('$title', '$body', '$user_id', '$today', '$stored_file_name', 0)";
+        $sql = "insert into board (title, body, user_id, date_value, file_name, views, likes) values ('$title', '$body', '$user_id', '$today', '$stored_file_name', 0, 0)";
     }
     $result = mysqli_query($conn, $sql);
 

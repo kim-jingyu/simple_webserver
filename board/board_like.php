@@ -1,10 +1,8 @@
 <?php
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
-    session_start();
-
-    if (!isset($_SESSION['loginId'])) {
-        header('location:/login/login.html');
+    if (!isset($_COOKIE['JWT'])) {
+        header("location:/login/login.html");
         exit();
     }
 

@@ -9,9 +9,7 @@
 
 <body>
     <?php
-        session_start();
-
-        if (!isset($_SESSION['loginId'])) {
+        if (!isset($_COOKIE['JWT'])) {
             header("location:/login/login.html");
             exit();
         }

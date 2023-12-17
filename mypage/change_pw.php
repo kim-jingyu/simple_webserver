@@ -1,5 +1,11 @@
 <?php
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
+
+    if (!isset($_COOKIE['JWT'])) {
+        header("location:/login/login.html");
+        exit();
+    }
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -9,8 +15,8 @@
 
     $old_pw = $conn -> real_escape_string(filter_var(strip_tags(md5($_POST['OldPw'])), FILTER_SANITIZE_SPECIAL_CHARS));
 
-    $login_id = $_SESSION['loginId'];
-    $select_pw_sql = "select pw from member where user_id = '$loginId'";
+    $user_id = getToken($_COOKIE['JWT'])['user'];
+    $select_pw_sql = "select user_pw from member where user_id = '$user_id'";
     $select_pw_result = $conn -> query($select_pw_sql);
 
     if (!mysqli_num_rows($select_pw_result)) {

@@ -1,9 +1,7 @@
 <?php
     include $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
-    session_start();
-
-    if (!isset($_SESSION['loginId'])) {
+    if (!isset($_COOKIE['JWT'])) {
         header("location:/login/login.html");
         exit();
     }

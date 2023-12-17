@@ -1,8 +1,6 @@
 <?php
 	require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
 
-	session_start();
-
 	$conn = mysqli_connect($db_host, $db_username, $db_password, $db_name);
 
 	if (!$conn) {

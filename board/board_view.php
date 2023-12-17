@@ -1,5 +1,6 @@
 <?php
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+    require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -7,9 +8,7 @@
         die("데이터베이스 오류 발생.".mysqli_connect_error());
     }
 
-    session_start();
-
-    if (!isset($_SESSION['loginId'])) {
+    if (!isset($_COOKIE['JWT'])) {
         header("location:/login/login.html");
         exit();
     }
@@ -51,9 +50,9 @@
             echo '<p>파일명: <a href="/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</p>';
         }
 
-        $login_id = $_SESSION['loginId'];
+        $user_id = getToken($_COOKIE['JWT'])['user'];
 
-        if ($row['user_id'] == $login_id) {
+        if ($row['user_id'] == $user_id) {
             echo "<form action='board_fix.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
                     <p><button type='submit'>게시물 수정</button></p>
@@ -61,7 +60,10 @@
                 <form action='board_delete.php' method='get'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
                     <p><button type='submit'>게시글 삭제</button></p>
-                </form>
+                </form>"
+                ;
+        }
+        echo "
                 <form action='board_like.php' method='post'>
                     <input type='hidden' name='board_id' value='".$board_id."'>
                     <p><button type='submit'>좋아요!</button></p>
@@ -69,7 +71,6 @@
                 <form action='board.php'>
                     <input type='submit' value='뒤로'> 
                 </form>
-                ";
-        }
+            ";
     }
 ?>

@@ -1,6 +1,6 @@
 <?php
     require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-    require_once '/jwt/jwt.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
@@ -18,8 +18,8 @@
     $result = mysqli_fetch_array(mysqli_query($conn, $sql));
 
     if ($result) {
-        $jwt = createToken($id, $user_name);
-        setcookie('JWT', $jwt, time() + 30 * 60);
+        $jwt = createToken($result['user_id'], $result['user_name']);
+        setcookie('JWT', $jwt, time() + 30 * 60, '/');
         echo "<script>location.replace('/index.php');</script>";
     } else {
         $_SESSION['loginError'] = "로그인 실패!";

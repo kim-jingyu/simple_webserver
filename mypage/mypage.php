@@ -10,10 +10,9 @@
     <br>
     <?php
         require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+        require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
         
-        session_start();
-
-        if (!isset($_SESSION['loginId'])) {
+        if (!isset($_COOKIE['JWT'])) {
             header("location:/login/login.html");
             exit();
         }
@@ -24,16 +23,16 @@
             die('데이터베이스 오류 발생'.mysqli_connect_error());
         }
 
-        $login_id = $_SESSION['loginId'];
+        $user_id = getToken($_COOKIE['JWT'])['user'];
     ?>
     <h2>
-        당신은 <?php echo $login_id; ?>입니다!
+        당신은 <?php echo $user_id; ?>입니다!
     </h2>
     <form action="change_id.php" method="post">
         <fieldset>
             <legend>아이디 수정</legend>
             <label for="OldId">기존 ID:</label>
-            <input type="text" name="OldId" id="OldId" value="<?php echo $login_id ?>" readonly>
+            <input type="text" name="OldId" id="OldId" value="<?php echo $user_id ?>" readonly>
             <br><br>
             <label for="NewId">바꿀 ID:</label>
             <input type="text" name="NewId" id="NewId" placeholder="바꿀 ID" required>
