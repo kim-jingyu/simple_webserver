@@ -118,7 +118,7 @@
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
-                            echo '<td><a href="board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
+                            echo '<td><a href="/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
                             echo '<td>'.$row['user_id'].'</td>';
                             echo '<td>'.$row['views'].'</td>';
                             echo '<td>'.$row['likes'].'</td>';
