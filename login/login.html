@@ -14,25 +14,19 @@
             <h2 class="form-signin-heading">Login In</h2>
             <div>
                 <label for="inputUseid" class="sr-only">Id</label>
-                <input name="UserId" type="text" id="inputUserid" class="form-control" placeholder="ID" required autofocus>
+                <input name="UserId" type="text" id="inputUserid" class="form-control" required autofocus>
             </div>
             <div>
                 <label for="inputPassword" class="sr-only">Password</label>
-                <input name="Password" type="password" id="inputPassword" class="form-control" placeholder="Password"
-                    required>
+                <input name="Password" type="password" id="inputPassword" class="form-control" required>
             </div>
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me">Remember me
-                </label>
+            <div class="signup_link">
+                👉🏻<a href="/signup/signup.html">회원가입</a>
             </div>
-            <button name="Login" value="Login" class="login_btn" type="submit">Login</button>
-            <button type="button" class="btn btn-lg btn-primary btn-block" onclick="location.href='/signup/signup.html'">
-                회원가입
-            </button>
-        </form>
-        <form action="/inquiry/board.php">
-            <p><input type="submit" value="문의게시판 바로가기"></p>
+            <div class="signup_link">
+                👉🏻<a href="/inquiry/board.php">문의게시판 바로가기</a>
+            </div>
+            <button name="Login" value="Login" class="account_btn" type="submit">Login</button>
         </form>
     </div>
 </body>

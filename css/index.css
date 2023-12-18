@@ -1,0 +1,117 @@
+* {
+    margin: 0;
+    padding: 0;
+    background-color: rgb(200, 196, 196);
+}
+
+header {
+    height: 75px;
+    padding: 1rem;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    border-bottom: 1px solid grey;
+}
+
+nav {
+    display: flex;
+}
+
+.body {
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: flex-start;
+    height: 500px;
+    width: 700px;
+    border-radius: 10px;
+}
+
+p {
+    padding: 5px;
+    text-align: center;
+    font-size: 15px;
+}
+
+.logout_btn {
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.mypage_btn {
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.funcs {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.search_text {
+    margin-bottom: 20px;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid rgb(14, 156, 222);
+    outline: none;
+    font-size: 18px;
+}
+
+.search_btn {
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    padding: 5px;
+    margin-right: 10px;
+    cursor: pointer;
+    background-color: rgb(14, 156, 222);
+    color: #fff;
+}
+
+select {
+    width: 120px;
+    border: 1px solid rgb(14, 156, 222);
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 5px 8px;
+    margin-right: 10px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+}
+
+.date {
+    margin: 2px;
+}
+
+/* input type="date" 스타일링 */
+input[type="date"] {
+    appearance: none;
+    border: 1px solid rgb(14, 156, 222);
+    border-radius: 4px;
+    outline: none;
+    font-size: 18px;
+}
