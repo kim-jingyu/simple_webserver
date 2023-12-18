@@ -17,7 +17,7 @@
     
     $sql = "delete from board where id = '$board_id'";
     $conn -> query($sql);
-    header("location:board.php");
+    header("location:/index.php");
     mysqli_close();
     exit();
 ?>

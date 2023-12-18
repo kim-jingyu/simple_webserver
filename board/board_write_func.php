@@ -90,11 +90,11 @@
     if ($result) {
         if ($board_id) {
             echo "<script>alert('수정이 완료되었습니다.');</script>";
-            echo "<script>location.replace('board_view.php?id=$board_id');</script>";
+            echo "<script>location.replace('board_view.php?board_id=$board_id');</script>";
         } else {
             $board_id = $conn -> insert_id;
             echo "<script>alert('작성이 완료되었습니다.');</script>";
-            echo "<script>location.replace('board_view.php?id=$board_id');</script>";
+            echo "<script>location.replace('board_view.php?board_id=$board_id');</script>";
         }
     } else {
         echo "<script>alert('작성 중 오류가 발생했습니다.');</script>";

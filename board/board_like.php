@@ -19,10 +19,10 @@
 
     if ($result) {
         echo "<script>alert('좋아요!');</script>";
-        echo "<script>location.replace('board_view.php?id=$board_id');</script>";
+        echo "<script>location.replace('board_view.php?board_id=$board_id');</script>";
     } else {
         echo "<script>alert('좋아요 실패!');</script>";
-        echo "<script>location.replace('board.php);</script>";
+        echo "<script>location.replace('/index.php);</script>";
     }
     
     $conn -> close();
