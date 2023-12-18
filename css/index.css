@@ -4,7 +4,7 @@
     background-color: rgb(200, 196, 196);
 }
 
-header {
+.header {
     height: 75px;
     padding: 1rem;
     color: white;
@@ -16,11 +16,7 @@ header {
     border-bottom: 1px solid grey;
 }
 
-nav {
-    display: flex;
-}
-
-.body {
+.container {
     height: 800px;
     display: flex;
     flex-direction: column;
@@ -28,20 +24,14 @@ nav {
     justify-content: space-evenly;
 }
 
-.container {
+.board {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: flex-start;
+    justify-content: space-around;
     height: 500px;
     width: 700px;
     border-radius: 10px;
-}
-
-p {
-    padding: 5px;
-    text-align: center;
-    font-size: 15px;
 }
 
 .logout_btn {
@@ -50,7 +40,7 @@ p {
     border: none;
     padding: 5px;
     cursor: pointer;
-    color: #fff;
+    color: rgb(148, 41, 41);
 }
 
 .mypage_btn {
@@ -59,7 +49,7 @@ p {
     border: none;
     padding: 5px;
     cursor: pointer;
-    color: #fff;
+    color: black;
 }
 
 .funcs {
@@ -78,7 +68,7 @@ p {
     font-size: 18px;
 }
 
-.search_btn {
+.btn {
     font-size: 15px;
     font-weight: bold;
     border: none;
@@ -114,4 +104,44 @@ input[type="date"] {
     border-radius: 4px;
     outline: none;
     font-size: 18px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 500px;
+    margin: 1rem auto;
+    border: 1px solid #ddd;
+    background-color: white;
+}
+
+/* 테이블 행 */
+th,
+td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background-color: rgb(14, 156, 222);
+    color: #ddd;
+}
+
+/* 테이블 올렸을 때 */
+tbody tr:hover {
+    background-color: #d3d3d3;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.page {
+    margin: 0 5px;
+}
+
+.footer {
+    margin: 0 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
 }
