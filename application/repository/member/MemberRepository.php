@@ -9,7 +9,7 @@
             try {
                 $conn = DBConnectionUtil::getConnection();
                 $sql = "INSERT INTO member(user_id, user_pw, user_name, user_level, user_info, user_address) VALUES (?,?,?,?,?,?)";
-                $stmt = $conn->prepare();
+                $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssssss", $memberSaveDto->getId, $memberSaveDto->getPw, $memberSaveDto->getName, $memberSaveDto->getLevel, $memberSaveDto->getInfo, $memberSaveDto->getAddress);
                 $stmt->execute();
             } catch (Exception $e) {
