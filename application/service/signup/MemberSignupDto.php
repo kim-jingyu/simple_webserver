@@ -1,5 +1,5 @@
 <?php
-    class MemberSaveDto {
+    class MemberSignupDto {
         private $id;
         private $pw;
         private $name;

@@ -2,6 +2,12 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/member/MemberService.php';
 
+    function close($message) {
+        echo "<script>alert('{$message}')</script>";
+        echo "<script>location.replace('{$mypageUrl}');</script>";
+        exit();
+    }
+
     $memberService = new MemberService();
     $mypageUrl = $_SERVER['DOCUMENT_ROOT'].'/view/mypage/mypage.php';
 
@@ -23,11 +29,5 @@
 
         $message = $memberService->changePw($originalId, $oldPw, $newPw);
         close($message);
-    }
-
-    function close($message) {
-        echo "<script>alert('{$message}')</script>";
-        echo "<script>location.replace('{$mypageUrl}');</script>";
-        exit();
     }
 ?>
