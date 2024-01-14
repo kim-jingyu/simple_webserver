@@ -20,11 +20,21 @@
         $encryption_key = 'secret_key';
         $encrypted_address = openssl_encrypt($userAddress, 'aes-256-cbc', $encryption_key, OPENSSL_ZERO_PADDING, '1234567890123456');
 
-        $memberSignupDto = new MemberSignupDto($userId, $hashedPw, $userName, $userInfo, $encrypted_address);
-        return $memberSignupDto;
+        $memberSaveDto = new MemberSaveDto($userId, $hashedPw, $userName, $userInfo, $encrypted_address);
+        return $memberSaveDto;
+    }
+
+    function close($message, $url) {
+        echo "<script>alert('{$message}')</script>";
+        echo "<script>location.replace('{$url}');</script>";
+        exit();
     }
     
     $signupService = new SignupService();
-    $signupService->signup(getParams());
-    
+    $isSucceed = $signupService->signup(getParams());
+    if ($isSucceed) {
+        close("회원가입 성공!", "/index.php");
+    } else {
+        close("회원가입 실패!", "/application/view/signup/signup.html");
+    }
 ?>

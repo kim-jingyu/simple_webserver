@@ -3,13 +3,13 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/member/MemberService.php';
 
     function close($message) {
+        $mypageUrl = '/application/view/mypage/mypage.php';
         echo "<script>alert('{$message}')</script>";
         echo "<script>location.replace('{$mypageUrl}');</script>";
         exit();
     }
 
     $memberService = new MemberService();
-    $mypageUrl = $_SERVER['DOCUMENT_ROOT'].'/view/mypage/mypage.php';
 
     if ($_REQUEST['changeId']) {
         $newId = filter_var(strip_tags($_POST['newId']), FILTER_SANITIZE_SPECIAL_CHARS);
