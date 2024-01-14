@@ -13,35 +13,23 @@
         public function changeId($newId, $originalId) {
             try {
                 $memberRepository->updateId($newId, $originalId);
-                echo "<script>alert('ID가 수정되었습니다');</script>";
+                return "ID가 수정되었습니다!";
             } catch (Exception $e) {
-                echo "<script>alert('ID 수정에 실패했습니다!');</script>";
-            } finally {
-                echo "<script>location.replace('{$mypageUrl}');</script>";
-                exit();
+                return "ID 수정에 실패했습니다!";
             }
         }
     
-        public function changePw($newId, $originalId, $oldPw) {
-            
-            $originalId = getToken($_COOKIE['JWT'])['user'];
-
+        public function changePw($originalId, $oldPw, $newPw) {
             $originalPw = $memberRepository->findById($originalId)['user_pw'];
             if ($oldPw != $originalPw) {
-                echo "<script>alert('비밀번호가 일치하지 않습니다!');</script>";
-                echo "<script>location.replace('{$mypageUrl}');</script>";
+                return "비밀번호가 일치하지 않습니다!";
             }
     
-            $newPw = filter_var(strip_tags(md5($_POST['newPw'])), FILTER_SANITIZE_SPECIAL_CHARS);
-
             try {
                 $memberRepository->updatePw($newPw, $oldPw);
-                echo "<script>alert('PW가 수정되었습니다!');</script>";
+                return "PW가 수정되었습니다!";
             } catch (Exception $e) {
-                echo "<script>alert('PW 수정에 실패했습니다!');</script>";
-            } finally {
-                echo "<script>location.replace('{$mypageUrl}');</script>";
-                exit();
+                return "PW 수정에 실패했습니다!";
             }
         }
     }

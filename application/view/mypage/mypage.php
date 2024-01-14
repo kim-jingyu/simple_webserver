@@ -1,7 +1,5 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
-    $memberServicePath = $_SERVER['DOCUMENT_ROOT'].'/application/service/mypage/MyPageService.php';
-
     checkToken();
     $userId = getToken($_COOKIE['JWT'])['user'];
 ?>
@@ -10,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/mypage.css">
+    <link rel="stylesheet" href="/css/mypage.css">
     <title>마이페이지</title>
 </head>
 <body>
@@ -19,7 +17,7 @@
         <h2>
             당신은 <?php echo $userId; ?>입니다!
         </h2>
-        <form action="change_id.php" method="post">
+        <form action="/application/controller/MyPageController.php" method="post">
             <fieldset>
                 <legend>아이디 수정</legend>
                 <label for="oldId">기존 ID:</label>
@@ -31,7 +29,7 @@
                 <input class="btn" type="submit" name="changeId" value="아이디 수정">
             </fieldset>
         </form>
-        <form action="<?php echo $memberServicePath ?>" method="post">
+        <form action="/application/controller/MyPageController.php" method="post">
             <fieldset>
                 <legend>비밀번호 수정</legend>
                 <label for="oldPw">기존 PW:</label>
@@ -47,7 +45,7 @@
             <form action="/index.php">
                 <input class="btn" type="submit" value="뒤로">
             </form>
-            <form action="/logout/logout.php">
+            <form action="/application/service/logout.php">
                 <input class="btn" type="submit" value="로그아웃">
             </form>
         </div>
