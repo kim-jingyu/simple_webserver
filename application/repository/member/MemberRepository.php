@@ -2,6 +2,9 @@
     require_once $_SERVER['DOCUMENT_ROOT'] . '/application/connection/DBConnectionUill.php';
 
     class MemberRepository {
+        public function __construct() {
+        }
+
         public function save($memberSaveDto) {
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -39,6 +42,20 @@
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Update Id - DB Exception 발생!");
+            } finally {
+                close($conn, $stmt);
+            }
+        }
+
+        public function updatePw($newPw, $oldPw) {
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "UPDATE member SET user_pw = ? WHERE user_pw = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ss", $newPw, $oldPw);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Update Pw - DB Exception 발생!");
             } finally {
                 close($conn, $stmt);
             }
