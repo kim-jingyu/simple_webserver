@@ -1,19 +1,5 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-    require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
-    
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
-
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-    if (mysqli_connect_errno()) {
-        die('데이터베이스 오류 발생'.mysqli_connect_error());
-    }
-
-    $user_id = getToken($_COOKIE['JWT'])['user'];
+    require $_SERVER['DOCUMENT_ROOT'].'/application/service/mypage/MyPageService.php';
 ?>
 <!DOCTYPE html>
 <html lang="ko">

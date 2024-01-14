@@ -32,4 +32,11 @@
 	    
         return $decoded_jwt;
     }
+
+    function checkToken() {
+        if (!isset($_COOKIE['JWT'])) {
+            header("location:/login/login.html");
+            exit();
+        }
+    }
 ?>
