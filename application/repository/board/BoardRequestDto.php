@@ -1,5 +1,5 @@
 <?php
-    class BoardDto {
+    class BoardRequestDto {
         private $searchWord;
         private $dateValue;
         private $numPerPage;

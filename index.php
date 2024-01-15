@@ -4,6 +4,7 @@
 
     checkToken();
     $id = getToken($_COOKIE['JWT'])['user'];
+    var_dump(getToken($_COOKIE['JWT']));
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +21,7 @@
     <div class="header">
         <p><?php echo "어서오세요. $id"; ?>님!</p>
         <a href="/application/service/logout/LogoutService.php" class="logout_btn">로그아웃</a>
-        <a href="/appliaction/view/mypage/mypage.php" class="mypage_btn">마이페이지</a>
+        <a href="/application/view/mypage/mypage.php" class="mypage_btn">마이페이지</a>
     </div>
     <div class="container">
         <h1>게시판</h1>
@@ -41,8 +42,8 @@
                         <input class="btn" type="submit" value="검색">
                     </div>
                     <div class="date">
-                        <label for="date_value">날짜:</lable>
-                        <input type="date" id="date_value" name="dateValue" value="<?php echo $_GET['dateValue'] ?>">    
+                        <label for="dateValue">날짜:</lable>
+                        <input type="date" id="dateValue" name="dateValue" value="<?php echo $_GET['dateValue'] ?>">    
                     </div>
                 </form>
             </div>
@@ -57,6 +58,7 @@
                 <?php
                     if (mysqli_num_rows($result)) {
                         while ($row = mysqli_fetch_array($result)) {
+                            var_dump($row);
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
                             echo '<td><a href="/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
@@ -68,27 +70,27 @@
                         echo '</table>';
                         echo '<p class="page"> [ ';
                         // 이전 페이지 블록이 있으며, 이전 페이지 블록 링크 출력
-                        if ($block_now > 1) {
-                            $prev_block_start = $block_now - 5;
-                            if ($prev_block_start == 0) {
-                                $prev_block_start = 1;
+                        if ($blockNow > 1) {
+                            $prevBlockStart = $blockNow - 5;
+                            if ($prevBlockStart == 0) {
+                                $prevBlockStart = 1;
                             }
-                            echo '<a href="?page='.$prev_block_start.'&search='.$search_word.'&date_value'.$date_value.'">이전 페이지</a>';
+                            echo '<a href="?page='.$prevBlockStart.'&search='.$searchWord.'&dateValue'.$dateValue.'">이전 페이지</a>';
                         }
 
-                        for ($page_num = $block_now + 1; $page_num <= min($block_now + 5, $total_pages); $page_num++) {
-                            if ($page_num == $page_now) {
-                                echo $page_num;
+                        for ($pageNum = $blockNow + 1; $pageNum <= min($blockNow + 5, $totalPages); $pageNum++) {
+                            if ($pageNum == $page_now) {
+                                echo $pageNum;
                             } else {
-                                echo '<a href="?page='.$page_num.'&search='.$search_word.'&date_value='.$date_value.'">'.$page_num.'</a>';
+                                echo '<a href="?page='.$pageNum.'&search='.$searchWord.'&dateValue='.$dateValue.'">'.$pageNum.'</a>';
                             }
                             echo ' ';
                         }
 
                         // 다음 페이지 블록이 있으며, 다음 페이지 블록 링크 출력
-                        if ($block_now + 5 < $total_pages) {
-                            $next_block_start = $block_now + 6;
-                            echo '<a href="?page='.$next_block_start.'&search='.$search_word.'&date_value='.$date_value.'">다음 페이지</a>';
+                        if ($blockNow + 5 < $totalPages) {
+                            $nextBlockStart = $blockNow + 6;
+                            echo '<a href="?page='.$nextBlockStart.'&search='.$searchWord.'&dateValue='.$dateValue.'">다음 페이지</a>';
                         }
 
                         echo ' ]</p>';

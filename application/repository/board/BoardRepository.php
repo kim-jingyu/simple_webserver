@@ -1,5 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'] . '/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardResponseDto.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRequestDto.php';
 
     class BoardRepository {
         public function __construct() {
@@ -27,22 +29,22 @@
             }
         }
 
-        public function pagenate(BoardDto $boardDto) {
+        public function pagenate(BoardRequestDto $boardRequestDto) {
             $conn = null;
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
                 $cntSql = "SELECT count(*) AS cnt FROM board WHERE title LIKE ? AND date_value LIKE ?";
                 $stmt = $conn->prepare($cntSql);
-                $searchWord = $boardDto->getSearchWord();
-                $dateValue = $boardDto->getDateValue();
+                $searchWord = $boardRequestDto->getSearchWord();
+                $dateValue = $boardRequestDto->getDateValue();
                 $stmt->bind_param("ss", $searchWord, $dateValue);
                 $stmt->execute();
                 $totalCnt = $stmt->get_result()->fetch_assoc()['cnt'];
 
                 $selectSql = "SELECT * FROM board WHERE title LIKE ? AND date_value like ?";
-                if ($boardDto->getSort() != null) {
-                    $sort = $boardDto->getSort();
+                if ($boardRequestDto->getSort() != null) {
+                    $sort = $boardRequestDto->getSort();
                     if ($sort == 'author') {
                         $selectSql .=  " order by user_id desc";
                     } else if ($sort == 'date') {
@@ -58,13 +60,14 @@
                 $selectSql .= " limit ?, ?";
 
                 $stmt = $conn->prepare($selectSql);
-                $startIndexPerPage = $boardDto->getStartIndexPerPage();
-                $numPerPage = $boardDto->getNumPerPage();
+                $startIndexPerPage = $boardRequestDto->getStartIndexPerPage();
+                $numPerPage = $boardRequestDto->getNumPerPage();
                 $stmt->bind_param("ssii", $searchWord, $dateValue, $startIndexPerPage, $numPerPage);
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                return $result;
+                $boardResponseDto = new BoardResponseDto($totalCnt, $result);
+                return $boardResponseDto;
             } catch (Exception $e) {
                 throw new Exception("Pagnation At Board - DB Exception 발생!");
             } finally {
