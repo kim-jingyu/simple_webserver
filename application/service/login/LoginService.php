@@ -12,7 +12,7 @@
             $member = $memberRepository->findByIdAndPw($loginDto->getUserId(), $loginDto->getUserPw());
 
             if ($member) {
-                $jwt = createToken($member['user_id'], $member['uesr_pw']);
+                $jwt = createToken($member['user_id'], $member['user_pw']);
                 setcookie('JWT', $jwt, time() + 30 * 60, '/');
                 return true;
             } else {

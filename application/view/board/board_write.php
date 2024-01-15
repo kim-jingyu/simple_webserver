@@ -1,8 +1,6 @@
 <?php
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    checkToken();
 ?>
 <!DOCTYPE html>
 <html lang="ko">

@@ -35,7 +35,7 @@
 
     function checkToken() {
         if (!isset($_COOKIE['JWT'])) {
-            header("location:/login/login.html");
+            header("location:/application/view/login/login.html");
             exit();
         }
     }

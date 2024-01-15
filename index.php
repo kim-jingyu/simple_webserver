@@ -1,9 +1,8 @@
 <?php
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit;
-    }
-    require_once $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/BoardController.php';
+
+    checkToken();
     $id = getToken($_COOKIE['JWT'])['user'];
 ?>
 
@@ -20,8 +19,8 @@
 <body>
     <div class="header">
         <p><?php echo "어서오세요. $id"; ?>님!</p>
-        <a href="/logout/logout.php" class="logout_btn">로그아웃</a>
-        <a href="/mypage/mypage.php" class="mypage_btn">마이페이지</a>
+        <a href="/application/service/logout/LogoutService.php" class="logout_btn">로그아웃</a>
+        <a href="/appliaction/view/mypage/mypage.php" class="mypage_btn">마이페이지</a>
     </div>
     <div class="container">
         <h1>게시판</h1>
@@ -43,7 +42,7 @@
                     </div>
                     <div class="date">
                         <label for="date_value">날짜:</lable>
-                        <input type="date" id="date_value" name="date_value" value="<?php echo $_GET['date_value'] ?>">    
+                        <input type="date" id="date_value" name="dateValue" value="<?php echo $_GET['dateValue'] ?>">    
                     </div>
                 </form>
             </div>
@@ -56,64 +55,6 @@
                     <th>좋아요</th>
                 </tr>
                 <?php
-                    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-
-                    if (!isset($_COOKIE['JWT'])) {
-                        header("location:/login/login.html");
-                        exit();
-                    }
-
-                    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-                    if (mysqli_connect_errno()) {
-                        die('데이터베이스 오류 발생.'.mysqli_connect_error());
-                    }
-
-                    // 검색
-                    $search_word = $conn -> real_escape_string(filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS));
-                    // 날짜 검색
-                    $date_value = $conn -> real_escape_string($_GET['date_value']);
-
-                    // 페이징
-                    $num_per_page = 5;
-
-                    $total_count_sql = "select count(*) as cnt from board where title like '%$search_word%' and date_value like '%$date_value%'";
-                    $total_result = $conn -> query($total_count_sql);
-                    $total_row = $total_result -> fetch_assoc();
-                    $total_cnt = $total_row['cnt'];
-                    $total_pages = ceil($total_cnt / $num_per_page);
-
-                    // 현재 페이지 번호
-                    $page_now = $_GET['page'] ? $conn -> real_escape_string(filter_var(strip_tags(intval($_GET['page'])), FILTER_SANITIZE_SPECIAL_CHARS))  : 1;
-
-                    // 현재 페이지 블록 번호
-                    $block_now = floor(($page_now - 1) / 5) * 5;
-
-                    // 각 페이지 시작 인덱스
-                    $start = ($page_now - 1) * $num_per_page;
-
-                    $select_sql = "select * from board where title like '%$search_word%' and date_value like '%$date_value%'";
-
-                    if (isset($_GET['sort'])) {
-                        $sort = $conn -> real_escape_string(filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS));
-                        if ($sort == 'author') {
-                            $select_sql .= " order by user_id desc";
-                        } else if ($sort == 'date') {
-                            $select_sql .= " order by date_value desc";
-                        } else if ($sort == 'views') {
-                            $select_sql .= " order by views desc";
-                        } else if ($sort == 'likes') {
-                            $select_sql .= " order by likes desc";
-                        } else {
-                            $select_sql .= " order by id asc";
-                        }
-                    }
-                
-                    $select_sql .= " limit $start, $num_per_page";
-                    
-                    $result = mysqli_query($conn, $select_sql);
-                    
-                    
                     if (mysqli_num_rows($result)) {
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
