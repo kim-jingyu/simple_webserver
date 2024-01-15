@@ -1,4 +1,7 @@
 <?php
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardDto.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+
     $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
     $dateValue = $_GET['dateValue'];
 
