@@ -19,15 +19,29 @@
             }
         }
     
-        public function findById($memberId) {
+        public function findById($userId) {
             try {
                 $conn = DBConnectionUtil::getConnection();
                 $sql = "SELECT * FROM member WHERE user_id = ?";
-                $stmt = prepared_query($conn, $sql, [$memberId]);
+                $stmt = prepared_query($conn, $sql, [$userId]);
                 $user = $stmt->get_result()->fetch_assoc();
                 return $user;
             } catch (Exception $e) {
                 throw new Exception("FindById - DB Exception 발생!");
+            } finally {
+                close($conn, $stmt);
+            }
+        }
+
+        public function findByIdAndPw($userId, $userPw) {
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT * FROM member WHERE user_id = ? AND user_pw = ?";
+                $stmt = prepared_query($conn, $sql, [$userId, $userPw]);
+                $user = $stmt->get_result()->fetch_assoc();
+                return $user;
+            } catch (Exception $e) {
+                throw new Exception("FindByIdAndPw - DB Exception 발생!");
             } finally {
                 close($conn, $stmt);
             }
