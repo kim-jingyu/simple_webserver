@@ -14,7 +14,7 @@
         exit();
     }
 
-    $hashedPw = md5($userPw);
+    $hashedPw = password_hash($userPw, PASSWORD_DEFAULT);
     $userInfo = filter_var(strip_tags($_POST['userInfo']), FILTER_SANITIZE_SPECIAL_CHARS);
     
     $userAddress = trim($_POST['address']);

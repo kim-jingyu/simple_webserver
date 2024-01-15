@@ -50,30 +50,6 @@
                 }
             }
         }
-
-        public function findByIdAndPw($userId, $userPw) {
-            $conn = null;
-            $stmt = null;
-            try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT * FROM member WHERE user_id = ? AND user_pw = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ss", $userId, $userPw);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("FindByIdAndPw - DB Exception 발생!");
-            } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
-                }
-            }
-        }
     
         public function updateId($newId, $oldId) {
             $conn = null;
