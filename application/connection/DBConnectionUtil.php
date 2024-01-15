@@ -6,8 +6,8 @@
         }
 
         public static function getConnection() {
-            $dbInfo = new DbInfo();
-            $conn = new mysqli($dbInfo->getInfo()[0], $dbInfo->getInfo()[1], $dbInfo->getInfo()[2], $dbInfo->getInfo()[3]);
+            $info = DbInfo::getInfo();
+            $conn = new mysqli($info[0], $info[1], $info[2], $info[3]);
             
             if (mysqli_connect_errno()) {
                 die('데이터베이스 오류 발생' . mysqli_connect_error());

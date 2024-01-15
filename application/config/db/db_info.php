@@ -3,7 +3,7 @@
         public function __construct() {
         }
 
-        public function getInfo() {
+        public static function getInfo() {
             $db_host = getenv("DB_HOST");
             $db_username = getenv("DB_USERNAME");
             $db_password = getenv("DB_PASSWORD");
