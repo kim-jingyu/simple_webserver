@@ -37,12 +37,15 @@
                 $cntSql = "SELECT count(*) AS cnt FROM board WHERE title LIKE ? AND date_value LIKE ?";
                 $stmt = $conn->prepare($cntSql);
                 $searchWord = $boardRequestDto->getSearchWord();
+                $searchWord = '%'.$searchWord.'%';
                 $dateValue = $boardRequestDto->getDateValue();
+                $dateValue = '%'.$dateValue.'%';
                 $stmt->bind_param("ss", $searchWord, $dateValue);
                 $stmt->execute();
-                $totalCnt = $stmt->get_result()->fetch_assoc()['cnt'];
+                $result = $stmt->get_result();
+                $totalCnt = $result->fetch_assoc()['cnt'];
 
-                $selectSql = "SELECT * FROM board WHERE title LIKE ? AND date_value like ?";
+                $selectSql = "SELECT * FROM board WHERE title LIKE ? AND date_value LIKE ?";
                 if ($boardRequestDto->getSort() != null) {
                     $sort = $boardRequestDto->getSort();
                     if ($sort == 'author') {

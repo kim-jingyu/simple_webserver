@@ -4,7 +4,6 @@
 
     checkToken();
     $id = getToken($_COOKIE['JWT'])['user'];
-    var_dump(getToken($_COOKIE['JWT']));
 ?>
 
 <!DOCTYPE html>
@@ -58,7 +57,6 @@
                 <?php
                     if (mysqli_num_rows($result)) {
                         while ($row = mysqli_fetch_array($result)) {
-                            var_dump($row);
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
                             echo '<td><a href="/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
