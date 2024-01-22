@@ -1,43 +1,42 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-    require $_SERVER['DOCUMENT_ROOT'].'/jwt/jwt.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] .'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+
+    $conn = DBConnectionUtil::getConnection();
+    checkToken();
 
     session_start();
 
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-    if (mysqli_connect_errno()) {
-        die("데이터베이스 오류 발생.".mysqli_connect_error());
-    }
-
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
-
-    $board_id = $conn -> real_escape_string(filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS));
+    $board_id = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     // 조회수 기능
     $last_view_time_per_board = 'last_view_time_of_'.$board_id;
 
     if (!isset($_SESSION[$last_view_time_per_board])) {
         $_SESSION[$last_view_time_per_board] = time();
-        $update_sql = "update board set views = views + 1 where id = $board_id";
-        $conn -> query($update_sql);
+        $update_sql = "UPDATE board SET views = views + 1 WHERE id = ?";
+        $stmt = $conn->prepare($update_sql);
+        $stmt->bind_param("i", $board_id);
+        $stmt->execute();
     } else {
         $last_view_time = $_SESSION[$last_view_time_per_board];
         $current_time = time();
         $gap_time = $current_time - $last_view_time;
         if ($gap_time > 5) {
-            $update_sql = "update board set views = views + 1 where id = $board_id";
-            $conn -> query($update_sql);
+            $update_sql = "update board set views = views + 1 where id = ?";
+            $stmt = $conn->prepare($update_sql);
+            $stmt->bind_param("i", $board_id);
+            $stmt->execute();
             $_SESSION[$last_view_time_per_board] = $current_time;
         }
     }
 
-    $select_sql = "select * from board where id = '$board_id'";
-    $select_result = mysqli_query($conn, $select_sql);
-    $row = $select_result -> fetch_assoc();
+    $select_sql = "select * from board where id = ?";
+    $stmt = $conn->prepare($select_sql);
+    $stmt->bind_param("i", $board_id);
+    $stmt->execute();
+    $select_result = $stmt->get_result();
+    $row = $select_result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +44,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/board.css">
+    <link rel="stylesheet" href="/css/board.css">
     <title>게시글</title>
 </head>
 <body>

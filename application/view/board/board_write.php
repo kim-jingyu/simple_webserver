@@ -8,14 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/board.css">
+    <link rel="stylesheet" href="/css/board.css">
     <title>게시글 작성</title>
 </head>
 
 <body>
     <h1>게시글 작성</h1>
     <div class="container">
-        <form action="board_write_func.php" method="post" enctype="multipart/form-data">
+        <form action="/application/service/board/board_write_func.php" method="post" enctype="multipart/form-data">
             <input class="input-title" type="text" name="title" maxlength="20" placeholder="게시글 제목 입력. 최대 20자" required>
             <textarea class="textarea-content" type="text" name="body" rows="20" cols="40" maxlength="100" placeholder="게시글 본문 입력. 최대 100자" required></textarea>
             <label for="file">

@@ -1,18 +1,11 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
+    checkToken();
+    $conn = DBConnectionUtil::getConnection();
 
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-    if (mysqli_connect_errno()) {
-        die("데이터베이스 오류발생.".mysqli_connect_error());
-    }
-
-    $board_id = $conn -> real_escape_string(filter_var(strip_tags($_POST['board_id'])));
+    $board_id = filter_var(strip_tags($_POST['board_id']));
 
     $update_sql = "update board set likes = likes + 1 where id = $board_id";
     $result = $conn -> query($update_sql);

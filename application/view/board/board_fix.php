@@ -1,12 +1,9 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-    
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
+    require_once $_SERVER['DOCUMENT_ROOT'] .'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
+    checkToken();
+    $conn = DBConnectionUtil::getConnection();
 
     $board_id = $conn -> real_escape_string(filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS));
     $select_sql = "select * from board where id = '$board_id'";

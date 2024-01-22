@@ -59,7 +59,7 @@
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
-                            echo '<td><a href="/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
+                            echo '<td><a href="/application/view/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
                             echo '<td>'.$row['user_id'].'</td>';
                             echo '<td>'.$row['views'].'</td>';
                             echo '<td>'.$row['likes'].'</td>';
@@ -98,7 +98,7 @@
                     }
                 ?>
             <div class="footer">
-                <form action="/board/board_write.php" method="post">
+                <form action="/application/view/board/board_write.php" method="post">
                     <input type="submit" name="writeBoard" class="btn" value="게시글 작성">
                 </form>
             </div>
