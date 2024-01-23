@@ -1,8 +1,3 @@
-<?php
-    require_once $_SERVER['DOCUMENT_ROOT'].'/connection/DBConnectionUtil.php';
-    
-    $conn = DBConnectionUtil::getConnection();
-?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>

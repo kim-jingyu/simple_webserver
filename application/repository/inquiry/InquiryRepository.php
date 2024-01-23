@@ -48,6 +48,38 @@
                 return $inquiryBoardResponse;
             } catch (Exception $e) {
                 throw new Exception("Pagenate At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function findById($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "select * from inquiry_board where id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $row = $stmt->get_result()->fetch_assoc();
+                return $row;
+            } catch (Exception $e) {
+                throw new Exception("FinById At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
             }
         }
     }

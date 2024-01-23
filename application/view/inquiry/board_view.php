@@ -1,19 +1,8 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
+    $boardId = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-    if (mysqli_connect_errno()) {
-        die("데이터베이스 오류 발생.".mysqli_connect_error());
-    }
-
-    $board_id = $conn -> real_escape_string(filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS));
-
-    $select_sql = "select * from inquiry_board where id = '$board_id'";
-    $select_result = mysqli_query($conn, $select_sql);
-    $row = $select_result -> fetch_assoc();
-    $writer_name = $row['writer_name'];
-    $writer_pw = $row['writer_pw'];
+    $inquiryRepository = new InquiryRepository();
+    $row = $inquiryRepository->findById($boardId);
 ?>
 
 <!DOCTYPE html>
