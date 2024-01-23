@@ -1,18 +1,10 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-
-    $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
-
-    $board_id = $conn -> real_escape_string(filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS));
-    $select_sql = "select * from inquiry_board where id = '$board_id'";
-    $result = mysqli_query($conn, $select_sql);
-
-    if (mysqli_num_rows($result)) {
-        $row = mysqli_fetch_assoc($result);
-        $title = $row['title'];
-        $body = $row['body'];
-    }
-    mysqli_close($conn);
+    $boardId = ilter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
+    
+    $inquiryRepository = new InquiryRepository();
+    $row = $inquiryRepository->findById($boardId);
+    $title = $row['title'];
+    $body = $row['body'];
 ?>
 
 <!DOCTYPE html>
