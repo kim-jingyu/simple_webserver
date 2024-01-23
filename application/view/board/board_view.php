@@ -62,7 +62,7 @@
                     if (isset($row['file_name'])) {
                         $file_name = implode('_', array_slice(explode('_', $row['file_name']), 1));
                         $file_path = '/path/upload/'.$stored_file_name;
-                        echo '<p>파일명: <a href="/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</a></p>';
+                        echo '<p>파일명: <a href="/application/service/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</a></p>';
                     }
                 ?>
             </p>
