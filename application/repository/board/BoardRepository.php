@@ -88,6 +88,7 @@
             $conn = null;
             $stmt = null;
             try {
+                $conn = DBConnectionUtil::getConnection();
                 if ($board_id) {
                     $sql = "update board set title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? where id = ?";
                     $stmt = $conn->prepare($sql);
@@ -101,6 +102,30 @@
                 }
             } catch (Exception $e) {
                 throw new Exception("Write At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function like($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "update board set likes = likes + 1 where id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            } catch (Exception $e) {
+                throw new Exception("Like At Board - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();

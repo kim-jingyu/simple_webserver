@@ -5,19 +5,20 @@
     checkToken();
     $conn = DBConnectionUtil::getConnection();
 
-    $board_id = filter_var(strip_tags($_POST['board_id']));
+    $boardId = filter_var(strip_tags($_POST['board_id']));
 
-    $update_sql = "update board set likes = likes + 1 where id = $board_id";
-    $result = $conn -> query($update_sql);
+    $boardRepository = new BoardRepository();
+    try {
+        $result = $boardRepository->like($boardId);
 
-    if ($result) {
-        echo "<script>alert('좋아요!');</script>";
-        echo "<script>location.replace('board_view.php?board_id=$board_id');</script>";
-    } else {
-        echo "<script>alert('좋아요 실패!');</script>";
-        echo "<script>location.replace('/index.php);</script>";
+        if ($result) {
+            echo "<script>alert('좋아요!');</script>";
+            echo "<script>location.replace('/application/view/board/board_view.php?board_id=$boardId');</script>";
+        } else {
+            echo "<script>alert('좋아요 실패!');</script>";
+            echo "<script>location.replace('/index.php);</script>";
+        }
+    } catch (Exception $e) {
+        echo $e;
     }
-    
-    $conn -> close();
-    exit();
 ?>
