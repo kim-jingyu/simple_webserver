@@ -2,7 +2,6 @@
     if (!isset($_POST['pw']) or !isset($_POST['name'])) {
         echo "<script>alert('작성자 정보를 입력하세요!');</script>";
         echo "<script>location.replace('board_write.php');</script>";
-        mysqli_close($conn);
         exit();
     }
 

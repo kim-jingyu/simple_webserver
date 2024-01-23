@@ -161,5 +161,27 @@
                 }
             }
         }
+
+        public function deleteById($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "delete from inquiry_board where id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Delete At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
     }
 ?>
