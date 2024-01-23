@@ -71,7 +71,86 @@
                 $row = $stmt->get_result()->fetch_assoc();
                 return $row;
             } catch (Exception $e) {
-                throw new Exception("FinById At Inquiry - DB Exception 발생!");
+                throw new Exception("FindById At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function findPwByWriterName($writerName) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "select writer_pw from inquiry_board where writer_name= ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("s", $writerName);
+                $stmt->execute();
+                $pw = $stmt->get_result()->fetch_assoc()['writer_pw'];
+                return $pw;
+            } catch (Exception $e) {
+                throw new Exception("FindPwByWriterName At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function update(InquiryBoardUpdateRequest $inquiryBoardUpdateRequest) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "update inquiry_board set title = ?, body = ?, writer_name = ?, writer_pw = ?, date_value = ? where id = ?";
+                $stmt = $conn->prepare($sql);
+                $title = $inquiryBoardUpdateRequest->getTitle();
+                $body = $inquiryBoardUpdateRequest->getBody();
+                $writerName = $inquiryBoardUpdateRequest->getWriterName();
+                $writerPw = $inquiryBoardUpdateRequest->getWriterPw();
+                $today = $inquiryBoardUpdateRequest->getToday();
+                $boardId = $inquiryBoardUpdateRequest->getBoardId();
+                $stmt->bind_param("sssssi", $title, $body, $writerName, $writerPw, $today, $boardId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Update At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function save(InquiryBoardUpdateRequest $inquiryBoardUpdateRequest) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "insert into inquiry_board (title, body, writer_name, writer_pw, date_value) values (?, ?, ?, ?, ?)";
+                $stmt = $conn->prepare($sql);
+                $title = $inquiryBoardUpdateRequest->getTitle();
+                $body = $inquiryBoardUpdateRequest->getBody();
+                $writerName = $inquiryBoardUpdateRequest->getWriterName();
+                $writerPw = $inquiryBoardUpdateRequest->getWriterPw();
+                $today = $inquiryBoardUpdateRequest->getToday();
+                $stmt->bind_param("sssss", $title, $body, $writerName, $writerPw, $today);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Update At Inquiry - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();
