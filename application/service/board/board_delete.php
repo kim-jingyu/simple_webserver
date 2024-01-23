@@ -1,10 +1,6 @@
 <?php
-    include $_SERVER['DOCUMENT_ROOT'].'/db/db_info.php';
-
-    if (!isset($_COOKIE['JWT'])) {
-        header("location:/login/login.html");
-        exit();
-    }
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
     $conn = new mysqli($db_host, $db_username, $db_password, $db_name);
 
