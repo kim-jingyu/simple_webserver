@@ -89,12 +89,12 @@
             $stmt = null;
             try {
                 if ($board_id) {
-                    $sql = "update board set title = '$title', body = '$body', user_id = '$user_id', date_value = '$today', file_name = '$stored_file_name' where id = '$board_id'";
+                    $sql = "update board set title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? where id = ?";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssssi", $title, $body, $user_id, $today, $stored_file_name, $board_id);
                     $stmt->execute();
                 } else {
-                    $sql = "insert into board (title, body, user_id, date_value, file_name, views, likes) values ('$title', '$body', '$user_id', '$today', '$stored_file_name', 0, 0)";
+                    $sql = "insert into board (title, body, user_id, date_value, file_name, views, likes) values (?, ?, ?, ?, ?, 0, 0)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssss", $title, $body, $user_id, $today, $stored_file_name);
                     $stmt->execute();

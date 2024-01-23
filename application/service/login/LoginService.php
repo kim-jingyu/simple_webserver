@@ -7,7 +7,11 @@
         }
 
         public function login(MemberRepository $memberRepository, LoginDto $loginDto) {
-            $result = $memberRepository->findById($loginDto->getUserId());
+            try {
+                $result = $memberRepository->findById($loginDto->getUserId());    
+            } catch (Exception $e) {
+                echo $e;
+            }
 
             if ($result->num_rows > 0) {
                 $member = $result->fetch_array();
