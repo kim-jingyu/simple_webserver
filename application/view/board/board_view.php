@@ -1,39 +1,40 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] .'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/BoardController.php';
 
     $conn = DBConnectionUtil::getConnection();
     checkToken();
 
     session_start();
 
-    $board_id = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     // 조회수 기능
-    $last_view_time_per_board = 'last_view_time_of_'.$board_id;
+    $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
 
-    if (!isset($_SESSION[$last_view_time_per_board])) {
-        $_SESSION[$last_view_time_per_board] = time();
+    if (!isset($_SESSION[$lastViewTimePerBoard])) {
+        $_SESSION[$lastViewTimePerBoard] = time();
         $update_sql = "UPDATE board SET views = views + 1 WHERE id = ?";
         $stmt = $conn->prepare($update_sql);
-        $stmt->bind_param("i", $board_id);
+        $stmt->bind_param("i", $boardId);
         $stmt->execute();
     } else {
-        $last_view_time = $_SESSION[$last_view_time_per_board];
+        $last_view_time = $_SESSION[$lastViewTimePerBoard];
         $current_time = time();
         $gap_time = $current_time - $last_view_time;
         if ($gap_time > 5) {
             $update_sql = "update board set views = views + 1 where id = ?";
             $stmt = $conn->prepare($update_sql);
-            $stmt->bind_param("i", $board_id);
+            $stmt->bind_param("i", $boardId);
             $stmt->execute();
-            $_SESSION[$last_view_time_per_board] = $current_time;
+            $_SESSION[$lastViewTimePerBoard] = $current_time;
         }
     }
 
     $select_sql = "select * from board where id = ?";
     $stmt = $conn->prepare($select_sql);
-    $stmt->bind_param("i", $board_id);
+    $stmt->bind_param("i", $boardId);
     $stmt->execute();
     $select_result = $stmt->get_result();
     $row = $select_result->fetch_assoc();
@@ -82,19 +83,19 @@
                     echo "<div class='footer'>";
                     if ($row['user_id'] == $user_id) {
                         echo "<form action='board_fix.php' method='get'>
-                                <input type='hidden' name='board_id' value='".$board_id."'>
+                                <input type='hidden' name='boardId' value='".$boardId."'>
                                 <p><button class='btn' type='submit'>게시물 수정</button></p>
                             </form>
 
                             <form action='board_delete.php' method='get'>
-                                <input type='hidden' name='board_id' value='".$board_id."'>
+                                <input type='hidden' name='boardId' value='".$boardId."'>
                                 <p><button class='btn' type='submit'>게시글 삭제</button></p>
                             </form>
                             ";
                     }
                     echo "
                             <form action='board_like.php' method='post'>
-                                <input type='hidden' name='board_id' value='".$board_id."'>
+                                <input type='hidden' name='boardId' value='".$boardId."'>
                                 <p><button class='btn' type='submit'>좋아요!</button></p>
                             </form>
                             

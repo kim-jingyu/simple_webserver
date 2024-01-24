@@ -1,9 +1,20 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/BoardController.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/BoardController.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardResponse.php';
 
     checkToken();
     $id = getToken($_COOKIE['JWT'])['user'];
+
+    $boardController = new BoardController();
+    $indexBoardResponse = $boardController->getIndexBoard();
+    
+    $searchWord = $indexBoardResponse->getSearchWord();
+    $dateValue = $indexBoardResponse->getDateValue();
+    $blockNow = $indexBoardResponse->getBlockNow();
+    $sort = $indexBoardResponse->getSort();
+    $totalPages = $indexBoardResponse->getTotalPages();
+    $result = $indexBoardResponse->getResult();
 ?>
 
 <!DOCTYPE html>
@@ -29,20 +40,20 @@
                 <form class="funcs" action="" method="get">
                     <div>
                         <select name="sort" onchange="this.form.submit()">
-                            <option value=""  <?php if(isset($_GET['sort'])) {echo "disabled"; } ?>>정렬 옵션</option>
-                            <option value="author" <?php if($_GET['sort'] == 'author') {echo "selected"; } ?>>작성자순</option>
-                            <option value="date" <?php if($_GET['sort'] == 'date') {echo "selected"; } ?>>날짜순</option>
-                            <option value="views" <?php if($_GET['sort'] == 'views') {echo "selected"; } ?>>조회수순</option>
-                            <option value="likes" <?php if($_GET['sort'] == 'likes') {echo "selected"; } ?>>추천순</option>
+                            <option value=""  <?php if(isset($sort)) {echo "disabled"; } ?>>정렬 옵션</option>
+                            <option value="author" <?php if($sort == 'author') {echo "selected"; } ?>>작성자순</option>
+                            <option value="date" <?php if($sort == 'date') {echo "selected"; } ?>>날짜순</option>
+                            <option value="views" <?php if($sort == 'views') {echo "selected"; } ?>>조회수순</option>
+                            <option value="likes" <?php if($sort == 'likes') {echo "selected"; } ?>>추천순</option>
                         </select>
                     </div>
                     <div class="search">
-                        <input class="search_text" type="text" name="search" value="<?php echo $_GET['search']; ?>" placeholder="검색">
+                        <input class="search_text" type="text" name="search" value="<?php echo $searchWord; ?>" placeholder="검색">
                         <input class="btn" type="submit" value="검색">
                     </div>
                     <div class="date">
                         <label for="dateValue">날짜:</lable>
-                        <input type="date" id="dateValue" name="dateValue" value="<?php echo $_GET['dateValue'] ?>">    
+                        <input type="date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
                     </div>
                 </form>
             </div>
@@ -59,7 +70,7 @@
                         while ($row = mysqli_fetch_array($result)) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
-                            echo '<td><a href="/application/view/board/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
+                            echo '<td><a href="/application/view/board/board_view.php?boardId='.$row['id'].'">'.$row['title'].'</a></td>';
                             echo '<td>'.$row['user_id'].'</td>';
                             echo '<td>'.$row['views'].'</td>';
                             echo '<td>'.$row['likes'].'</td>';
