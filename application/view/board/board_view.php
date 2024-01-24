@@ -94,7 +94,7 @@
                             ";
                     }
                     echo "
-                            <form action='board_like.php' method='post'>
+                            <form action='/application/service/board/BoardLikeService.php' method='post'>
                                 <input type='hidden' name='boardId' value='".$boardId."'>
                                 <p><button class='btn' type='submit'>좋아요!</button></p>
                             </form>

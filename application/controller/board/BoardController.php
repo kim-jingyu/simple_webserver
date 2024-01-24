@@ -30,7 +30,13 @@
         }
 
         public function getIndexBoardFix() {
+            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
+            $boardRepository = new BoardRepository();
+            $result = $boardRepository->findAllById();
+
+            $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $result);
+            return $indexBoardFixResponse;
         }
 
         public function getIndexBoardWrite() {

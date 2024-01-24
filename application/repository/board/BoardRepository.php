@@ -7,6 +7,30 @@
         public function __construct() {
         }
 
+        public function findAllById($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT * FROM board WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            } catch (Exception $e) {
+                throw new Exception("FindAllById At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+    
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
         public function updateId($newId, $oldId) {
             $conn = null;
             $stmt = null;
