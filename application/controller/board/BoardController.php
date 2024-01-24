@@ -39,10 +39,6 @@
             return $indexBoardFixResponse;
         }
 
-        public function getIndexBoardWrite() {
-
-        }
-
         public function getIndexBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
