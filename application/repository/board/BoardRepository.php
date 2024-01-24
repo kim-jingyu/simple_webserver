@@ -114,12 +114,12 @@
             try {
                 $conn = DBConnectionUtil::getConnection();
                 if ($board_id) {
-                    $sql = "update board set title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? where id = ?";
+                    $sql = "UPDATE board SET title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? WHERE id = ?";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssssi", $title, $body, $user_id, $today, $stored_file_name, $board_id);
                     $stmt->execute();
                 } else {
-                    $sql = "insert into board (title, body, user_id, date_value, file_name, views, likes) values (?, ?, ?, ?, ?, 0, 0)";
+                    $sql = "INSERT INTO board (title, body, user_id, date_value, file_name, views, likes) VALUES (?, ?, ?, ?, ?, 0, 0)";
                     $stmt = $conn->prepare($sql);
                     $stmt->bind_param("sssss", $title, $body, $user_id, $today, $stored_file_name);
                     $stmt->execute();
@@ -142,7 +142,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "update board set likes = likes + 1 where id = ?";
+                $sql = "UPDATE board SET likes = likes + 1 WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();
@@ -150,6 +150,30 @@
                 return $result;
             } catch (Exception $e) {
                 throw new Exception("Like At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function view($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "UPDATE board SET views = views + 1 WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            } catch (Exception $e) {
+                throw new Exception("View At Board - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();

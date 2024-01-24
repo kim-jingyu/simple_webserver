@@ -44,7 +44,30 @@
         }
 
         public function getIndexBoardView() {
+            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
+            // 조회수 기능
+            $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
+
+            $boardRepository = new BoardRepository();
+
+            if (!isset($_SESSION[$lastViewTimePerBoard])) {
+                $_SESSION[$lastViewTimePerBoard] = time();
+                $boardRepository->view($boardId);
+            } else {
+                $lastViewTime = $_SESSION[$lastViewTimePerBoard];
+                $currentTime = time();
+                $gapTime = $currentTime - $lastViewTime;
+                if ($gapTime > 5) {
+                    $boardRepository->view($boardId);
+                    $_SESSION[$lastViewTimePerBoard] = $currentTime;
+                }
+            }
+        
+            $result = $boardRepository->findAllById();
+            
+            $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $result);
+            return $indexBoardViewResponse;
         }
     }
 

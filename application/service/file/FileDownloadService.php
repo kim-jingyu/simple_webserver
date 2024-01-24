@@ -1,18 +1,18 @@
 <?php
-    $file_name = filter_var(strip_tags($_GET['file']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $fileName = filter_var(strip_tags($_GET['file']), FILTER_SANITIZE_SPECIAL_CHARS);
 
-    if (isset($file_name)) {
-        $file_path = '/path/upload/'.$file_name;
+    if (isset($fileName)) {
+        $filePath = '/path/upload/'.$fileName;
 
-        if (file_exists($file_path)) {
+        if (file_exists($filePath)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$file_name.'"');
+            header('Content-Disposition: attachment; filename="'.$fileName.'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
-            header('Content-Length: '.filesize($file_path));
-            readfile($file_path);
+            header('Content-Length: '.filesize($filePath));
+            readfile($filePath);
             exit;
         } else {
             echo "<script>alert('파일이 존재하지 않습니다!');</script>";
