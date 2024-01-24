@@ -1,17 +1,23 @@
 <?php
-    class BoardWriteRequest {
+    class BoardFixRequest {
+        private $boardId;
         private $title;
         private $body;
         private $userId;
         private $today;
         private $storedFileName;
 
-        public function __construct($title, $body, $userId, $today, $storedFileName) {
+        public function __construct($boardId, $title, $body, $userId, $today, $storedFileName) {
+            $this->boardId = $boardId;
             $this->title = $title;
             $this->body = $title;
             $this->userId = $userId;
             $this->today = $today;
             $this->storedFileName = $storedFileName;
+        }
+
+        public function getBoardId() {
+            return $this->boardId;
         }
 
         public function getTitle() {

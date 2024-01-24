@@ -1,6 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     checkToken();
+    $userId = getToken($_COOKIE['JWT'])['user'];
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -22,6 +23,7 @@
                 <div class="btn-upload">파일 업로드하기</div>
             </label>
             <input type="file" name="file" id="file">
+            <input type="hidden" name="userId" value="<?php echo $userId; ?>">
             <input class="btn" type="submit" value="게시글 등록">
         </form>
         <form action="/index.php">

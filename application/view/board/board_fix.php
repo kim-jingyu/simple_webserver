@@ -3,6 +3,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/BoardController.php';
 
     checkToken();
+    $userId = getToken($_COOKIE['JWT'])['user'];
 
     $boardController = new BoardController();
     $response = $boardController->getIndexBoardFix();
@@ -37,6 +38,7 @@
             </label>
             <input type="file" name="file" id="file">
             <input type='hidden' name='boardId' value='<?php echo "$boardId"; ?>'>
+            <input type="hidden" name="userId" value="<?php echo $userId; ?>">
             <input class="btn" type="submit" value="게시글 수정">
         </form>
         <form action="board_view.php">

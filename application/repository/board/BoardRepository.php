@@ -113,19 +113,48 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                if ($board_id) {
-                    $sql = "UPDATE board SET title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? WHERE id = ?";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("sssssi", $title, $body, $user_id, $today, $stored_file_name, $board_id);
-                    $stmt->execute();
-                } else {
-                    $sql = "INSERT INTO board (title, body, user_id, date_value, file_name, views, likes) VALUES (?, ?, ?, ?, ?, 0, 0)";
-                    $stmt = $conn->prepare($sql);
-                    $stmt->bind_param("sssss", $title, $body, $user_id, $today, $stored_file_name);
-                    $stmt->execute();
-                }
+                $sql = "INSERT INTO board (title, body, user_id, date_value, file_name, views, likes) VALUES (?, ?, ?, ?, ?, 0, 0)";
+                $stmt = $conn->prepare($sql);
+                $title = $boardWriteRequest->getTitle();
+                $body = $boardWriteRequest->getBody();
+                $userId = $boardWriteRequest->getUserId();
+                $today = $boardWriteRequest->getToday();
+                $storedFileName = $boardWriteRequest->getStoredFileName();
+                $stmt->bind_param("sssss", $title, $body, $userId, $today, $storedFileName);
+                $stmt->execute();
+
+                $boardId = $conn->insert_id;
+                return $boardId;
             } catch (Exception $e) {
                 throw new Exception("Write At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function fix(BoardFixRequest $boardFixRequest) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "UPDATE board SET title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $title = $boardFixRequest->getTitle();
+                $body = $boardFixRequest->getBody();
+                $userId = $boardFixRequest->getUserId();
+                $today = $boardFixRequest->getToday();
+                $storedFileName = $boardFixRequest->getStoredFileName();
+                $boardId = $boardFixRequest->getBoardId();
+                $stmt->bind_param("sssssi", $title, $body, $userId, $today, $storedFileName, $boardId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Fix At Board - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();
