@@ -2,7 +2,8 @@
     $boardId = ilter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
     
     $inquiryRepository = new InquiryRepository();
-    $row = $inquiryRepository->findById($boardId);
+    $result = $inquiryRepository->findById($boardId);
+    $row = $result->fetch_assoc();
     $title = $row['title'];
     $body = $row['body'];
 ?>

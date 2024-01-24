@@ -68,8 +68,8 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();
-                $row = $stmt->get_result()->fetch_assoc();
-                return $row;
+                $result = $stmt->get_result();
+                return $result;
             } catch (Exception $e) {
                 throw new Exception("FindById At Inquiry - DB Exception 발생!");
             } finally {
