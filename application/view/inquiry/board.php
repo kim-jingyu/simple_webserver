@@ -1,3 +1,16 @@
+<?php
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardController.php';
+
+    $inquiryBoardController = new InquiryBoardController();
+    $response = $inquiryBoardController->getInquriyBoard();
+
+    $searchWord = $response->getSearchWord();
+    $dateValue = $response->getDateValue();
+    $blockNow = $response->getBlockNow();
+    $sort = $response->getSort();
+    $totalPages = $response->getTotalPages();
+    $result = $response->getResult();
+?>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,18 +26,18 @@
             <form class="funcs" action="" method="get">
                 <div>
                     <select name="sort" onchange="this.form.submit()">
-                        <option value=""  <?php if(isset($_GET['sort'])) {echo "disabled"; } ?>>정렬 옵션</option>
-                        <option value="author" <?php if($_GET['sort'] == 'author') {echo "selected"; } ?>>작성자순</option>
-                        <option value="date" <?php if($_GET['sort'] == 'date') {echo "selected"; } ?>>날짜순</option>
+                        <option value=""  <?php if(isset($sort)) {echo "disabled"; } ?>>정렬 옵션</option>
+                        <option value="author" <?php if($sort == 'author') {echo "selected"; } ?>>작성자순</option>
+                        <option value="date" <?php if($sort == 'date') {echo "selected"; } ?>>날짜순</option>
                     </select>
                 </div>
                 <div class="search">
-                    <input class="search_text" type="text" name="search" value="<?php echo $_GET['search']; ?>" placeholder="검색">
+                    <input class="search_text" type="text" name="search" value="<?php echo $searchWord; ?>" placeholder="검색">
                     <input class="btn" type="submit" value="검색">
                 </div>
                 <div class="date">
-                    <label for="date_value">날짜:</lable>
-                    <input type="date" id="date_value" name="date_value" value="<?php echo $_GET['date_value'] ?>">    
+                    <label for="dateValue">날짜:</lable>
+                    <input type="date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
                 </div>
             </form>
         </div>
@@ -35,55 +48,36 @@
                 <th>작성자</th>
             </tr>
             <?php
-                $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
-                $dateValue = filter_var(strip_tags($_GET['date_value']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $numPerPage = 5;
-
-                $page_now = $_GET['page'] ? filter_var(strip_tags($_GET['page']), FILTER_SANITIZE_SPECIAL_CHARS) : 1;
-                $block_now = floor(($page_now - 1) / 5) * 5;
-                $startIdxPerPage = ($page_now - 1) * $num_per_page;
-
-                $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-                $inquiryBoardRequest = new InquiryBoardRequest($searchWord, $dateValue, $numPerPage, $startIdxPerPage, $sort);
-                $inquiryRepository = new InquiryRepository();
-                $inquiryBoardResponse = $inquiryRepository->pagenate($inquiryBoardRequest);
-
-                $totalCnt = $inquiryBoardResponse->getTotalCnt();
-                $result = $inquiryBoardResponse->getResult();
-                $total_pages = ceil($totalCnt / $numPerpage);
-
                 if (mysqli_num_rows($result)) {
                     while ($row = mysqli_fetch_array($result)) {
                         echo '<tr>';
                         echo '<td>'.$row['id'].'</td>';
-                        echo '<td><a href="/application/view/inquiry/board_view.php?board_id='.$row['id'].'">'.$row['title'].'</a></td>';
+                        echo '<td><a href="/application/view/inquiry/board_view.php?boardId='.$row['id'].'">'.$row['title'].'</a></td>';
                         echo '<td>'.$row['writer_name'].'</td>';
                         echo '</tr>';
                     }
                     echo '</table>';
                     echo '<p class="page"> [ ';
-                    if ($block_now > 1) {
-                        $prev_block_start = $block_now - 5;
-                        if ($prev_block_start == 0) {
-                            $prev_block_start = 1;
+                    if ($blockNow > 1) {
+                        $prevBlockStart = $blockNow - 5;
+                        if ($prevBlockStart == 0) {
+                            $prevBlockStart = 1;
                         }
-                        echo '<a href="?page='.$prev_block_start.'&search='.$searchWord.'&date_value'.$dateValue.'">이전 페이지</a>"';
+                        echo '<a href="?page='.$prevBlockStart.'&search='.$searchWord.'&dateValue'.$dateValue.'">이전 페이지</a>"';
                     }
 
-                    for ($page_num = $block_now + 1; $page_num <= min($block_now + 5, $total_pages); $page_num++) {
-                        if ($page_num == $page_now) {
-                            echo $page_num;
+                    for ($pageNum = $blockNow + 1; $pageNum <= min($blockNow + 5, $totalPages); $pageNum++) {
+                        if ($pageNum == $pageNow) {
+                            echo $pageNum;
                         } else {
-                            echo '<a href="?page='.$page_num.'&search='.$searchWord.'&date_value='.$dateValue.'">'.$page_num.'</a>';
+                            echo '<a href="?page='.$pageNum.'&search='.$searchWord.'&dateValue='.$dateValue.'">'.$pageNum.'</a>';
                         }
                         echo ' ';
                     }
 
-                    if ($block_now + 5 < $total_pages) {
-                        $next_block_start = $block_now + 6;
-                        echo '<a href="?page='.$next_block_start.'&search='.$searchWord.'&date_value='.$dateValue.'">다음 페이지</a>';
+                    if ($blockNow + 5 < $totalPages) {
+                        $nextBlockStart = $blockNow + 6;
+                        echo '<a href="?page='.$nextBlockStart.'&search='.$searchWord.'&dateValue='.$dateValue.'">다음 페이지</a>';
                     }
                     echo ' ]</p>';
                 } else {
@@ -95,7 +89,7 @@
             <form action="board_write.php" method="post">
                 <input class="btn" type="submit" name="writeBoard" value="게시글 작성">
             </form>
-            <form action="/login/login.html">
+            <form action="/application/view/login/login.html">
                 <input class="btn" type="submit" value="뒤로">
             </form>
         </div>
