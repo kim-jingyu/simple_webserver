@@ -11,6 +11,7 @@
     
     $searchWord = $indexBoardResponse->getSearchWord();
     $dateValue = $indexBoardResponse->getDateValue();
+    $pageNow = $indexBoardResponse->getPageNow();
     $blockNow = $indexBoardResponse->getBlockNow();
     $sort = $indexBoardResponse->getSort();
     $totalPages = $indexBoardResponse->getTotalPages();
@@ -88,7 +89,7 @@
                         }
 
                         for ($pageNum = $blockNow + 1; $pageNum <= min($blockNow + 5, $totalPages); $pageNum++) {
-                            if ($pageNum == $page_now) {
+                            if ($pageNum == $pageNow) {
                                 echo $pageNum;
                             } else {
                                 echo '<a href="?page='.$pageNum.'&search='.$searchWord.'&dateValue='.$dateValue.'">'.$pageNum.'</a>';

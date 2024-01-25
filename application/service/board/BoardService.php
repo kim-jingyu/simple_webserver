@@ -1,6 +1,11 @@
 <?php
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardWriteRequest.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardFixRequest.php';
 
     class BoardService {
+        private $storedFileName;
+
         public function __construct() {
         }
 
@@ -10,8 +15,6 @@
                 $conn->close();
                 exit();
             }
-
-            $storedFileName = null;
 
             $file = $_FILES['file'];
             if ($file['size'] != 0) {
@@ -23,7 +26,7 @@
                 $allowedExtensions = ['jpg', 'png', 'gif', 'txt', 'zip', 'word', 'pdf'];
 
                 $timestamp = time();
-                $storedFileName = $timestamp.'_'.$fileName;
+                $this->storedFileName = $timestamp.'_'.$fileName;
 
                 if ($fileError == UPLOAD_ERR_OK) {
                     // 파일 MIME 타입 검증
@@ -35,7 +38,7 @@
                         // 파일 확장자 검증
                         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                         if (in_array($fileExtension, $allowedExtensions)) {
-                            $uploadPath = '/path/upload/'.$storedFileName;
+                            $uploadPath = '/path/upload/'.$this->storedFileName;
                             // 파일 이동 및 저장
                             if (move_uploaded_file($fileTempName, $uploadPath)) {
                                 echo "<script>alert('파일 업로드 성공!');</script>";
@@ -63,18 +66,18 @@
         }
 
         public function write($title, $body, $userId, $today) {
-            fileUpload();
+            $this->fileUpload();
 
-            $boardWriteRequest = new BoardWriteRequest($title, $body, $userId, $today, $storedFileName);
+            $boardWriteRequest = new BoardWriteRequest($title, $body, $userId, $today, $this->storedFileName);
             $boardRepository = new BoardRepository();
             $boardId = $boardRepository->write($boardWriteRequest);
             return $boardId;
         }
 
         public function fix($boardId, $title, $body, $userId, $today) {
-            fileUpload();
+            $this->fileUpload();
 
-            $boardFixRequest = new BoardFixRequest($title, $body, $userId, $today, $storedFileName);
+            $boardFixRequest = new BoardFixRequest($title, $body, $userId, $today, $this->storedFileName);
             $boardRepository = new BoardRepository();
             $boardRepository->fix($boardFixRequest);
         }

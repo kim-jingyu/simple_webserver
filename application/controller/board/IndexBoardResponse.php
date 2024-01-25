@@ -2,14 +2,16 @@
     class IndexBoardResponse {
         private $searchWord;
         private $dateValue;
+        private $pageNow;
         private $blockNow;
         private $sort;
         private $totalPages;
         private $result;
 
-        public function __construct($searchWord, $dateValue, $blockNow, $sort, $totalPages, $result) {
+        public function __construct($searchWord, $dateValue,$pageNow, $blockNow, $sort, $totalPages, $result) {
             $this->searchWord = $searchWord;
             $this->dateValue = $dateValue;
+            $this->pageNow = $pageNow;
             $this->blockNow = $blockNow;
             $this->sort = $sort;
             $this->totalPages = $totalPages;
@@ -22,6 +24,10 @@
 
         public function getDateValue() {
             return $this->dateValue;
+        }
+
+        public function getPageNow() {
+            return $this->pageNow;
         }
 
         public function getBlockNow() {

@@ -30,7 +30,7 @@
             $totalPages = ceil($totalCnt / $numPerPage);
             $result = $boardResponseDto->getResult();
 
-            $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $blockNow, $sort, $totalPages, $result);
+            $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $result);
             return $indexBoardResponse;
         }
 
