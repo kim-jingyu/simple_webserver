@@ -77,9 +77,14 @@
         public function fix($boardId, $title, $body, $userId, $today) {
             $this->fileUpload();
 
-            $boardFixRequest = new BoardFixRequest($title, $body, $userId, $today, $this->storedFileName);
+            $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $this->storedFileName);
             $boardRepository = new BoardRepository();
-            $boardRepository->fix($boardFixRequest);
+
+            try {
+                $boardRepository->fix($boardFixRequest);
+            } catch (Exception $e) {
+                throw $e;
+            }
         }
     }
 ?>

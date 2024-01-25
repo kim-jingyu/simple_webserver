@@ -10,7 +10,7 @@
         public function __construct($boardId, $title, $body, $userId, $today, $storedFileName) {
             $this->boardId = $boardId;
             $this->title = $title;
-            $this->body = $title;
+            $this->body = $body;
             $this->userId = $userId;
             $this->today = $today;
             $this->storedFileName = $storedFileName;

@@ -38,7 +38,7 @@
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
             $boardRepository = new BoardRepository();
-            $result = $boardRepository->findAllById();
+            $result = $boardRepository->findAllById($boardId);
 
             $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $result);
             return $indexBoardFixResponse;
