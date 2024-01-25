@@ -1,5 +1,5 @@
 <?php
-    class InquiryBoardResponse {
+    class InquiryPagenateResponse {
         private $totalCnt;
         private $result;
 

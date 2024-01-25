@@ -1,5 +1,8 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'].'';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryBoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryBoardRequest.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquriyBoardViewResponse.php';
 
     class InquiryBoardController {
         public function __construct() {
@@ -17,12 +20,12 @@
             $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
 
             $inquiryBoardRequest = new InquiryBoardRequest($searchWord, $dateValue, $numPerPage, $startIdxPerPage, $sort);
-            $inquiryRepository = new InquiryRepository();
-            $inquiryBoardResponse = $inquiryRepository->pagenate($inquiryBoardRequest);
+            $inquiryBoardRepository = new InquiryBoardRepository();
+            $inquiryPagenateResponse = $inquiryBoardRepository->pagenate($inquiryBoardRequest);
 
-            $totalCnt = $inquiryBoardResponse->getTotalCnt();
-            $totalPages = ceil($totalCnt / $numPerpage);
-            $result = $inquiryBoardResponse->getResult();
+            $totalCnt = $inquiryPagenateResponse->getTotalCnt();
+            $totalPages = ceil($totalCnt / $numPerPage);
+            $result = $inquiryPagenateResponse->getResult();
 
             $inquiryBoardResponse = new InquiryBoardResponse($searchWord, $dateValue, $blockNow, $sort, $totalPages, $result);
             return $inquiryBoardResponse;
@@ -31,8 +34,8 @@
         public function getInquiryBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $inquiryRepository = new InquiryBoardRepository();
-            $result = $inquiryRepository->findById();
+            $inquiryBoardRepository = new InquiryBoardRepository();
+            $result = $inquiryBoardRepository->findById($boardId);
 
             $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $result);
             return $inquiryBoardViewResponse;

@@ -1,7 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardController.php';
 
-    $boardController = new BoardController();
+    $boardController = new InquiryBoardController();
     $response = $boardController->getInquiryBoardView();
 
     $boardId = $response->getBoardId();

@@ -1,5 +1,5 @@
 <?php
-    $boardId = ilter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
     
     $inquiryRepository = new InquiryRepository();
     $result = $inquiryRepository->findById($boardId);

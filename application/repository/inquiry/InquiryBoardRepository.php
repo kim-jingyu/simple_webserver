@@ -1,5 +1,6 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryPagenateResponse.php';
 
     class InquiryBoardRepository {
         public function __construct() {
@@ -34,7 +35,7 @@
                         $select_sql .= " order by id asc";
                     }
                 }
-                $selectSql .= " LIMIT $startIdxPerPage, $numPerPage";
+                $selectSql .= " LIMIT ?, ?";
 
                 $startIdxPerPage = $inquiryBoardRequest->getStartIdxPerPage();
                 $numPerPage = $inquiryBoardRequest->getNumPerPage();
@@ -44,8 +45,8 @@
                 $stmt->execute();
                 $result = $stmt->get_result();
 
-                $inquiryBoardResponse = new InquiryBoardResponse($totalCnt, $result);
-                return $inquiryBoardResponse;
+                $inquiryPagenateResponse = new InquiryPagenateResponse($totalCnt, $result);
+                return $inquiryPagenateResponse;
             } catch (Exception $e) {
                 throw new Exception("Pagenate At Inquiry - DB Exception 발생!");
             } finally {

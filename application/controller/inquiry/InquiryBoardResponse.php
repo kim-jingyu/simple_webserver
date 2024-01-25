@@ -15,7 +15,7 @@
             $this->totalPages = $totalPages;
             $this->result = $result;
         }
-
+        
         public function getSearchWord() {
             return $this->searchWord;
         }
