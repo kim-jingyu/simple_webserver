@@ -8,7 +8,7 @@
 
         public function __construct($title, $body, $userId, $today, $storedFileName) {
             $this->title = $title;
-            $this->body = $title;
+            $this->body = $body;
             $this->userId = $userId;
             $this->today = $today;
             $this->storedFileName = $storedFileName;
