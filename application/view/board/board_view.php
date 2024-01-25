@@ -59,14 +59,14 @@
                             <p><button class='btn' type='submit'>게시물 수정</button></p>
                         </form>
 
-                        <form action='board_delete.php' method='get'>
+                        <form action='/application/controller/board/BoardDeleteController.php' method='get'>
                             <input type='hidden' name='boardId' value='".$boardId."'>
                             <p><button class='btn' type='submit'>게시글 삭제</button></p>
                         </form>
                         ";
                 }
                 echo "
-                        <form action='/application/service/board/BoardLikeService.php' method='post'>
+                        <form action='/application/controller/board/BoardLikeController.php' method='post'>
                             <input type='hidden' name='boardId' value='".$boardId."'>
                             <p><button class='btn' type='submit'>좋아요!</button></p>
                         </form>

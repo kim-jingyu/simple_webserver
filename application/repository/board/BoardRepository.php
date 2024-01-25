@@ -175,8 +175,7 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
+                $stmt->get_result();
             } catch (Exception $e) {
                 throw new Exception("Like At Board - DB Exception 발생!");
             } finally {
