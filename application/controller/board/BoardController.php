@@ -2,6 +2,9 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRequestDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardResponseDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardViewResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardFixResponse.php';
 
     class BoardController {
         public function __construct() {
@@ -66,10 +69,7 @@
             return $indexBoardViewResponse;
         }
 
-        public function writeIndexBoard() {
-            $title = filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $userId = filter_var(strip_tags($_POST['userId']), FILTER_SANITIZE_SPECIAL_CHARS);
+        public function writeIndexBoard($title, $body, $userId) {
             $today = date("Y-m-d");
 
             try {
@@ -80,15 +80,11 @@
                 echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             } catch (Exception $e) {
                 echo "<script>alert('작성 중 오류가 발생했습니다.');</script>";
-                echo "<script>location.replace('/application/view/board/board_write.php');</script>";
+                echo "<script>location.replace('/application/view/board/board_write.php?boardId=$boardId');</script>";
             }
         }
 
-        public function fixIndexBoard() {
-            $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $title = filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $userId = filter_var(strip_tags($_POST['userId']), FILTER_SANITIZE_SPECIAL_CHARS);
+        public function fixIndexBoard($boardId, $title, $body, $userId) {
             $today = date("Y-m-d");
 
             try {
@@ -96,10 +92,10 @@
                 $boardService->fix($boardId, $title, $body, $userId, $today);
 
                 echo "<script>alert('수정이 완료되었습니다.');</script>";
-                echo "<script>location.replace('/application/view/board/board_view.php?board_id=$boardId');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             } catch (Exception $e) {
                 echo "<script>alert('작성 중 오류가 발생했습니다.');</script>";
-                echo "<script>location.replace('/application/view/board/board_write.php');</script>";
+                echo "<script>location.replace('/application/view/board/board_fix.php?boardId=$boardId');</script>";
             }
         }
     }
