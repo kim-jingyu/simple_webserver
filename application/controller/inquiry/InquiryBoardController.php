@@ -27,5 +27,15 @@
             $inquiryBoardResponse = new InquiryBoardResponse($searchWord, $dateValue, $blockNow, $sort, $totalPages, $result);
             return $inquiryBoardResponse;
         }
+
+        public function getInquiryBoardView() {
+            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+            $inquiryRepository = new InquiryBoardRepository();
+            $result = $inquiryRepository->findById();
+
+            $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $result);
+            return $inquiryBoardViewResponse;
+        }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
 
-    class InquiryRepository {
+    class InquiryBoardRepository {
         public function __construct() {
         }
 
@@ -135,20 +135,23 @@
             }
         }
 
-        public function save(InquiryBoardUpdateRequest $inquiryBoardUpdateRequest) {
+        public function save(InquiryBoardWriteRequest $inquiryBoardWriteRequest) {
             $conn = null;
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
                 $sql = "insert into inquiry_board (title, body, writer_name, writer_pw, date_value) values (?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-                $title = $inquiryBoardUpdateRequest->getTitle();
-                $body = $inquiryBoardUpdateRequest->getBody();
-                $writerName = $inquiryBoardUpdateRequest->getWriterName();
-                $writerPw = $inquiryBoardUpdateRequest->getWriterPw();
-                $today = $inquiryBoardUpdateRequest->getToday();
+                $title = $inquiryBoardWriteRequest->getTitle();
+                $body = $inquiryBoardWriteRequest->getBody();
+                $writerName = $inquiryBoardWriteRequest->getWriterName();
+                $writerPw = $inquiryBoardWriteRequest->getWriterPw();
+                $today = $inquiryBoardWriteRequest->getToday();
                 $stmt->bind_param("sssss", $title, $body, $writerName, $writerPw, $today);
                 $stmt->execute();
+
+                $boardId = $conn->insert_id;
+                return $boardId;
             } catch (Exception $e) {
                 throw new Exception("Update At Inquiry - DB Exception 발생!");
             } finally {

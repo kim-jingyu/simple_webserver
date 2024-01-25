@@ -1,9 +1,18 @@
 <?php
-    $boardId = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardController.php';
 
-    $inquiryRepository = new InquiryRepository();
-    $result = $inquiryRepository->findById($boardId);
+    $boardController = new BoardController();
+    $response = $boardController->getInquiryBoardView();
+
+    $boardId = $response->getBoardId();
+    $result = $response->getResult();
     $row = $result->fetch_assoc();
+    
+    $title = $row['title'];
+    $body = $row['body'];
+    $writerName = $row['writer_name'];
+    $writerPw = $row['writer_pw'];
+    $dateValue = $row['date_value'];
 ?>
 
 <!DOCTYPE html>
@@ -16,16 +25,15 @@
 </head>
 <body>
 <div class="container">
-        <h1><?php echo $row['title'] ?></h1>
+        <h1><?php echo $title ?></h1>
         <div>
-            <p><?php echo '작성자 : '.$row['writer_name']?></p>
-            <p><?php echo '작성일 : '.$row['date_value']?></p>
+            <p><?php echo '작성자 : '.$writerName?></p>
+            <p><?php echo '작성일 : '.$dateValue?></p>
             <p>
                 <?php
                     if (isset($row['file_name'])) {
-                        $file_name = implode('_', array_slice(explode('_', $row['file_name']), 1));
-                        $file_path = '/path/upload/'.$stored_file_name;
-                        echo '<p>파일명: <a href="/file/file_download.php?file='.$row['file_name'].'">'.$file_name.'</a></p>';
+                        $fileName = implode('_', array_slice(explode('_', $row['file_name']), 1));
+                        echo '<p>파일명: <a href="/application/service/file/FileDownloadService.php?file='.$row['file_name'].'">'.$fileName.'</a></p>';
                     }
                 ?>
             </p>
@@ -33,8 +41,8 @@
         <div class="content">    
             <h2>CONTENT</h2>
             <?php
-                if (mysqli_num_rows($select_result)) {
-                    echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$row['body'].'</textarea>';
+                if (mysqli_num_rows($result)) {
+                    echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$body.'</textarea>';
                 }
             ?>
         </div>
@@ -42,13 +50,13 @@
             
             <div class="footer">
                 <form action='board_fix.php' method='get'>
-                    <input type='hidden' name='board_id' value='<?php echo "$board_id" ?>'>
+                    <input type='hidden' name='boardId' value='<?php echo "$boardId" ?>'>
                     <p><button class='btn' type='submit'>게시물 수정</button></p>
                 </form>
-                <form action='board_delete.php' method='post'>
-                    <input type='hidden' name='board_id' value='<?php echo "$board_id" ?>'>
-                    <input type='hidden' name='name' value='<?php echo "$writer_name" ?>'>
-                    <input type='hidden' name='pw' value='<?php echo "$writer_pw" ?>'>
+                <form action='/application/controller/inquiry/InquiryBoardDeleteController.php' method='post'>
+                    <input type='hidden' name='boardId' value='<?php echo $boardId ?>'>
+                    <input type='hidden' name='writerName' value='<?php echo $writerName ?>'>
+                    <input type='hidden' name='writerPw' value='<?php echo $writerPw ?>'>
                     <button class="btn" type='submit'>게시글 삭제</button>
                 </form>
                 <form action='board.php'>
