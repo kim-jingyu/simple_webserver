@@ -2,6 +2,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRequestDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardResponseDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/board/BoardService.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardViewResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardFixResponse.php';
@@ -64,7 +65,7 @@
                 }
             }
         
-            $result = $boardRepository->findAllById();
+            $result = $boardRepository->findAllById($boardId);
             
             $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $result);
             return $indexBoardViewResponse;
