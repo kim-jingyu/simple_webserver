@@ -4,7 +4,7 @@
 
     checkToken();
 
-    $boardId = filter_var(strip_tags($_POST['board_id']));
+    $boardId = filter_var(strip_tags($_POST['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     $boardRepository = new BoardRepository();
     try {
