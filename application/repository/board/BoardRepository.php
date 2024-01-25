@@ -126,10 +126,8 @@
                 $stmt->execute();
 
                 $boardId = $conn->insert_id;
-                var_dump($boardId);
                 return $boardId;
             } catch (Exception $e) {
-                var_dump($e);
                 throw new Exception("Write At Board - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
