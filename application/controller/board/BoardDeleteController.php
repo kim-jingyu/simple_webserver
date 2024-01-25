@@ -4,7 +4,7 @@
 
     checkToken();
 
-    $boardId = filter_var(strip_tags($_GET['board_id']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     if (!isset($boardId)) {
         header("location:/index.php");
@@ -19,6 +19,6 @@
         header("location:/index.php");
     } catch (Exception $e) {
         echo "<script>alert('삭제 실패!');</script>";
-        header("location:/index.php");
+        header("location:/application/view/board/board_view.php?boardId=$boardId");
     }
 ?>
