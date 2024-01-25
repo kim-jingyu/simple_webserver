@@ -73,14 +73,15 @@
             }
         }
 
-        public function updatePw($newPw, $oldPw) {
+        public function updatePw($newPw, $originalId) {
             $conn = null;
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE member SET user_pw = ? WHERE user_pw = ?";
+                $sql = "UPDATE member SET user_pw = ? WHERE user_id = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ss", $newPw, $oldPw);
+                $hasedPw = password_hash($newPw, PASSWORD_DEFAULT);
+                $stmt->bind_param("ss", $hasedPw, $originalId);
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Update Pw - DB Exception 발생!");

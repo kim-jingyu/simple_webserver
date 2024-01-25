@@ -33,12 +33,12 @@
             $result = $memberRepository->findById($originalId);
             $row = $result->fetch_assoc();
             $originalPw = $row['user_pw'];
-            if (password_verify($oldPw, $originalPw)) {
+            if (!password_verify($oldPw, $originalPw)) {
                 return "비밀번호가 일치하지 않습니다!";
             }
     
             try {
-                $memberRepository->updatePw($newPw, $oldPw);
+                $memberRepository->updatePw($newPw, $originalId);
                 return "PW가 수정되었습니다!";
             } catch (Exception $e) {
                 return "PW 수정에 실패했습니다!";

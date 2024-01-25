@@ -45,7 +45,7 @@
             <form action="/index.php">
                 <input class="btn" type="submit" value="뒤로">
             </form>
-            <form action="/application/service/logout.php">
+            <form action="/application/service/logout/LogoutService.php">
                 <input class="btn" type="submit" value="로그아웃">
             </form>
         </div>

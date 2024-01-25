@@ -23,8 +23,8 @@
         close($message);
     } else if ($_REQUEST['changePw']) {
         $originalId = getToken($_COOKIE['JWT'])['user'];
-        $oldPw = filter_var(strip_tags(md5($_POST['oldPw'])), FILTER_SANITIZE_SPECIAL_CHARS);
-        $newPw = filter_var(strip_tags(md5($_POST['newPw'])), FILTER_SANITIZE_SPECIAL_CHARS);
+        $oldPw = filter_var(strip_tags($_POST['oldPw']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $newPw = filter_var(strip_tags($_POST['newPw']), FILTER_SANITIZE_SPECIAL_CHARS);
 
         $message = $myPageService->changePw($originalId, $oldPw, $newPw);
         close($message);
