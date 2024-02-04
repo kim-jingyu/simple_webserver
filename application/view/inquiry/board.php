@@ -2,14 +2,14 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardController.php';
 
     $inquiryBoardController = new InquiryBoardController();
-    $inquiryBoardResponse = $inquiryBoardController->getInquriyBoard();
+    $response = $inquiryBoardController->getInquriyBoard();
 
-    $searchWord = $inquiryBoardResponse->getSearchWord();
-    $dateValue = $inquiryBoardResponse->getDateValue();
-    $blockNow = $inquiryBoardResponse->getBlockNow();
-    $sort = $inquiryBoardResponse->getSort();
-    $totalPages = $inquiryBoardResponse->getTotalPages();
-    $result = $inquiryBoardResponse->getResult();
+    $searchWord = $response->getSearchWord();
+    $dateValue = $response->getDateValue();
+    $blockNow = $response->getBlockNow();
+    $sort = $response->getSort();
+    $totalPages = $response->getTotalPages();
+    $result = $response->getResult();
 ?>
 <!DOCTYPE html>
 <html lang="ko">

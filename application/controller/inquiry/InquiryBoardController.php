@@ -40,5 +40,15 @@
             $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $result);
             return $inquiryBoardViewResponse;
         }
+
+        public function getInquiryBoardFix() {
+            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    
+            $inquiryRepository = new InquiryRepository();
+            $result = $inquiryRepository->findById($boardId);
+            
+            $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $result);
+            return $inquiryBoardFixResponse;
+        }
     }
 ?>

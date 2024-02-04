@@ -1,5 +1,5 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'].'';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/inquiry/InquiryBoardService.php';
 
     if (!isset($_POST['pw']) or !isset($_POST['name'])) {
         echo "<script>alert('작성자 정보를 입력하세요!');</script>";
