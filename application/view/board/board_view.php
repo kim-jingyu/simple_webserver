@@ -8,11 +8,13 @@
     session_start();
 
     $boardController = new BoardController();
-    $response = $boardController->getIndexBoardView();
+    $boardViewResp = $boardController->getIndexBoardView();
 
-    $boardId = $response->getBoardId();
-    $result = $response->getResult();
-    $row = $result->fetch_assoc();
+    $boardId = $boardViewResp->getBoardId();
+    $boardResult = $boardViewResp->getResult();
+    $boardData = $boardResult->fetch_assoc();
+
+    $commentResult = $boardController->getComment($boardId);
 ?>
 
 <!DOCTYPE html>
@@ -20,24 +22,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/board.css">
+    <link rel="stylesheet" href="/css/board.css?after">
     <title>게시글</title>
 </head>
 <body>
     
     
     <div class="container">
-        <h1><?php echo $row['title'] ?></h1>
+        <h1><?php echo $boardData['title'] ?></h1>
         <div>
-            <p><?php echo '작성자 : '.$row['user_id']?></p>
-            <p><?php echo '작성일 : '.$row['date_value']?></p>
-            <p><?php echo '조회수 : '.$row['views']?></p>
-            <p><?php echo '좋아요 수 : '.$row['likes']?></p>
+            <p><?php echo '작성자 : '.$boardData['user_id']?></p>
+            <p><?php echo '작성일 : '.$boardData['date_value']?></p>
+            <p><?php echo '조회수 : '.$boardData['views']?></p>
+            <p><?php echo '좋아요 수 : '.$boardData['likes']?></p>
             <p>
                 <?php
-                    if (isset($row['file_name'])) {
-                        $file_name = implode('_', array_slice(explode('_', $row['file_name']), 1));
-                        echo '<p>파일명: <a href="/application/service/file/FileDownloadService.php?file='.$row['file_name'].'">'.$file_name.'</a></p>';
+                    if (isset($boardData['file_name'])) {
+                        $file_name = implode('_', array_slice(explode('_', $boardData['file_name']), 1));
+                        echo '<p>파일명: <a href="/application/service/file/FileDownloadService.php?file='.$boardData['file_name'].'">'.$file_name.'</a></p>';
                     }
                 ?>
             </p>
@@ -45,15 +47,15 @@
         <div class="content">    
             <h2>CONTENT</h2>
             <?php
-                if (mysqli_num_rows($result)) {
-                    echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$row['body'].'</textarea>';
+                if (mysqli_num_rows($boardResult)) {
+                    echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$boardData['body'].'</textarea>';
                 }
             ?>
         </div>
         <div>
             <?php
                 echo "<div class='footer'>";
-                if ($row['user_id'] == $userId) {
+                if ($boardData['user_id'] == $userId) {
                     echo "<form action='board_fix.php' method='get'>
                             <input type='hidden' name='boardId' value='".$boardId."'>
                             <p><button class='btn' type='submit'>게시물 수정</button></p>
@@ -76,6 +78,40 @@
                         </form>
                     ";
                 echo "</div>";
+            ?>
+        </div>
+        <hr>
+        <div>
+            <h2>COMMENT</h2>
+            <form action='/application/controller/board/BoardCommentController.php' method='post'>
+                <input type='hidden' name='commenterId' value='<?php echo $userId?>'>
+                <input type='hidden' name='boardId' value='<?php echo $boardId?>'>
+                <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="100" placeholder="댓글 작성. 최대 100자"></textarea>
+                <button class='btn' type='submit'>댓글 작성</button>
+            </form>
+            <?php
+                $rows = mysqli_num_rows($commentResult);
+                echo '<div class="comment">';
+                if (!$rows) {
+                    echo '<div class="comments">';
+                    echo '<h2>No Comments</h2>';
+                    echo '</div>';
+                } else {
+                    while ($commentData = mysqli_fetch_array($commentResult)) {
+                        echo '<div class="comments">';
+                        echo '<div class="comment-top">';
+                        echo '<a class="commenter">'.$commentData['commenter_id'].'</a>';
+                        echo '<span class="dot">.</span>';
+                        echo $commentData['comment_date'];
+                        if ($commentData['commenter_id'] == $userId) {
+                            echo '<button>bye</button>';
+                        }
+                        echo '</div>';
+                        echo '<p>'.$commentData['comment'].'</p>';
+                        echo '</div>';
+                    }
+                }
+                echo '</div>';
             ?>
         </div>
     </div>

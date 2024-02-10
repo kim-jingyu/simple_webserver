@@ -236,5 +236,51 @@
                 }
             }
         }
+
+        public function comment($commenterId, $comment, $dateValue, $boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "INSERT INTO comment(commenter_id, comment, comment_date, board_id) VALUES (?,?,?,?)";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssi", $commenterId, $comment, $dateValue, $boardId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("Comment At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function findWithComments($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT * FROM board INNER JOIN comment ON board.id = comment.board_id WHERE board.id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                return $result;
+            } catch (Exception $e) {
+                throw new Exception("findWithComments At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
     }
 ?>

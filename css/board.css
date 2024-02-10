@@ -20,8 +20,8 @@ p {
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
-    height: 800px;
-    width: 340px;
+    height: 1200px;
+    width: 800px;
     border: 1px solid rgb(14, 156, 222);
     border-radius: 10px;
     padding: 20px;
@@ -57,8 +57,20 @@ p {
 }
 
 .textarea-content {
+    resize: none;
     width: 95%;
-    margin-bottom: 20px;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid rgb(14, 156, 222);
+    outline: none;
+    background-color: #eee;
+    font-size: 18px;
+}
+
+.textarea-comment {
+    resize: none;
+    height: 40px;
+    width: 95%;
     padding: 5px;
     border: none;
     border-bottom: 1px solid rgb(14, 156, 222);
@@ -88,4 +100,51 @@ p {
 
 #file {
     display: none;
+}
+
+.comment {
+    height: 250px;
+    overflow-y: scroll;
+}
+
+.comment::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #F5F5F5;
+}
+
+.comment::-webkit-scrollbar {
+    width: 10px;
+    background-color: #F5F5F5;
+}
+
+.comment::-webkit-scrollbar-thumb {
+    background-color: #0ae;
+
+    background-image: -webkit-gradient(linear, 0 0, 0 100%,
+            color-stop(.5, rgba(255, 255, 255, .2)),
+            color-stop(.5, transparent), to(transparent));
+}
+
+.comments {
+    border-bottom: 1px solid whitesmoke;
+    height: 50px;
+    width: 95%;
+    margin: 10px 0px;
+    padding: 10px;
+}
+
+.comment-top {
+    margin-bottom: 5px;
+}
+
+.commenter {
+    padding: 10px;
+    font-size: x-large;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+
+.dot {
+    text-align: center;
+    padding: 0px 20px 0px 20px;
 }
