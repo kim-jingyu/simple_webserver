@@ -117,5 +117,8 @@
             ?>
         </div>
     </div>
+    <script>
+        const = ;
+    </script>
 </body>
 </html>
