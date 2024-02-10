@@ -134,7 +134,7 @@ p {
 }
 
 .comment-top {
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 
 .commenter {
@@ -147,4 +147,21 @@ p {
 .dot {
     text-align: center;
     padding: 0px 20px 0px 20px;
+}
+
+.date {
+    padding-right: 10px;
+}
+
+.comment-btn {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+        color: rgb(14, 156, 222);
+    }
 }

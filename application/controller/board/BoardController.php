@@ -101,21 +101,6 @@
             }
         }
 
-        public function comment($commenterId, $comment, $boardId) {
-            try {
-                $boardRepository = new BoardRepository();
-
-                $dateValue = date("Y-m-d h:i:s");
-                $boardRepository->comment($commenterId, $comment, $dateValue, $boardId);
-
-                echo "<script>alert('댓글 작성완료!');</script>";
-            } catch (Exception $e) {
-                echo "<script>alert('댓글 작성중 문제가 발생했습니다!');</script>";
-            } finally {
-                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
-            }
-        }
-
         public function getComment($boardId) {
             try {
                 $boardRepository = new BoardRepository();
@@ -126,7 +111,5 @@
                 echo "<script>alert('댓글을 가져오는 도중에 문제가 발생했습니다!');</script>";
             }
         }
-    }
-
-    
+    }    
 ?>

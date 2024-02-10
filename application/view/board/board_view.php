@@ -83,7 +83,7 @@
         <hr>
         <div>
             <h2>COMMENT</h2>
-            <form action='/application/controller/board/BoardCommentController.php' method='post'>
+            <form action='/application/controller/board/BoardCommentWriteController.php' method='post'>
                 <input type='hidden' name='commenterId' value='<?php echo $userId?>'>
                 <input type='hidden' name='boardId' value='<?php echo $boardId?>'>
                 <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="100" placeholder="댓글 작성. 최대 100자"></textarea>
@@ -102,9 +102,11 @@
                         echo '<div class="comment-top">';
                         echo '<a class="commenter">'.$commentData['commenter_id'].'</a>';
                         echo '<span class="dot">.</span>';
-                        echo $commentData['comment_date'];
+                        echo '<span class="date">'.$commentData['comment_date'].'</span>';
                         if ($commentData['commenter_id'] == $userId) {
-                            echo '<button>bye</button>';
+                            echo "<a class='comment-btn' href='#' onclick='/application/controller/comment/CommentFixController.php'>수정</a>";
+                            echo "<span>/</span>";
+                            echo "<a class='comment-btn' href='#' onclick='/application/controller/comment/CommentDeleteController.php'>삭제</a>";
                         }
                         echo '</div>';
                         echo '<p>'.$commentData['comment'].'</p>';
