@@ -5,6 +5,6 @@
     $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
     $comment = filter_var(strip_tags($_POST['comment']), FILTER_SANITIZE_SPECIAL_CHARS);
 
-    $boardController = new CommentController();
-    $boardController->write($commenterId, $comment, $boardId);
+    $commentController = new CommentController();
+    $commentController->write($commenterId, $comment, $boardId);
 ?>

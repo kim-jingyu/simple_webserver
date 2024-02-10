@@ -10,7 +10,7 @@
                 $commentRepository = new CommentRepository();
 
                 $dateValue = date("Y-m-d h:i:s");
-                $boardRepository->write($commenterId, $comment, $dateValue, $boardId);
+                $commentRepository->write($commenterId, $comment, $dateValue, $boardId);
 
                 echo "<script>alert('댓글 작성완료!');</script>";
             } catch (Exception $e) {

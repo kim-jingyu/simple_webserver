@@ -83,7 +83,7 @@
         <hr>
         <div>
             <h2>COMMENT</h2>
-            <form action='/application/controller/board/BoardCommentWriteController.php' method='post'>
+            <form action='/application/controller/comment/CommentWriteController.php' method='post'>
                 <input type='hidden' name='commenterId' value='<?php echo $userId?>'>
                 <input type='hidden' name='boardId' value='<?php echo $boardId?>'>
                 <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="100" placeholder="댓글 작성. 최대 100자"></textarea>
