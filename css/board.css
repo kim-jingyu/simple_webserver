@@ -127,7 +127,6 @@ p {
 
 .comments {
     border-bottom: 1px solid whitesmoke;
-    height: 50px;
     width: 95%;
     margin: 10px 0px;
     padding: 10px;
@@ -135,6 +134,10 @@ p {
 
 .comment-top {
     margin-bottom: 10px;
+}
+
+.comment-body {
+    height: fit-content;
 }
 
 .commenter {

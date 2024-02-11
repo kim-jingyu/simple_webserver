@@ -85,7 +85,7 @@
             <form action='/application/controller/comment/CommentWriteController.php' method='post'>
                 <input type='hidden' name='commenterId' value='<?php echo $userId?>'>
                 <input type='hidden' name='boardId' value='<?php echo $boardId?>'>
-                <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="100" placeholder="댓글 작성. 최대 100자"></textarea>
+                <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="200" placeholder="댓글 작성. 최대 200자"></textarea>
                 <button class='btn' type='submit'>댓글 작성</button>
             </form>
             <?php
@@ -108,7 +108,7 @@
                             echo '<a class="comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
                         }
                         echo '</div>';
-                        echo '<p>'.$commentData['comment'].'</p>';
+                        echo '<div class="comment-body">'.$commentData['comment'].'</div>';
                         echo '</div>';
                     }
                 }
