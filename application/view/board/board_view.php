@@ -107,12 +107,13 @@
                             echo '<div id="modal" class="modal-overlay">
                                     <div class="modal-window">
                                         <div class="title">
-                                            수정
+                                            <h2>수정</h2>
                                         </div>
                                         <div class="close-area">X</div>
-                                        <div class="content">
-                                            수정하기
-                                        </div>
+                                        <form class="fix-content" action="/application/controller/comment/CommentWriteController.php" method="post">
+                                            <textarea class="textarea-fix" rows="50" maxlength="500">'.$commentData['comment'].'</textarea>
+                                            <button class="btn" type="submit">댓글 수정</button>
+                                        </form>
                                     </div>
                                 </div>';
                             echo "<span>/</span>";

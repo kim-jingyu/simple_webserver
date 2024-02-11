@@ -209,12 +209,12 @@ p {
 #modal .modal-window {
     background: rgba(69, 139, 197, 0.70);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    /* backdrop-filter: blur(13.5px); */
-    /* -webkit-backdrop-filter: blur(13.5px); */
+    backdrop-filter: blur(13.5px);
+    -webkit-backdrop-filter: blur(13.5px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    width: 400px;
-    height: 500px;
+    width: 800px;
+    height: 1000px;
     position: relative;
     top: -100px;
     padding: 10px;
@@ -240,9 +240,21 @@ p {
     color: white;
 }
 
-#modal .content {
+#modal .fix-content {
     margin-top: 20px;
     padding: 0px 10px;
     text-shadow: 1px 1px 2px gray;
     color: white;
+}
+
+#modal .textarea-fix {
+    resize: none;
+    width: 95%;
+    height: 60%;
+    border-top: 1px solid whitesmoke;
+    border-left: 1px solid whitesmoke;
+    margin: 10px 0px;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
