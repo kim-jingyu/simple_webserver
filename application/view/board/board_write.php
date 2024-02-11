@@ -15,7 +15,7 @@
 
 <body>
     <div class="container">
-    <h1>게시글 작성</h1>
+        <h1 class="title">게시글 작성</h1>
         <form action="/application/controller/board/BoardWriteController.php" method="post" enctype="multipart/form-data">
             <input class="input-title" type="text" name="title" maxlength="100" placeholder="게시글 제목 입력. 최대 100자" required>
             <textarea class="textarea-content" type="text" name="body" rows="20" cols="40" maxlength="500" placeholder="게시글 본문 입력. 최대 500자" required></textarea>
@@ -24,10 +24,8 @@
             </label>
             <input type="file" name="file" id="file">
             <input type="hidden" name="userId" value="<?php echo $userId; ?>">
-            <input class="btn" type="submit" value="게시글 등록">
-        </form>
-        <form action="/index.php">
-            <input class="btn" type="submit" value="뒤로">
+            <button class="btn" type="submit">게시글 등록</button>
+            <a class="btn" style="text-decoration: none;" href="/index.php">뒤로</a>
         </form>
     </div>
 </body>
