@@ -13,7 +13,6 @@
     $boardId = $boardViewResp->getBoardId();
     $boardResult = $boardViewResp->getResult();
     $boardData = $boardResult->fetch_assoc();
-
     $commentResult = $boardController->getComment($boardId);
 ?>
 
@@ -106,7 +105,7 @@
                         if ($commentData['commenter_id'] == $userId) {
                             echo "<a class='comment-btn' href='#' onclick='/application/controller/comment/CommentFixController.php'>수정</a>";
                             echo "<span>/</span>";
-                            echo "<a class='comment-btn' href='#' onclick='/application/controller/comment/CommentDeleteController.php'>삭제</a>";
+                            echo '<a class="comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
                         }
                         echo '</div>';
                         echo '<p>'.$commentData['comment'].'</p>';
@@ -117,8 +116,6 @@
             ?>
         </div>
     </div>
-    <script>
-        const = ;
-    </script>
+    <script src="/js/board.js"></script>
 </body>
 </html>
