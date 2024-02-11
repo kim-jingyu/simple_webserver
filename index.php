@@ -55,7 +55,7 @@
                     </div>
                     <div class="date-box">
                         <label for="dateValue">날짜:</lable>
-                        <input type="date" class="date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
+                        <input type="date" class="search_date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
                     </div>
                 </form>
             </div>

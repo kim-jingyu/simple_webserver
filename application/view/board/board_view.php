@@ -103,7 +103,18 @@
                         echo '<span class="dot">.</span>';
                         echo '<span class="date">'.$commentData['comment_date'].'</span>';
                         if ($commentData['commenter_id'] == $userId) {
-                            echo "<a class='comment-btn' href='#' onclick='/application/controller/comment/CommentFixController.php'>수정</a>";
+                            echo "<a class='comment-btn' id='fix-btn' href='#'>수정</a>";
+                            echo '<div id="modal" class="modal-overlay">
+                                    <div class="modal-window">
+                                        <div class="title">
+                                            수정
+                                        </div>
+                                        <div class="close-area">X</div>
+                                        <div class="content">
+                                            수정하기
+                                        </div>
+                                    </div>
+                                </div>';
                             echo "<span>/</span>";
                             echo '<a class="comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
                         }
