@@ -242,7 +242,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT comment.id AS id, comment.commenter_id AS commenter_id, comment.comment AS comment FROM board INNER JOIN comment ON board.id = comment.board_id WHERE board.id = ?";
+                $sql = "SELECT comment.id AS id, comment.commenter_id AS commenter_id, comment.body AS body FROM board INNER JOIN comment ON board.id = comment.board_id WHERE board.id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();

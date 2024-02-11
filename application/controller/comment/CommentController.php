@@ -5,12 +5,12 @@
         public function __construct() {
         }
 
-        public function write($commenterId, $comment, $boardId) {
+        public function write($commenterId, $body, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
 
                 $dateValue = date("Y-m-d H:i:s");
-                $commentRepository->write($commenterId, $comment, $dateValue, $boardId);
+                $commentRepository->write($commenterId, $body, $dateValue, $boardId);
 
                 echo "<script>alert('댓글 작성완료!');</script>";
             } catch (Exception $e) {
@@ -20,11 +20,11 @@
             }
         }
 
-        public function fix($commenterId, $boardId) {
+        public function fix($body, $id, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
 
-                $commentRepository->fix();
+                $commentRepository->fix($body, $id);
 
                 echo "<script>alert('댓글 수정완료!');</script>";
             } catch (Exception $e) {

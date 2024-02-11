@@ -5,14 +5,14 @@
         public function __construct() {
         }
 
-        public function write($commenterId, $comment, $dateValue, $boardId) {
+        public function write($commenterId, $body, $dateValue, $boardId) {
             $conn = null;
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "INSERT INTO comment(commenter_id, comment, comment_date, board_id) VALUES (?,?,?,?)";
+                $sql = "INSERT INTO comment(commenter_id, body, comment_date, board_id) VALUES (?,?,?,?)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("sssi", $commenterId, $comment, $dateValue, $boardId);
+                $stmt->bind_param("sssi", $commenterId, $body, $dateValue, $boardId);
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Write At Comment - DB Exception 발생!");
@@ -27,14 +27,14 @@
             }
         }
 
-        public function fix($commenterId, $boardId) {
+        public function fix($body, $id) {
             $conn = null;
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "INSERT INTO comment(commenter_id, comment, comment_date, board_id) VALUES (?,?,?,?)";
+                $sql = "UPDATE comment SET body = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("sssi", $commenterId, $comment, $dateValue, $boardId);
+                $stmt->bind_param("si", $body, $id);
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Fix At Comment - DB Exception 발생!");

@@ -85,7 +85,7 @@
             <form action='/application/controller/comment/CommentWriteController.php' method='post'>
                 <input type='hidden' name='commenterId' value='<?php echo $userId?>'>
                 <input type='hidden' name='boardId' value='<?php echo $boardId?>'>
-                <textarea class="textarea-comment" type="text" name="comment" rows="20" cols="20" maxlength="200" placeholder="댓글 작성. 최대 200자"></textarea>
+                <textarea class="textarea-comment" type="text" name="body" rows="20" cols="20" maxlength="200" placeholder="댓글 작성. 최대 200자"></textarea>
                 <button class='btn' type='submit'>댓글 작성</button>
             </form>
             <?php
@@ -110,8 +110,10 @@
                                             <h2>수정</h2>
                                         </div>
                                         <div class="close-area">X</div>
-                                        <form class="fix-content" action="/application/controller/comment/CommentWriteController.php" method="post">
-                                            <textarea class="textarea-fix" rows="50" maxlength="500">'.$commentData['comment'].'</textarea>
+                                        <form class="fix-content" action="/application/controller/comment/CommentFixController.php" method="post">
+                                            <textarea class="textarea-fix" name="body" rows="50" maxlength="500">'.$commentData['body'].'</textarea>
+                                            <input type="hidden" name="id" value="'.$commentData['id'].'">
+                                            <input type="hidden" name="boardId" value="'.$boardId.'">
                                             <button class="btn" type="submit">댓글 수정</button>
                                         </form>
                                     </div>
@@ -120,7 +122,7 @@
                             echo '<a class="comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
                         }
                         echo '</div>';
-                        echo '<div class="comment-body">'.$commentData['comment'].'</div>';
+                        echo '<div class="comment-body">'.$commentData['body'].'</div>';
                         echo '</div>';
                     }
                 }
