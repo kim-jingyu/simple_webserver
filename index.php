@@ -106,8 +106,14 @@
 
                         echo ' ]</p>';
                     } else {
+                        echo '<tr>';
+                        echo '<td>게시</td>';
+                        echo '<td>물이</td>';
+                        echo '<td>없습</td>';
+                        echo '<td>니다.</td>';
+                        echo '<td>🤪</td>';
+                        echo '</tr>';
                         echo '</table>';
-                        echo "게시물이 없습니다.";
                     }
                 ?>
             <div class="footer">

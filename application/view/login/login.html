@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <form action="/application/controller/LoginController.php" method="post" name="LoginForm" class="form-signin">
-            <h2 class="form-signin-heading">Login In</h2>
+            <h2 class="signin-title">Login</h2>
             <div>
                 <label for="inputUseid" class="sr-only">Id</label>
                 <input name="userId" type="text" id="inputUserid" class="form-control" required autofocus>
@@ -20,11 +20,11 @@
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input name="password" type="password" id="inputPassword" class="form-control" required>
             </div>
-            <div class="signup_link">
-                👉🏻<a href="/application/view/signup/signup.html">회원가입</a>
+            <div class="link-box">
+                <a class="link" href="/application/view/signup/signup.html">회원가입</a>
             </div>
-            <div class="signup_link">
-                👉🏻<a href="/application/view/inquiry/board.php">문의게시판 바로가기</a>
+            <div class="link-box">
+                <a class="link" href="/application/view/inquiry/board.php">문의게시판 바로가기</a>
             </div>
             <button name="Login" value="Login" class="account_btn" type="submit">Login</button>
         </form>

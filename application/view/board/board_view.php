@@ -38,7 +38,7 @@
                 <?php
                     if (isset($boardData['file_name'])) {
                         $file_name = implode('_', array_slice(explode('_', $boardData['file_name']), 1));
-                        echo '<p>파일명: <a href="/application/service/file/FileDownloadService.php?file='.$boardData['file_name'].'">'.$file_name.'</a></p>';
+                        echo '<p>파일명: <a class="link" href="/application/service/file/FileDownloadService.php?file='.$boardData['file_name'].'">'.$file_name.'</a></p>';
                     }
                 ?>
             </p>
@@ -80,7 +80,7 @@
             ?>
         </div>
         <hr>
-        <div>
+        <div class="comment-box">
             <h2>COMMENT</h2>
             <form action='/application/controller/comment/CommentWriteController.php' method='post'>
                 <input type='hidden' name='commenterId' value='<?php echo $userId?>'>

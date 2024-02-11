@@ -53,41 +53,55 @@ p {
     font-size: 15px;
 }
 
+.signin-title {
+    margin-bottom: 50px;
+}
+
 .account_btn {
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    background-color: rgb(14, 156, 222);
-    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
     color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
 .logout_btn {
-    font-size: 20px;
-    font-weight: bold;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    background-color: rgb(128, 0, 0);
-    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
     color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
 
-.signup_link {
-    margin: 10px;
+.link-box {
+    font-size: 16px;
+    margin-bottom: 10px;
     padding: 5px;
     text-align: center;
-    font-size: 15px;
+}
+
+.link {
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+        color: rgb(14, 156, 222);
+    }
 }
 
 .search_btn {
-    font-size: 15px;
-    font-weight: bold;
-    border: none;
-    padding: 5px;
-    cursor: pointer;
-    background-color: rgb(14, 156, 222);
+    padding: 10px;
+    background-color: #3498db;
     color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
 }
