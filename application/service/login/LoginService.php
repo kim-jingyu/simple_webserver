@@ -15,11 +15,10 @@
                 if (password_verify($userPw, $member['user_pw'])) {
                     $jwt = createToken($member['user_id'], $member['user_name']);
                     setcookie('JWT', $jwt, time() + 30 * 60, '/');
-                }
-                return true;
-            } else {
-                return false;
+                    return true;
+                } 
             }
+            return false;
         }
     }
 ?>
