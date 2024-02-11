@@ -94,5 +94,27 @@
                 }
             }
         }
+
+        public function updateCommenterId($newId, $oldId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "UPDATE comment SET commenter_id = ? WHERE commenter_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ss", $newId, $oldId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("UpdateCommenterId At Comment - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
     }
 ?>

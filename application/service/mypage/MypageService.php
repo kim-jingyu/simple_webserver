@@ -2,6 +2,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/member/MemberRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
     
     class MypageService {
         public function __construct() {
@@ -10,10 +11,12 @@
         public function changeId($newId, $originalId) {
             $memberRepository = new MemberRepository();
             $boardRepository = new BoardRepository();
+            $commentRepository = new CommentRepository();
 
             try {
                 $memberRepository->updateId($newId, $originalId);
                 $boardRepository->updateId($newId, $originalId);
+                $commentRepository->updateCommenterId($newId, $originalId);
                 
                 $result = $memberRepository->findById($newId);
                 $row = $result->fetch_assoc();
