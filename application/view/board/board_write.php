@@ -17,8 +17,8 @@
     <div class="container">
     <h1>게시글 작성</h1>
         <form action="/application/controller/board/BoardWriteController.php" method="post" enctype="multipart/form-data">
-            <input class="input-title" type="text" name="title" maxlength="20" placeholder="게시글 제목 입력. 최대 20자" required>
-            <textarea class="textarea-content" type="text" name="body" rows="20" cols="40" maxlength="100" placeholder="게시글 본문 입력. 최대 100자" required></textarea>
+            <input class="input-title" type="text" name="title" maxlength="100" placeholder="게시글 제목 입력. 최대 100자" required>
+            <textarea class="textarea-content" type="text" name="body" rows="20" cols="40" maxlength="500" placeholder="게시글 본문 입력. 최대 500자" required></textarea>
             <label for="file">
                 <div class="btn-upload">파일 업로드하기</div>
             </label>
