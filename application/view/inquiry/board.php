@@ -26,13 +26,14 @@
             <div>
                 <form class="funcs" action="" method="get">
                     <div>
-                        <select name="sort" onchange="this.form.submit()">
+                        <select class="sort" name="sort" onchange="this.form.submit()">
                             <option value=""  <?php if(isset($sort)) {echo "disabled"; } ?>>정렬 옵션</option>
                             <option value="author" <?php if($sort == 'author') {echo "selected"; } ?>>작성자순</option>
                             <option value="date" <?php if($sort == 'date') {echo "selected"; } ?>>날짜순</option>
                         </select>
                     </div>
                     <div class="search">
+                    <label for="search">타이틀 검색:</lable>
                         <input class="search_text" type="text" name="search" value="<?php echo $searchWord; ?>" placeholder="검색">
                         <input class="btn" type="submit" value="검색">
                     </div>
