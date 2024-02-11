@@ -135,7 +135,6 @@ input[type="date"] {
 table {
     border-collapse: collapse;
     width: 700px;
-    height: 500px;
     margin: 1rem auto;
     border: 1px solid #ddd;
     text-align: center;
