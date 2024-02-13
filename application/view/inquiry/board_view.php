@@ -29,14 +29,6 @@
         <div>
             <p><?php echo '작성자 : '.$writerName?></p>
             <p><?php echo '작성일 : '.$dateValue?></p>
-            <p>
-                <?php
-                    if (isset($row['file_name'])) {
-                        $fileName = implode('_', array_slice(explode('_', $row['file_name']), 1));
-                        echo '<p>파일명: <a href="/application/service/file/FileDownloadService.php?file='.$row['file_name'].'">'.$fileName.'</a></p>';
-                    }
-                ?>
-            </p>
         </div>
         <div class="content">    
             <h2>CONTENT</h2>
@@ -59,9 +51,7 @@
                     <input type='hidden' name='writerPw' value='<?php echo $writerPw ?>'>
                     <button class="btn" type='submit'>게시글 삭제</button>
                 </form>
-                <form action='board.php'>
-                    <input class='btn' type='submit' value='뒤로'> 
-                </form>
+                <a class="btn" style="text-decoration: none;" href="board.php">뒤로</a>
             </div>
         </div>
     </div>

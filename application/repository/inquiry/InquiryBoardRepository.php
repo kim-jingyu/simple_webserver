@@ -65,7 +65,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "select * from inquiry_board where id = ?";
+                $sql = "SELECT * FROM inquiry_board WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();
@@ -89,7 +89,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "select writer_pw from inquiry_board where writer_name= ?";
+                $sql = "SELECT writer_pw FROM inquiry_board WHERE writer_name= ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("s", $writerName);
                 $stmt->execute();
@@ -113,7 +113,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "update inquiry_board set title = ?, body = ?, writer_name = ?, writer_pw = ?, date_value = ? where id = ?";
+                $sql = "UPDATE inquiry_board SET title = ?, body = ?, writer_name = ?, writer_pw = ?, date_value = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $title = $inquiryBoardUpdateRequest->getTitle();
                 $body = $inquiryBoardUpdateRequest->getBody();
@@ -141,7 +141,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "insert into inquiry_board (title, body, writer_name, writer_pw, date_value) values (?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO inquiry_board (title, body, writer_name, writer_pw, date_value) VALUES (?, ?, ?, ?, ?)";
                 $stmt = $conn->prepare($sql);
                 $title = $inquiryBoardWriteRequest->getTitle();
                 $body = $inquiryBoardWriteRequest->getBody();
@@ -171,7 +171,7 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "delete from inquiry_board where id = ?";
+                $sql = "DELETE FROM inquiry_board WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $boardId);
                 $stmt->execute();

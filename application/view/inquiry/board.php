@@ -88,12 +88,8 @@
                     }
                 ?>
             <div class="footer">
-                <form action="board_write.php" method="post">
-                    <input class="btn" type="submit" name="writeBoard" value="게시글 작성">
-                </form>
-                <form action="/application/view/login/login.html">
-                    <input class="btn" type="submit" value="뒤로">
-                </form>
+                <a class="btn" style="text-decoration: none;" href="board.php">게시글 작성</a>
+                <a class="btn" style="text-decoration: none;" href="/application/view/login/login.html">뒤로</a>
             </div>
         </div>
     </div>
