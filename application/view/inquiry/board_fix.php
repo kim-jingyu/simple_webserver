@@ -20,8 +20,8 @@
     <title>게시판 수정</title>
 </head>
 <body>
-    <h1>게시글 수정</h1>
     <div class="container">
+        <h1 class="title">게시글 수정</h1>
         <form action="/application/controller/inquiry/InquiryBoardFixController.php" method="post">
             <input class="input-title" type="text" name="name" maxlength="20" placeholder="작성자 이름" required>
             <input class="input-title" type="password" name="pw" maxlength="20" placeholder="비밀번호 입력" required>

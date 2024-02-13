@@ -20,7 +20,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/board.css">
+    <link rel="stylesheet" href="/css/board.css?after">
     <title>문의게시글</title>
 </head>
 <body>
@@ -45,14 +45,24 @@
                     <input type='hidden' name='boardId' value='<?php echo "$boardId" ?>'>
                     <p><button class='btn' type='submit'>게시물 수정</button></p>
                 </form>
-                <form action='/application/controller/inquiry/InquiryBoardDeleteController.php' method='post'>
-                    <input type='hidden' name='boardId' value='<?php echo $boardId ?>'>
-                    <input type='hidden' name='writerName' value='<?php echo $writerName ?>'>
-                    <input type='hidden' name='writerPw' value='<?php echo $writerPw ?>'>
-                    <button class="btn" type='submit'>게시글 삭제</button>
-                    <a class="btn" style="text-decoration: none;" href="board.php">뒤로</a>
-                </form>
+                <a class='inquiry-delete-btn' href='#'>게시글 삭제</a>
+                <div class="modals">
+                    <div class="modal-window">
+                        <div class="title">
+                            <h2>삭제</h2>
+                        </div>
+                        <div class="close-area">X</div>
+                        <form class="fix-content" action="/application/controller/inquiry/InquiryBoardDeleteController.php" method="post">
+                            <input type='hidden' name='boardId' value='<?php echo $boardId ?>'>
+                            <input class="input-title" type='text' name='writerName' placeholder="작성자 이름">
+                            <input class="input-title" type='text' name='writerPw' placeholder="비밀번호 입력">
+                            <button class="btn" type="submit">게시글 삭제</button>
+                        </form>
+                    </div>
+                </div>
+                <a class="btn" style="text-decoration: none;" href="board.php">뒤로</a>
             </div>
         </div>
     </div>
+    <script src="/js/inquiry.js"></script>
 </body>
