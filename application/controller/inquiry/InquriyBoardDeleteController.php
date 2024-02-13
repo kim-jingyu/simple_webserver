@@ -4,7 +4,7 @@
     $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
     if (!$boardId) {
-        header("location:/application/view/inquiry/board.php");
+        header("location:/application/view/inquiry/board_view.php?boardId=".$boardId);
         exit();
     }
 

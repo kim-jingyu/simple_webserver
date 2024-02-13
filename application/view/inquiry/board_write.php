@@ -11,7 +11,7 @@
 <body>
     <div class="container">
         <h1 class="title">문의게시글 작성</h1>
-        <form action="/application/controller/inquiry/InquiryBoardWriteController.php" method="post" enctype="multipart/form-data">
+        <form action="/application/controller/inquiry/InquiryBoardWriteController.php" method="post">
             <input class="input-title" type="text" name="name" maxlength="20" placeholder="작성자 이름" required>
             <input class="input-title" type="password" name="pw" maxlength="20" placeholder="비밀번호 입력" required>
             <input class="input-title" type="text" name="title" maxlength="20" placeholder="게시글 제목 입력. 최대 20자" required>

@@ -113,15 +113,13 @@
             $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE inquiry_board SET title = ?, body = ?, writer_name = ?, writer_pw = ?, date_value = ? WHERE id = ?";
+                $sql = "UPDATE inquiry_board SET title = ?, body = ?, date_value = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $title = $inquiryBoardUpdateRequest->getTitle();
                 $body = $inquiryBoardUpdateRequest->getBody();
-                $writerName = $inquiryBoardUpdateRequest->getWriterName();
-                $writerPw = $inquiryBoardUpdateRequest->getWriterPw();
                 $today = $inquiryBoardUpdateRequest->getToday();
                 $boardId = $inquiryBoardUpdateRequest->getBoardId();
-                $stmt->bind_param("sssssi", $title, $body, $writerName, $writerPw, $today, $boardId);
+                $stmt->bind_param("sssssi", $title, $body, $today, $boardId);
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Update At Inquiry - DB Exception 발생!");
