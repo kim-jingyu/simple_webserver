@@ -154,7 +154,7 @@
                 $boardId = $conn->insert_id;
                 return $boardId;
             } catch (Exception $e) {
-                throw new Exception("Update At Inquiry - DB Exception 발생!");
+                throw new Exception("Save At Inquiry - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();

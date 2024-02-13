@@ -8,12 +8,6 @@
 
             $inquiryBoardWriteRequest = new InquiryBoardWriteRequest($title, $body, $writerName, $writerPw, $today);
             $inquriyBoardRepository = new InquiryBoardRepository();
-            $findPw = $inquriyBoardRepository->findPwByWriterName($writerName);
-            if ($findPw != $writerPw) {
-                echo "<script>alert('작성자 비밀번호가 틀렸습니다!');</script>";
-                echo "<script>location.replace('/application/view/inquiry/board_write.php');</script>";
-                exit();
-            }
 
             try {
                 $boardId = $inquriyBoardRepository->save($inquiryBoardWriteRequest);
