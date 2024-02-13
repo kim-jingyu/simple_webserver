@@ -96,22 +96,24 @@
                     echo '<h2>No Comments</h2>';
                     echo '</div>';
                 } else {
+                    $num = 0;
                     while ($commentData = mysqli_fetch_array($commentResult)) {
+                        $num++;
                         echo '<div class="comments">';
                         echo '<div class="comment-top">';
                         echo '<a class="commenter">'.$commentData['commenter_id'].'</a>';
                         echo '<span class="dot">.</span>';
                         echo '<span class="date">'.$commentData['comment_date'].'</span>';
                         if ($commentData['commenter_id'] == $userId) {
-                            echo "<a class='comment-btn' id='fix-btn' href='#'>수정</a>";
-                            echo '<div id="modal" class="modal-overlay">
+                            echo "<a class='fix-comment-btn' href='#'>수정</a>";
+                            echo '<div class="modals">
                                     <div class="modal-window">
                                         <div class="title">
                                             <h2>수정</h2>
                                         </div>
                                         <div class="close-area">X</div>
                                         <form class="fix-content" action="/application/controller/comment/CommentFixController.php" method="post">
-                                            <textarea class="textarea-fix" name="body" rows="50" maxlength="500">'.$commentData['body'].'</textarea>
+                                            <textarea class="textarea-fix" name="body" maxlength="500">'.$commentData['body'].'</textarea>
                                             <input type="hidden" name="id" value="'.$commentData['id'].'">
                                             <input type="hidden" name="boardId" value="'.$boardId.'">
                                             <button class="btn" type="submit">댓글 수정</button>
@@ -119,7 +121,7 @@
                                     </div>
                                 </div>';
                             echo "<span>/</span>";
-                            echo '<a class="comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
+                            echo '<a class="delete-comment-btn" href="#" onclick="deleteFunc('.$commentData['id'].','.$boardId.');">삭제</a>';
                         }
                         echo '</div>';
                         echo '<div class="comment-body">'.$commentData['body'].'</div>';

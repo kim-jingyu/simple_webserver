@@ -171,7 +171,7 @@ p {
     padding-right: 10px;
 }
 
-.comment-btn {
+.fix-comment-btn {
     text-decoration: none;
     font-size: 15px;
     font-weight: bold;
@@ -184,17 +184,26 @@ p {
     }
 }
 
-#modal {
-    background: rgba(255, 255, 255, 0.25);
+.delete-comment-btn {
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+        color: rgb(14, 156, 222);
+    }
 }
 
-#modal.modal-overlay {
+.modals {
+    display: none;
     width: 100%;
     height: 100%;
     position: absolute;
     left: 0;
     top: 0;
-    display: none;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -206,32 +215,32 @@ p {
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-#modal .modal-window {
+.modals .modal-window {
     background: rgba(69, 139, 197, 0.70);
     box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
     backdrop-filter: blur(13.5px);
     -webkit-backdrop-filter: blur(13.5px);
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.18);
-    width: 800px;
-    height: 1000px;
+    width: 400px;
+    height: 600px;
     position: relative;
     top: -100px;
     padding: 10px;
 }
 
-#modal .title {
+.modals .title {
     padding-left: 10px;
     display: inline;
     text-shadow: 1px 1px 2px gray;
     color: white;
 }
 
-#modal .title h2 {
+.modals .title h2 {
     display: inline;
 }
 
-#modal .close-area {
+.modals .close-area {
     display: inline;
     float: right;
     padding-right: 10px;
@@ -240,17 +249,17 @@ p {
     color: white;
 }
 
-#modal .fix-content {
+.modals .fix-content {
     margin-top: 20px;
     padding: 0px 10px;
     text-shadow: 1px 1px 2px gray;
     color: white;
 }
 
-#modal .textarea-fix {
+.modals .textarea-fix {
     resize: none;
     width: 95%;
-    height: 60%;
+    height: 450px;
     border-top: 1px solid whitesmoke;
     border-left: 1px solid whitesmoke;
     margin: 10px 0px;
