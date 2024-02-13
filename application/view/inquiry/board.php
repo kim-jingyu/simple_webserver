@@ -6,6 +6,7 @@
 
     $searchWord = $response->getSearchWord();
     $dateValue = $response->getDateValue();
+    $pageNow = $response->getPageNow();
     $blockNow = $response->getBlockNow();
     $sort = $response->getSort();
     $totalPages = $response->getTotalPages();
@@ -33,14 +34,14 @@
                         </select>
                     </div>
                     <div class="search">
-                    <label for="search">타이틀 검색:</lable>
+                        <label for="search">타이틀 검색:</lable>
                         <input class="search_text" type="text" name="search" value="<?php echo $searchWord; ?>" placeholder="검색">
-                        <input class="btn" type="submit" value="검색">
                     </div>
                     <div class="date-box">
                         <label for="dateValue">날짜:</lable>
-                        <input type="date" class="date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
+                        <input type="date" class="search_date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
                     </div>
+                    <input class="btn" type="submit" value="검색">
                 </form>
             </div>
             <table>
@@ -83,8 +84,12 @@
                         }
                         echo ' ]</p>';
                     } else {
+                        echo '<tr>';
+                        echo '<td>게시물이</td>';
+                        echo '<td>없습니다.</td>';
+                        echo '<td>🤪</td>';
+                        echo '</tr>';
                         echo '</table>';
-                        echo "게시물이 없습니다.";
                     }
                 ?>
             <div class="footer">

@@ -28,7 +28,7 @@
             $totalPages = ceil($totalCnt / $numPerPage);
             $result = $inquiryPagenateResponse->getResult();
 
-            $inquiryBoardResponse = new InquiryBoardResponse($searchWord, $dateValue, $blockNow, $sort, $totalPages, $result);
+            $inquiryBoardResponse = new InquiryBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $result);
             return $inquiryBoardResponse;
         }
 

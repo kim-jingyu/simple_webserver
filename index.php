@@ -51,12 +51,12 @@
                     <div class="search">
                         <label for="search">타이틀 검색:</lable>
                         <input class="search_text" type="text" name="search" value="<?php echo $searchWord; ?>" placeholder="검색">
-                        <input class="btn" type="submit" value="검색">
                     </div>
                     <div class="date-box">
                         <label for="dateValue">날짜:</lable>
                         <input type="date" class="search_date" id="dateValue" name="dateValue" value="<?php echo $dateValue; ?>">    
                     </div>
+                    <input class="btn" type="submit" value="검색">
                 </form>
             </div>
             <table>
