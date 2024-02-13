@@ -3,11 +3,12 @@
 
     if (isset($fileName)) {
         $filePath = '/path/upload/'.$fileName;
+        $originalFileName = explode("_", $fileName)[1];
 
         if (file_exists($filePath)) {
             header('Content-Description: File Transfer');
             header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$fileName.'"');
+            header('Content-Disposition: attachment; filename="'.$originalFileName.'"');
             header('Expires: 0');
             header('Cache-Control: must-revalidate');
             header('Pragma: public');
