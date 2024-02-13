@@ -84,6 +84,30 @@
             }
         }
 
+        public function findWriterNameById($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT writer_name FROM inquiry_board WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $name = $stmt->get_result()->fetch_assoc()['writer_name'];
+                return $name;
+            } catch (Exception $e) {
+                throw new Exception("FindWriterNameById At Inquiry - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
         public function findPwByWriterName($writerName) {
             $conn = null;
             $stmt = null;
@@ -119,7 +143,7 @@
                 $body = $inquiryBoardUpdateRequest->getBody();
                 $today = $inquiryBoardUpdateRequest->getToday();
                 $boardId = $inquiryBoardUpdateRequest->getBoardId();
-                $stmt->bind_param("sssssi", $title, $body, $today, $boardId);
+                $stmt->bind_param("sssi", $title, $body, $today, $boardId);
                 $stmt->execute();
             } catch (Exception $e) {
                 throw new Exception("Update At Inquiry - DB Exception 발생!");

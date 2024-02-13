@@ -88,7 +88,7 @@
                     }
                 ?>
             <div class="footer">
-                <a class="btn" style="text-decoration: none;" href="board.php">게시글 작성</a>
+                <a class="btn" style="text-decoration: none;" href="board_write.php">게시글 작성</a>
                 <a class="btn" style="text-decoration: none;" href="/application/view/login/login.html">뒤로</a>
             </div>
         </div>

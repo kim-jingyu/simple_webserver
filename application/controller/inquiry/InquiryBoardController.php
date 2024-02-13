@@ -3,6 +3,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryBoardRequest.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquriyBoardViewResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardFixResponse.php';
 
     class InquiryBoardController {
         public function __construct() {
@@ -44,8 +45,8 @@
         public function getInquiryBoardFix() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
     
-            $inquiryRepository = new InquiryRepository();
-            $result = $inquiryRepository->findById($boardId);
+            $inquiryBoardRepository = new InquiryBoardRepository();
+            $result = $inquiryBoardRepository->findById($boardId);
             
             $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $result);
             return $inquiryBoardFixResponse;

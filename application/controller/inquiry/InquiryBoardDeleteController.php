@@ -22,9 +22,11 @@
     
     try {
         $inquiryBoardRepository->deleteById($boardId);
-    } catch (Exception $e) {
         echo "<script>alert('게시글이 삭제되었습니다!');</script>";
         echo "<script>location.replace('/application/view/inquiry/board.php');</script>";
+    } catch (Exception $e) {
+        echo "<script>alert('게시글 삭제에 실패했습니다!!');</script>";
+        echo "<script>location.replace('/application/view/inquiry/board_view.php?boardId='".$boardId.");</script>";
     } finally {
         exit();
     }

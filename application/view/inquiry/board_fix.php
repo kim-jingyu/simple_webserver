@@ -1,7 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardController.php';
 
-    $inquiryBoardController = new InquriyBoardController();
+    $inquiryBoardController = new InquiryBoardController();
     $response = $inquiryBoardController->getInquiryBoardFix();
     $boardId = $response->getBoardId();
     $result = $response->getResult();
@@ -29,8 +29,8 @@
             <textarea class="textarea-content" name="body" rows="20" cols="40" maxlength="500" placeholder="게시글 본문 입력. 최대 500자" required><?php echo "$body"; ?></textarea>
             <input type='hidden' name='boardId' value='<?php echo "$boardId"; ?>'>
             <input class="btn" type="submit" value="게시글 수정">
+            <a class="btn" style="text-decoration: none;" href="board_view.php?boardId=<?php echo "$boardId"; ?>">뒤로</a>
         </form>
-        <a class="btn" style="text-decoration: none;" href="board_view.php?boardId=<?php echo "$boardId"; ?>">게시글 작성</a>
     </div>
 </body>
 </html>

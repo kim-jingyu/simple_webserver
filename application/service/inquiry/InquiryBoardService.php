@@ -29,8 +29,15 @@
         public function fix($boardId, $writerName, $writerPw, $title, $body) {
             $today = date("Y-m-d");
 
-            $inquiryBoardUpdateRequest = new InquiryBoardUpdateRequest($boardId, $writerName, $writerPw, $title, $body, $today);
+            $inquiryBoardUpdateRequest = new InquiryBoardUpdateRequest($boardId, $title, $body, $today);
             $inquriyBoardRepository = new InquiryBoardRepository();
+            $findName = $inquriyBoardRepository->findWriterNameById($boardId);
+            if ($findName != $writerName) {
+                echo "<script>alert('작성자 이름이 틀렸습니다!');</script>";
+                echo "<script>location.replace('/application/view/inquiry/board_fix.php?boardId=".$boardId."');</script>";
+                exit();
+            }
+
             $findPw = $inquriyBoardRepository->findPwByWriterName($writerName);
             if ($findPw != $writerPw) {
                 echo "<script>alert('작성자 비밀번호가 틀렸습니다!');</script>";

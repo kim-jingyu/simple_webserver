@@ -50,8 +50,8 @@
                     <input type='hidden' name='writerName' value='<?php echo $writerName ?>'>
                     <input type='hidden' name='writerPw' value='<?php echo $writerPw ?>'>
                     <button class="btn" type='submit'>게시글 삭제</button>
+                    <a class="btn" style="text-decoration: none;" href="board.php">뒤로</a>
                 </form>
-                <a class="btn" style="text-decoration: none;" href="board.php">뒤로</a>
             </div>
         </div>
     </div>
