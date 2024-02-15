@@ -10,17 +10,18 @@
         }
 
         public static function getClient() {
-            $awsConfigs = [
-                'version' => 'latest',
-                'region' => 'ap-northeast-2',
-                'credentials' => [
-                    'key' => getenv("S3_ACCESS_KEY_ID"),
-                    'secret' => getenv("S3_SECRET_ACCESS_KEY"),
-                ],
+            $credentials = [
+                'key' => getenv("S3_ACCESS_KEY_ID"),
+                'secret' => getenv("S3_SECRET_ACCESS_KEY"),
             ];
 
-            $s3Client = S3Client::factory($awsConfigs);
-            return $s3Client;
+            $s3 = new S3Client([
+                'version' => 'latest',
+                'region' => 'ap-northeast-2',
+                'credentials' => $credentials,
+            ]);
+
+            return $s3;
         }
 
         public static function getBucketName() {
