@@ -19,8 +19,7 @@
                 ],
             ];
 
-            $sdk = new Aws\Sdk($awsConfigs);
-            $s3Client = $sdk->createS3();
+            $s3Client = S3Client::factory($awsConfigs);
             return $s3Client;
         }
 
