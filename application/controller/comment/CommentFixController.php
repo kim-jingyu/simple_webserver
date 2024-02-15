@@ -1,5 +1,8 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/comment/CommentController.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+
+    checkToken();
 
     $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
     $id = filter_var(strip_tags($_POST['id']), FILTER_SANITIZE_SPECIAL_CHARS);

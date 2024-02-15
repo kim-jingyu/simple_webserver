@@ -2,6 +2,8 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/mypage/MypageService.php';
 
+    checkToken();
+
     function close($message) {
         echo "<script>alert('$message')</script>";
         echo "<script>location.replace('/application/view/mypage/mypage.php');</script>";
