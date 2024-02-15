@@ -27,15 +27,16 @@
                 ]);
                 $body = $result['Body'];
                 $fileContent = $body->getContents();
+                echo $fileContent;
 
-                header('Content-Description: File Transfer');
-                header('Content-Type: '.$result['ContentType']);
-                header('Content-Disposition: attachment; filename='.$originalFileName);
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: '.$result['ContentLength']);
-                readfile($fileContent);
+                // header('Content-Description: File Transfer');
+                // header('Content-Type: '.$result['ContentType']);
+                // header('Content-Disposition: attachment; filename='.$originalFileName);
+                // header('Expires: 0');
+                // header('Cache-Control: must-revalidate');
+                // header('Pragma: public');
+                // header('Content-Length: '.$result['ContentLength']);
+                // readfile($fileContent);
             } catch (Exception $e) {
                 echo "<script>alert('파일 다운로드 실패!');</script>";
                 echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
