@@ -52,11 +52,8 @@
                                     'ACL' => 'public-read',
                                 ]);
 
-                                error_log($result, 3, "/var/log/apache2/test.log");
-
                                 echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (Exception $e) {
-                                error_log($e, 3, "/var/log/apache2/test.log");
                                 $msg = $e->getMessage();
                                 echo "<script>alert('".$msg."')</script>";
                                 // echo "<script>alert('파일 저장에 실패했습니다! ".$e->getMessage()."');</script>";
