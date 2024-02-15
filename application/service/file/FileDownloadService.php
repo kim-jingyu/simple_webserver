@@ -20,8 +20,12 @@
             $originalFileName = explode("_", $fileName)[1];
 
             try {
-                $url = $s3Client->getObjectUrl($bucketName, $filePath);
-                print_r($url);
+                // $url = $s3Client->getObjectUrl($bucketName, $filePath);
+                $result = $s3Client->getObject([
+                    'Bucket' => $bucketName,
+                    'Key' => $filePath,
+                ]);
+                print_r($result);
                 
                 // header('Content-Description: File Transfer');
                 // header('Content-Type: application/octet-stream');
