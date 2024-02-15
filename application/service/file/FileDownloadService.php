@@ -32,7 +32,7 @@
                 header('Expires: 0');
                 header('Cache-Control: must-revalidate');
                 header('Pragma: public');
-                header('Content-Length: '.filesize($result['Body']));
+                header('Content-Length: '.$result['ContentLength']);
                 readfile($result['Body']);
             } catch (Exception $e) {
                 echo "<script>alert('파일 다운로드 실패!');</script>";
