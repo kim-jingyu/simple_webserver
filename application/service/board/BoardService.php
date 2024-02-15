@@ -44,7 +44,7 @@
                             try {
                                 $s3Client = S3Manager::getClient();
                                 $bucketName = S3Manager::getBucketName();
-                                var_dump($s3Client);
+                                // var_dump($s3Client);
                                 
                                 $result = $s3Client->putObject([
                                     'Bucket' => $bucketName,
