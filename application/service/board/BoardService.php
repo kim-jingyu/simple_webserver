@@ -55,7 +55,7 @@
 
                                 echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (Exception $e) {
-                                print_r($e);
+                                echo $e->getMessage();
                                 // echo "<script>alert('파일 저장에 실패했습니다! ".$e->getMessage()."');</script>";
                                 // echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
