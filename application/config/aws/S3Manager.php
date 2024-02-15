@@ -26,6 +26,7 @@
 
         public static function getBucketName() {
             $bucket = getenv("S3_BUCKET_NAME");
+            print_r($bucket);
             return $bucket;
         }
     }
