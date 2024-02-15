@@ -15,8 +15,8 @@
     $boardRepository = new BoardRepository();
     $commentRepository = new CommentRepository();
     try {
-        $boardRepository->delete($boardId);
         $commentRepository->deleteByBoardId($boardId);
+        $boardRepository->delete($boardId);
 
         echo "<script>alert('삭제 완료!');</script>";
         header("location:/index.php");
