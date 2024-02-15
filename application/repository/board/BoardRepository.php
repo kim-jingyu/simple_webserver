@@ -33,6 +33,30 @@
             }
         }
 
+        public function findFileNameById($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT file_name FROM board WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $boardId);
+                $stmt->execute();
+                $fileName = $stmt->get_result()->fetch_assoc()['file_name'];
+                return $fileName;
+            } catch (Exception $e) {
+                throw new Exception("FindFileNameById At Board - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+    
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
         public function updateId($newId, $oldId) {
             $conn = null;
             $stmt = null;

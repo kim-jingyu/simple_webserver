@@ -37,8 +37,8 @@
             <p>
                 <?php
                     if (isset($boardData['file_name'])) {
-                        $file_name = implode('_', array_slice(explode('_', $boardData['file_name']), 1));
-                        echo '<p>파일명: <a class="link" href="/application/service/file/FileDownloadService.php?file='.$boardData['file_name'].'">'.$file_name.'</a></p>';
+                        $file_name = explode('_', $boardData['file_name'])[1];
+                        echo '<p>파일명: <a class="link" href="/application/service/board/FileDownloadController.php?boardId='.$boardId.'">'.$file_name.'</a></p>';
                     }
                 ?>
             </p>

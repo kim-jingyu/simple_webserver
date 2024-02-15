@@ -1,24 +1,41 @@
 <?php
-    $fileName = filter_var(strip_tags($_GET['file']), FILTER_SANITIZE_SPECIAL_CHARS);
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
 
-    if (isset($fileName)) {
-        $filePath = '/path/upload/'.$fileName;
-        $originalFileName = explode("_", $fileName)[1];
-
-        if (file_exists($filePath)) {
-            header('Content-Description: File Transfer');
-            header('Content-Type: application/octet-stream');
-            header('Content-Disposition: attachment; filename="'.$originalFileName.'"');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: '.filesize($filePath));
-            readfile($filePath);
-            exit;
-        } else {
-            echo "<script>alert('파일이 존재하지 않습니다!');</script>";
+    class FileDownloadService {
+        public function __construct() {
         }
-    } else {
-        echo "<script>alert('파일 다운로드 실패!');</script>";
+
+        public function download($boardId) {
+            $boardRepository = new BoardRepository();
+            $fileName = $boardRepository->findFileNameById($boardId);
+            if (!$fileName) {
+                echo "<script>alert('파일이 존재하지 않습니다!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
+            }
+
+            $s3Client = S3Manager::getClient();
+            $bucketName = S3Manager::getBucketName();
+            $filePath = 'path/upload/'.$fileName;
+            $originalFileName = explode("_", $fileName)[1];
+
+            try {
+                $url = $s3Client->getObjectUrl($bucketName, $filePath);
+                
+                header('Content-Description: File Transfer');
+                header('Content-Type: application/octet-stream');
+                header('Content-Disposition: attachment; filename='.$originalFileName);
+                header('Expires: 0');
+                header('Cache-Control: must-revalidate');
+                header('Pragma: public');
+                header('Content-Length: '.filesize($url));
+                readfile($url);
+            } catch (Exception $e) {
+                echo "<script>alert('파일 다운로드 실패!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
+            } finally {
+                exit();
+            }
+        }
     }
 ?>
