@@ -34,8 +34,14 @@
     }
 
     function checkToken() {
-        if (!isset($_COOKIE['JWT'])) {
+        try {
+            if (!isset($_COOKIE['JWT'])) {
+                throw new Exception;
+            }
+            getToken($_COOKIE['JWT'])['user'];
+        } catch (\Throwable $th) {
             header("location:/application/view/login/login.html");
+        } finally {
             exit();
         }
     }
