@@ -52,11 +52,12 @@
                                     'SourceFile' => $fileTempName
                                 ]);
 
+                                error_log($result, 3, "/var/log/apache2/test_error.log");
+
                                 echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (S3Exception $e) {
                                 echo "<script>alert('파일 저장에 실패했습니다!');</script>";
-                                print_r($result);
-                                // echo "<script>location.replace('/application/view/board/board_write.php');</script>";
+                                echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
                             }
                         } else {
