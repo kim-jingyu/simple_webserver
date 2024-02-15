@@ -6,9 +6,19 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardViewResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardFixResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
     class BoardController {
         public function __construct() {
+        }
+
+        private function checkUser() {
+            $boardRepository = new BoardRepository();
+            $findUserId = $boardRepository->findUserIdById($boardId);
+            $userId = getToken($_COOKIE['JWT']['user']);
+            if ($findUserId != $userId) {
+                throw new Exception;
+            }
         }
 
         public function getIndexBoard() {
@@ -75,6 +85,7 @@
             $today = date("Y-m-d");
 
             try {
+                $this->checkUser();
                 $boardService = new BoardService();
                 $boardId = $boardService->write($title, $body, $userId, $today);
                 
@@ -90,6 +101,7 @@
             $today = date("Y-m-d");
 
             try {
+                $this->checkUser();
                 $boardService = new BoardService();
                 $boardService->fix($boardId, $title, $body, $userId, $today);
 

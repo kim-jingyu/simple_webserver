@@ -1,6 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
     class FileDownloadService {
         public function __construct() {
@@ -8,6 +9,9 @@
 
         public function download($boardId) {
             $boardRepository = new BoardRepository();
+            $findUserId = $boardRepository->findUserIdById($boardId);
+            $userId = getToken($_COOKIE['JWT']['user']);
+
             $fileName = $boardRepository->findFileNameById($boardId);
             if (!$fileName) {
                 echo "<script>alert('파일이 존재하지 않습니다!');</script>";
@@ -20,6 +24,10 @@
             $originalFileName = explode("_", $fileName)[1];
 
             try {
+                if ($findUserId != $userId) {
+                    throw new Exception;
+                }
+
                 $result = $s3Client->getObject([
                     'Bucket' => $bucketName,
                     'Key' => $filePath,
