@@ -14,6 +14,8 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("sssi", $commenterId, $body, $dateValue, $boardId);
                 $stmt->execute();
+                $commentId = $conn->insert_id;
+                return $commentId;
             } catch (Exception $e) {
                 throw new Exception("Write At Comment - DB Exception 발생!");
             } finally {
@@ -62,6 +64,30 @@
                 return $result;
             } catch (Exception $e) {
                 throw new Exception("findAllByBoard At Comment - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
+        public function findCommenterIdById($id) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "SELECT commenter_id FROM comment WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $id);
+                $stmt->execute();
+                $commenterId = $stmt->get_result()->fetch_assoc()['commenter_id'];
+                return $commenterId;
+            } catch (Exception $e) {
+                throw new Exception("findCommenterIdById At Comment - DB Exception 발생!");
             } finally {
                 if ($stmt != null) {
                     $stmt->close();

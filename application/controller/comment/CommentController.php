@@ -23,6 +23,12 @@
         public function fix($body, $id, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
+                $commenterId = $commentRepository->findCommenterIdById();
+
+                $userId = getToken($_COOKIE['JWT'])['user'];
+                if ($commenterId != $userId) {
+                    throw new Exception;
+                }
 
                 $commentRepository->fix($body, $id);
 
@@ -50,6 +56,12 @@
         public function delete($commentId, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
+                $commenterId = $commentRepository->findCommenterIdById();
+
+                $userId = getToken($_COOKIE['JWT'])['user'];
+                if ($commenterId != $userId) {
+                    throw new Exception;
+                }
 
                 $commentRepository->delete($commentId);
 

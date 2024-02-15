@@ -16,7 +16,7 @@
     $commentRepository = new CommentRepository();
     try {
         $findUserId = $boardRepository->findUserIdById($boardId);
-        $userId = getToken($_COOKIE['JWT']['user']);
+        $userId = getToken($_COOKIE['JWT'])['user'];
         if ($findUserId != $userId) {
             throw new Exception;
         }

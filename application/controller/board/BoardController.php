@@ -15,7 +15,7 @@
         private function checkUser() {
             $boardRepository = new BoardRepository();
             $findUserId = $boardRepository->findUserIdById($boardId);
-            $userId = getToken($_COOKIE['JWT']['user']);
+            $userId = getToken($_COOKIE['JWT'])['user'];
             if ($findUserId != $userId) {
                 throw new Exception;
             }
