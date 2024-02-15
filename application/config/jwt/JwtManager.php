@@ -39,8 +39,9 @@
                 throw new Exception;
             }
             getToken($_COOKIE['JWT'])['user'];
-        } catch (\Throwable $th) {
-            header("location:/application/view/login/login.html");
+        } catch (Exception $e) {
+            // header("location:/application/view/login/login.html");
+            echo "hi";
         } finally {
             exit();
         }
