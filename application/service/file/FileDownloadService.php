@@ -25,12 +25,10 @@
                     'Key' => $filePath,
                 ]);
 
-                echo $result['Body'];
-
                 header('Content-Type: '.$result['ContentType']);
                 header('Content-Disposition: attachment; filename='.$originalFileName);
                 header('Content-Length: '.$result['ContentLength']);
-                readfile($result['Body']);
+                echo $result['Body'];
             } catch (Exception $e) {
                 echo "<script>alert('파일 다운로드 실패!');</script>";
                 echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
