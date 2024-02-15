@@ -44,7 +44,6 @@
                             try {
                                 $s3Client = S3Manager::getClient();
                                 $bucketName = S3Manager::getBucketName();
-                                print_r($bucketName);
                                 
                                 $result = $s3Client->putObject([
                                     'Bucket' => $bucketName,
@@ -54,9 +53,8 @@
 
                                 echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (Exception $e) {
-                                echo $e->getMessage();
-                                // echo "<script>alert('파일 저장에 실패했습니다!');</script>";
-                                // echo "<script>location.replace('/application/view/board/board_write.php');</script>";
+                                echo "<script>alert('파일 저장에 실패했습니다!');</script>";
+                                echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
                             }
                         } else {
