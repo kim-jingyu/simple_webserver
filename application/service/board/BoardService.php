@@ -2,6 +2,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardWriteRequest.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardFixRequest.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
 
     class BoardService {
         private $storedFileName;
@@ -40,9 +41,18 @@
                         if (in_array($fileExtension, $allowedExtensions)) {
                             $uploadPath = '/path/upload/'.$this->storedFileName;
                             // 파일 이동 및 저장
-                            if (move_uploaded_file($fileTempName, $uploadPath)) {
+                            try {
+                                $s3Client = S3Manager::getClient();
+                                $bucketName = S3Manager::getBucketName();
+                                
+                                $result = $s3Client->putObject([
+                                    'Bucket' => $bucketName,
+                                    'Key' => $uploadPath,
+                                    'Body' => $fileTempName
+                                ]);
+                                
                                 echo "<script>alert('파일 업로드 성공!');</script>";
-                            } else {
+                            } catch (S3Exception $e) {
                                 echo "<script>alert('파일 저장에 실패했습니다!');</script>";
                                 echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
