@@ -20,13 +20,10 @@
             $originalFileName = explode("_", $fileName)[1];
 
             try {
-                // $url = $s3Client->getObjectUrl($bucketName, $filePath);
                 $result = $s3Client->getObject([
                     'Bucket' => $bucketName,
                     'Key' => $filePath,
                 ]);
-
-                echo $result['Body'];
 
                 header('Content-Type: '.$result['ContentType']);
                 header('Content-Disposition: attachment; filename='.$originalFileName);
