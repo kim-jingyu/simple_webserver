@@ -95,6 +95,28 @@
             }
         }
 
+        public function deleteByBoardId($boardId) {
+            $conn = null;
+            $stmt = null;
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $sql = "DELETE FROM comment WHERE board_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $commentId);
+                $stmt->execute();
+            } catch (Exception $e) {
+                throw new Exception("DeleteByBoardId At Comment - DB Exception 발생!");
+            } finally {
+                if ($stmt != null) {
+                    $stmt->close();
+                }
+
+                if ($conn != null) {
+                    $conn->close();
+                }
+            }
+        }
+
         public function updateCommenterId($newId, $oldId) {
             $conn = null;
             $stmt = null;

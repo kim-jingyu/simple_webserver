@@ -1,5 +1,6 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
     checkToken();
@@ -12,8 +13,10 @@
     }
 
     $boardRepository = new BoardRepository();
+    $commentRepository = new CommentRepository();
     try {
         $boardRepository->delete($boardId);
+        $commentRepository->deleteByBoardId($boardId);
 
         echo "<script>alert('삭제 완료!');</script>";
         header("location:/index.php");
