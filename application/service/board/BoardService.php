@@ -52,7 +52,7 @@
                                 ]);
                                 
                                 echo "<script>alert('파일 업로드 성공!');</script>";
-                            } catch (S3Exception $e) {
+                            } catch (Exception $e) {
                                 echo "<script>alert('파일 저장에 실패했습니다!');</script>";
                                 echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
