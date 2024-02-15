@@ -12,7 +12,7 @@
         public function __construct() {
         }
 
-        private function checkUser() {
+        private function checkUser($boardId) {
             $boardRepository = new BoardRepository();
             $findUserId = $boardRepository->findUserIdById($boardId);
             $userId = getToken($_COOKIE['JWT'])['user'];
@@ -85,7 +85,6 @@
             $today = date("Y-m-d");
 
             try {
-                $this->checkUser();
                 $boardService = new BoardService();
                 $boardId = $boardService->write($title, $body, $userId, $today);
                 
@@ -101,7 +100,7 @@
             $today = date("Y-m-d");
 
             try {
-                $this->checkUser();
+                $this->checkUser($boardId);
                 $boardService = new BoardService();
                 $boardService->fix($boardId, $title, $body, $userId, $today);
 

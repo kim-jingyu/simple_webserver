@@ -23,7 +23,7 @@
         public function fix($body, $id, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
-                $commenterId = $commentRepository->findCommenterIdById();
+                $commenterId = $commentRepository->findCommenterIdById($id);
 
                 $userId = getToken($_COOKIE['JWT'])['user'];
                 if ($commenterId != $userId) {
@@ -56,7 +56,7 @@
         public function delete($commentId, $boardId) {
             try {
                 $commentRepository = new CommentRepository();
-                $commenterId = $commentRepository->findCommenterIdById();
+                $commenterId = $commentRepository->findCommenterIdById($commentId);
 
                 $userId = getToken($_COOKIE['JWT'])['user'];
                 if ($commenterId != $userId) {
