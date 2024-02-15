@@ -44,16 +44,14 @@
                             try {
                                 $s3Client = S3Manager::getClient();
                                 $bucketName = S3Manager::getBucketName();
-
-                                var_dump($s3Client);
                                 
-                                // $result = $s3Client->putObject([
-                                //     'Bucket' => $bucketName,
-                                //     'Key' => $uploadPath,
-                                //     'Body' => $fileTempName
-                                // ]);
+                                $result = $s3Client->putObject([
+                                    'Bucket' => $bucketName,
+                                    'Key' => $uploadPath,
+                                    'SourceFile' => $fileTempName
+                                ]);
                                 
-                                // echo "<script>alert('파일 업로드 성공!');</script>";
+                                echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (S3Exception $e) {
                                 echo "<script>alert('파일 저장에 실패했습니다!');</script>";
                                 echo "<script>location.replace('/application/view/board/board_write.php');</script>";
