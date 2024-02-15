@@ -13,7 +13,6 @@
     }
 
     $boardRepository = new BoardRepository();
-    $commentRepository = new CommentRepository();
     try {
         $findUserId = $boardRepository->findUserIdById($boardId);
         $userId = getToken($_COOKIE['JWT'])['user'];
@@ -21,7 +20,6 @@
             throw new Exception;
         }
 
-        $commentRepository->deleteByBoardId($boardId);
         $boardRepository->delete($boardId);
 
         echo "<script>alert('삭제 완료!');</script>";
