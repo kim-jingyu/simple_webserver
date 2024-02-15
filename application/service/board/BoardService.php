@@ -40,6 +40,7 @@
                         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                         if (in_array($fileExtension, $allowedExtensions)) {
                             $uploadPath = '/path/upload/'.$this->storedFileName;
+                            $result;
                             // 파일 이동 및 저장
                             try {
                                 $s3Client = S3Manager::getClient();
@@ -50,11 +51,11 @@
                                     'Key' => $uploadPath,
                                     'SourceFile' => $fileTempName
                                 ]);
-                                print_r($result);
 
-                                // echo "<script>alert('파일 업로드 성공!');</script>";
+                                echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (S3Exception $e) {
-                                // echo "<script>alert('파일 저장에 실패했습니다!');</script>";
+                                echo "<script>alert('파일 저장에 실패했습니다!');</script>";
+                                print_r($result);
                                 // echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
                             }
