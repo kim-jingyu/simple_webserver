@@ -39,7 +39,7 @@
                         // 파일 확장자 검증
                         $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                         if (in_array($fileExtension, $allowedExtensions)) {
-                            $uploadPath = '/path/upload/'.$this->storedFileName;
+                            $uploadPath = 'path/upload/'.$this->storedFileName;
                             // 파일 이동 및 저장
                             try {
                                 $s3Client = S3Manager::getClient();
@@ -50,13 +50,12 @@
                                     'Bucket' => $bucketName,
                                     'Key' => $uploadPath,
                                     'SourceFile' => $fileTempName,
-                                    'ACL' => 'public-read',
                                 ]);
 
                                 echo "<script>alert('파일 업로드 성공!');</script>";
                             } catch (Exception $e) {
                                 echo $e->getMessage();
-                                // echo "<script>alert('파일 저장에 실패했습니다! ".$e->getMessage()."');</script>";
+                                // echo "<script>alert('파일 저장에 실패했습니다!');</script>";
                                 // echo "<script>location.replace('/application/view/board/board_write.php');</script>";
                                 exit(1);
                             }
