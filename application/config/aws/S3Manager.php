@@ -3,6 +3,7 @@
 
     use Aws\S3\S3Client;
     use Aws\Exception\AwsException;
+    use Aws\Credentials\CredentialProvider;
 
     class S3Manager {
         public function __construct() {
@@ -18,7 +19,8 @@
                 ],
             ];
 
-            $s3Client = new Aws\S3\S3Client($awsConfigs);
+            $sdk = new Aws\Sdk($awsConfigs);
+            $s3Client = $sdk->createS3();
             return $s3Client;
         }
 
