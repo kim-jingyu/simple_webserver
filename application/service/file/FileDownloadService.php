@@ -26,6 +26,8 @@
                     'Key' => $filePath,
                 ]);
 
+                echo $result['Body'];
+
                 header('Content-Type: '.$result['ContentType']);
                 header('Content-Disposition: attachment; filename='.$originalFileName);
                 header('Content-Length: '.$result['ContentLength']);
