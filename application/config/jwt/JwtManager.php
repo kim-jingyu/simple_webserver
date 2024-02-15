@@ -40,8 +40,7 @@
             }
             getToken($_COOKIE['JWT'])['user'];
         } catch (Exception $e) {
-            // header("location:/application/view/login/login.html");
-            echo "hi";
+            header("location:/application/view/login/login.html");
         } finally {
             exit();
         }
