@@ -81,12 +81,12 @@
             return $indexBoardViewResponse;
         }
 
-        public function writeIndexBoard($title, $body, $userId) {
+        public function writeIndexBoard($title, $body, $userId, $file) {
             $today = date("Y-m-d");
 
             try {
                 $boardService = new BoardService();
-                $boardId = $boardService->write($title, $body, $userId, $today);
+                $boardId = $boardService->write($title, $body, $userId, $today, $file);
                 
                 echo "<script>alert('작성이 완료되었습니다.');</script>";
                 echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
@@ -96,13 +96,13 @@
             }
         }
 
-        public function fixIndexBoard($boardId, $title, $body, $userId) {
+        public function fixIndexBoard($boardId, $title, $body, $userId, $file) {
             $today = date("Y-m-d");
 
             try {
                 $this->checkUser($boardId);
                 $boardService = new BoardService();
-                $boardService->fix($boardId, $title, $body, $userId, $today);
+                $boardService->fix($boardId, $title, $body, $userId, $today, $file);
 
                 echo "<script>alert('수정이 완료되었습니다.');</script>";
                 echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
