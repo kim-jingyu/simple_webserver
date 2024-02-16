@@ -13,8 +13,8 @@
         public function __construct() {
         }
 
-        private function checkUser($boardRepository, $boardId) {
-            $findUserId = $boardRepository->findUserIdById($boardId);
+        private function checkUser($conn, $boardRepository, $boardId) {
+            $findUserId = $boardRepository->findUserIdById($conn, $boardId);
             $userId = getToken($_COOKIE['JWT'])['user'];
             if ($findUserId != $userId) {
                 throw new Exception;
@@ -80,8 +80,8 @@
         }
 
         public function write($title, $body, $userId, $today, $file) {
+            $conn = DBConnectionUtil::getConnection();
             try {
-                $conn = DBConnectionUtil::getConnection();
                 $conn->beginTransaction();
 
                 $fileName = $file['name'];
@@ -101,19 +101,22 @@
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
-            
         }
 
         public function fix($boardId, $title, $body, $userId, $today, $file) {
+            $conn = DBConnectionUtil::getConnection();
             $boardRepository = new BoardRepository();
             $boardFixRequest = null;
 
             try {
-                $conn = DBConnectionUtil::getConnection();
                 $conn->beginTransaction();
 
-                checkUser($boardRepository, $boardId);
+                checkUser($conn, $boardRepository, $boardId);
 
                 $fileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
@@ -137,44 +140,69 @@
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
 
         public function getIndexBoard(BoardRequestDto $boardRequestDto) {
-            try {
-                $boardRepository = new BoardRepository();
+            $conn = DBConnectionUtil::getConnection();
+            $boardRepository = new BoardRepository();
 
-                $boardResponseDto = $boardRepository->pagenate($boardDto);
+            try {
+                $conn->beginTransaction();
+
+                $boardResponseDto = $boardRepository->pagenate($conn, $boardDto);
                 
                 $totalCnt = $boardResponseDto->getTotalCnt();
                 $totalPages = ceil($totalCnt / $numPerPage);
                 $boardData = $boardResponseDto->getBoardData();
 
                 $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData);
+                $conn->commit();
                 return $indexBoardResponse;
             } catch (Exception $e) {
+                $conn->rollback();
                 throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
 
         public function getIndexBoardFix($boardId) {
-            try {
-                $boardRepository = new BoardRepository();
-                checkUser($boardRepository, $boardId);
+            $conn = DBConnectionUtil::getConnection();
+            $boardRepository = new BoardRepository();
 
-                $row = $boardRepository->findAllById($boardId);
+            try {
+                $conn->beginTransaction();
+                checkUser($conn, $boardRepository, $boardId);
+
+                $row = $boardRepository->findAllById($conn, $boardId);
 
                 $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $row);
+                $conn->commit();
                 return $indexBoardFixResponse;
-            } catch (\Throwable $th) {
-                //throw $th;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
 
         public function getIndexBoardView($boardId) {
+            $conn = DBConnectionUtil::getConnection();
+            $boardRepository = new BoardRepository();
+
             try {
-                $boardRepository = new BoardRepository();
-                checkUser($boardRepository, $boardId);
+                $conn->beginTransaction();
+                checkUser($conn, $boardRepository, $boardId);
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -192,24 +220,39 @@
                     }
                 }
             
-                $row = $boardRepository->findAllById($boardId);
+                $row = $boardRepository->findAllById($conn, $boardId);
                 
                 $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
+                $conn->commit();
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
+                $conn->rollback();
                 throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
 
         public function getComment($boardId) {
-            try {
-                $boardRepository = new BoardRepository();
-                checkUser($boardRepository, $boardId);
+            $conn = DBConnectionUtil::getConnection();
+            $boardRepository = new BoardRepository();
 
-                $row = $boardRepository->findWithComments($boardId);
+            try {
+                $conn->beginTransaction();
+                checkUser($conn, $boardRepository, $boardId);
+
+                $row = $boardRepository->findWithComments($conn, $boardId);
+                $conn->commit();
                 return $row;
             } catch (Exception $e) {
+                $conn->rollback();
                 throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
     }

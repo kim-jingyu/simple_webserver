@@ -7,17 +7,25 @@
         }
 
         public function signup(MemberRepository $memberRepository, MemberSaveDto $memberSaveDto) {
+            $conn = DBConnectionUtil::getConnection();
             try {
-                $duplicatedMember = $memberRepository->findById($memberSaveDto->getId());
-                if (mysqli_num_rows($duplicatedMember)) {
+                $conn->beginTransaction();
+
+                $userId = $memberRepository->findById($conn, $memberSaveDto->getId());
+                if (!empty($userId)) {
                     return "ID가 중복됩니다!";
                 }
     
-                $memberRepository->save($memberSaveDto);
+                $memberRepository->save($conn, $memberSaveDto);
+                $conn->commit();
                 return "회원가입 성공!";
-            } catch (Exception $e) {
-                echo $e->getMessage();
-                return "회원가입 실패!";
+            } catch (PDOException $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
     }

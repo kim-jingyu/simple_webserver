@@ -5,115 +5,90 @@
         public function __construct() {
         }
 
-        public function save($memberSaveDto) {
-            $conn = null;
+        public function save($conn, $memberSaveDto) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "INSERT INTO member(user_id, user_pw, user_name, user_level, user_info, user_address) VALUES (?,?,?,?,?,?)";
+                $sql = "INSERT INTO member(user_id, user_pw, user_name, user_level, user_info, user_address) VALUES (:userId,:userPw,:userName,:userLevel,:userInfo,:userAddress)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ssssss", $memberSaveDto->getId(), $memberSaveDto->getPw(), $memberSaveDto->getName(), $memberSaveDto->getLevel(), $memberSaveDto->getInfo(), $memberSaveDto->getAddress());
+                $stmt->bindValue(":userId", $memberSaveDto->getId());
+                $stmt->bindValue(":userPw", $memberSaveDto->getPw());
+                $stmt->bindValue(":userName", $memberSaveDto->getName());
+                $stmt->bindValue(":userLevel", $memberSaveDto->getLevel());
+                $stmt->bindValue(":userInfo", $memberSaveDto->getInfo());
+                $stmt->bindValue(":userAddress", $memberSaveDto->getAddress());
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Save - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
     
-        public function findById($userId) {
-            $conn = null;
+        public function findById($conn, $userId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT * FROM member WHERE user_id = ?";
+                $sql = "SELECT * FROM member WHERE user_id = :userId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("s", $userId);
+                $stmt->bindValue(":userId", $userId);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("FindById - DB Exception 발생!");
+                $userId = $stmt->fetchColumn();
+                return $userId;
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
     
-        public function updateId($newId, $oldId) {
-            $conn = null;
+        public function updateId($conn, $newId, $oldId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
                 $sql = "UPDATE member SET user_id = ? WHERE user_id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ss", $newId, $oldId);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Update Id - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function updatePw($newPw, $originalId) {
-            $conn = null;
+        public function updatePw($conn, $newPw, $originalId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
                 $sql = "UPDATE member SET user_pw = ? WHERE user_id = ?";
                 $stmt = $conn->prepare($sql);
                 $hasedPw = password_hash($newPw, PASSWORD_DEFAULT);
                 $stmt->bind_param("ss", $hasedPw, $originalId);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Update Pw - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
     
-        public function delete($id) {
-            $conn = null;
+        public function delete($conn, $id) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
                 $sql = "DELETE FROM member WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("i", $id);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Delete - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-    
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
