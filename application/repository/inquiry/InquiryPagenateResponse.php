@@ -1,19 +1,19 @@
 <?php
     class InquiryPagenateResponse {
         private $totalCnt;
-        private $result;
+        private $boardData;
 
-        public function __construct($totalCnt, $result) {
+        public function __construct($totalCnt, $boardData) {
             $this->totalCnt = $totalCnt;
-            $this->result = $result;
+            $this->boardData = $boardData;
         }
 
         public function getTotalCnt() {
             return $this->totalCnt;
         }
 
-        public function getResult() {
-            return $this->result;
+        public function getBoardData() {
+            return $this->boardData;
         }
     }
 ?>

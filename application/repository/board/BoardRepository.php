@@ -116,8 +116,8 @@
                 $numPerPage = $boardRequestDto->getNumPerPage();
                 $stmt->bindValue(":searchWord", $searchWord);
                 $stmt->bindValue(":dateValue", $dateValue);
-                $stmt->bindValue(":startIndexPerPage", $startIndexPerPage);
-                $stmt->bindValue(":numPerPage", $numPerPage);
+                $stmt->bindValue(":startIndexPerPage", $startIndexPerPage, PDO::PARAM_INT);
+                $stmt->bindValue(":numPerPage", $numPerPage, PDO::PARAM_INT);
                 $stmt->execute();
                 $boardData = $stmt->fetch();
 

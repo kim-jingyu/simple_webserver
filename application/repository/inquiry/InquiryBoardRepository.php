@@ -6,24 +6,21 @@
         public function __construct() {
         }
 
-        public function pagenate(InquiryBoardRequest $inquiryBoardRequest) {
-            $conn = null;
+        public function pagenate($conn, InquiryBoardRequest $inquiryBoardRequest) {
             $stmt = null;
             try {   
-                $conn = DBConnectionUtil::getConnection();
-
-                $totalCountSql = "SELECT count(*) AS cnt FROM inquiry_board WHERE title LIKE ? AND date_value LIKE ?";
+                $totalCountSql = "SELECT count(*) AS cnt FROM inquiry_board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 $stmt = $conn->prepare($totalCountSql);
                 $searchWord = $inquiryBoardRequest->getSearchWord();
                 $searchWord = '%'.$searchWord.'%';
                 $dateValue = $inquiryBoardRequest->getDateValue();
                 $dateValue = '%'.$dateValue.'%';
-                $stmt->bind_param("ss", $searchWord, $dateValue);
+                $stmt->bindValue(":searchWord", $searchWord);
+                $stmt->bindValue(":dateValue", $dateValue);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                $totalCnt = $result->fetch_assoc()['cnt'];
+                $totalCnt = $result->fetchColumn();
                 
-                $selectSql = "SELECT * FROM inquiry_board WHERE title LIKE ? AND date_value LIKE ?";
+                $selectSql = "SELECT * FROM inquiry_board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 
                 if (isset($_GET['sort'])) {
                     $sort = $inquiryBoardRequest->getSort();
@@ -35,177 +32,147 @@
                         $select_sql .= " order by id asc";
                     }
                 }
-                $selectSql .= " LIMIT ?, ?";
+                $selectSql .= " LIMIT :startIndexPerPage, :numPerPage";
 
                 $startIdxPerPage = $inquiryBoardRequest->getStartIdxPerPage();
                 $numPerPage = $inquiryBoardRequest->getNumPerPage();
                 
                 $stmt = $conn->prepare($selectSql);
-                $stmt->bind_param("ssii", $searchWord, $dateValue, $startIdxPerPage, $numPerPage);
+                $stmt->bindValue(":searchWord", $searchWord);
+                $stmt->bindValue(":dateValue", $dateValue);
+                $stmt->bindValue(":startIndexPerPage", $startIndexPerPage, PDO::PARAM_INT);
+                $stmt->bindValue(":numPerPage", $numPerPage, PDO::PARAM_INT);
                 $stmt->execute();
-                $result = $stmt->get_result();
+                $boardData = $stmt->fetch();
 
-                $inquiryPagenateResponse = new InquiryPagenateResponse($totalCnt, $result);
+                $inquiryPagenateResponse = new InquiryPagenateResponse($totalCnt, $boardData);
                 return $inquiryPagenateResponse;
-            } catch (Exception $e) {
-                throw new Exception("Pagenate At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function findById($boardId) {
-            $conn = null;
+        public function findById($conn, $boardId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT * FROM inquiry_board WHERE id = ?";
+                $sql = "SELECT * FROM inquiry_board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("FindById At Inquiry - DB Exception 발생!");
+                $row = $stmt->fetch();
+                return $row;
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function findWriterNameById($boardId) {
-            $conn = null;
+        public function findWriterNameById($conn, $boardId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT writer_name FROM inquiry_board WHERE id = ?";
+                $sql = "SELECT writer_name FROM inquiry_board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $name = $stmt->get_result()->fetch_assoc()['writer_name'];
+                $name = $stmt->fetchColumn();
                 return $name;
-            } catch (Exception $e) {
-                throw new Exception("FindWriterNameById At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function findPwByWriterName($writerName) {
-            $conn = null;
+        public function findPwByWriterName($conn, $writerName) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT writer_pw FROM inquiry_board WHERE writer_name= ?";
+                $sql = "SELECT writer_pw FROM inquiry_board WHERE writer_name= :writerName";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("s", $writerName);
+                $stmt->bindValue(":writerName", $writerName);
                 $stmt->execute();
-                $pw = $stmt->get_result()->fetch_assoc()['writer_pw'];
+                $pw = $stmt->fetchColumn();
                 return $pw;
-            } catch (Exception $e) {
-                throw new Exception("FindPwByWriterName At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function update(InquiryBoardUpdateRequest $inquiryBoardUpdateRequest) {
-            $conn = null;
+        public function update($conn, InquiryBoardUpdateRequest $inquiryBoardUpdateRequest) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE inquiry_board SET title = ?, body = ?, date_value = ? WHERE id = ?";
+                $sql = "UPDATE inquiry_board SET title = :title, body = :body, date_value = :today WHERE id = :id";
                 $stmt = $conn->prepare($sql);
                 $title = $inquiryBoardUpdateRequest->getTitle();
                 $body = $inquiryBoardUpdateRequest->getBody();
                 $today = $inquiryBoardUpdateRequest->getToday();
                 $boardId = $inquiryBoardUpdateRequest->getBoardId();
-                $stmt->bind_param("sssi", $title, $body, $today, $boardId);
+                $stmt->bindValue(":title", $title);
+                $stmt->bindValue(":body", $body);
+                $stmt->bindValue(":today", $today);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Update At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function save(InquiryBoardWriteRequest $inquiryBoardWriteRequest) {
-            $conn = null;
+        public function save($conn, InquiryBoardWriteRequest $inquiryBoardWriteRequest) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "INSERT INTO inquiry_board (title, body, writer_name, writer_pw, date_value) VALUES (?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO inquiry_board (title, body, writer_name, writer_pw, date_value) VALUES (:title, :body, :writerName, :writerPw, :today)";
                 $stmt = $conn->prepare($sql);
                 $title = $inquiryBoardWriteRequest->getTitle();
                 $body = $inquiryBoardWriteRequest->getBody();
                 $writerName = $inquiryBoardWriteRequest->getWriterName();
                 $writerPw = $inquiryBoardWriteRequest->getWriterPw();
                 $today = $inquiryBoardWriteRequest->getToday();
-                $stmt->bind_param("sssss", $title, $body, $writerName, $writerPw, $today);
+                $stmt->bindValue(":title", $title);
+                $stmt->bindValue(":body", $body);
+                $stmt->bindValue(":writerName", $writerName);
+                $stmt->bindValue(":writerPw", $writerPw);
+                $stmt->bindValue(":today", $today);
                 $stmt->execute();
 
-                $boardId = $conn->insert_id;
+                $boardId = $conn->lastInsertId();
                 return $boardId;
-            } catch (Exception $e) {
-                throw new Exception("Save At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
 
-        public function deleteById($boardId) {
-            $conn = null;
+        public function deleteById($conn, $boardId) {
             $stmt = null;
             try {
-                $conn = DBConnectionUtil::getConnection();
-                $sql = "DELETE FROM inquiry_board WHERE id = ?";
+                $sql = "DELETE FROM inquiry_board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Delete At Inquiry - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
                 if ($stmt != null) {
-                    $stmt->close();
-                }
-
-                if ($conn != null) {
-                    $conn->close();
+                    $stmt = null;
                 }
             }
         }
