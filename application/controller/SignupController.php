@@ -2,6 +2,7 @@
     require $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require $_SERVER['DOCUMENT_ROOT'].'/application/service/signup/SignupService.php';
     require $_SERVER['DOCUMENT_ROOT'].'/application/repository/member/MemberSaveDto.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/LoginIdDuplicatedException.php';
 
     function close($message, $url) {
         echo "<script>alert('{$message}')</script>";
@@ -32,6 +33,8 @@
         $signupService = new SignupService();
         $succeedMessage = $signupService->signup($memberSaveDto);
         close("회원가입 성공!", "/index.php");
+    } catch (LoginIdDuplicatedException $e) {
+        close("ID가 중복됩니다!", "/application/view/signup/signup.html");
     } catch (Exception $e) {
         close("회원가입 실패!", "/application/view/signup/signup.html");
     }
