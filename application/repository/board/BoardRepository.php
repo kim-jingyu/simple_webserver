@@ -11,115 +11,95 @@
 
         public function findAllById($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT * FROM board WHERE id = ?";
+                $sql = "SELECT * FROM board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("FindAllById At Board - DB Exception 발생!");
+                $row = $stmt->fetch();
+                return $row;
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function findUserIdById($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT user_id FROM board WHERE id = ?";
+                $sql = "SELECT user_id FROM board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $userId = $stmt->get_result()->fetch_assoc()['user_id'];
+                $userId = $stmt->fetchColumn();
                 return $userId;
-            } catch (Exception $e) {
-                throw new Exception("FindUserIdById At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function findFileNameById($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT file_name FROM board WHERE id = ?";
+                $sql = "SELECT file_name FROM board WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $fileName = $stmt->get_result()->fetch_assoc()['file_name'];
+                $fileName = $stmt->fetchColumn();
                 return $fileName;
-            } catch (Exception $e) {
-                throw new Exception("FindFileNameById At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function updateId($newId, $oldId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE board SET user_id = ? WHERE user_id = ?";
+                $sql = "UPDATE board SET user_id = :newId WHERE user_id = :oldId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ss", $newId, $oldId);
+                $stmt->bindValue(":newId", $newId);
+                $stmt->bindValue(":oldId", $oldId);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Update UserId At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function pagenate(BoardRequestDto $boardRequestDto) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $cntSql = "SELECT count(*) AS cnt FROM board WHERE title LIKE ? AND date_value LIKE ?";
+                $cntSql = "SELECT count(*) AS cnt FROM board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 $stmt = $conn->prepare($cntSql);
                 $searchWord = $boardRequestDto->getSearchWord();
                 $searchWord = '%'.$searchWord.'%';
                 $dateValue = $boardRequestDto->getDateValue();
                 $dateValue = '%'.$dateValue.'%';
-                $stmt->bind_param("ss", $searchWord, $dateValue);
+                $stmt->bindValue(":searchWord", $searchWord);
+                $stmt->bindValue(":dateValue", $dateValue);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                $totalCnt = $result->fetch_assoc()['cnt'];
+                $totalCnt = $result->fetchColumn();
 
-                $selectSql = "SELECT * FROM board WHERE title LIKE ? AND date_value LIKE ?";
+                $selectSql = "SELECT * FROM board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 if ($boardRequestDto->getSort() != null) {
                     $sort = $boardRequestDto->getSort();
                     if ($sort == 'author') {
@@ -134,66 +114,63 @@
                         $selectSql .= " order by id desc";
                     }
                 }
-                $selectSql .= " limit ?, ?";
+                $selectSql .= " limit :startIndexPerPage, :numPerPage";
 
                 $stmt = $conn->prepare($selectSql);
                 $startIndexPerPage = $boardRequestDto->getStartIndexPerPage();
                 $numPerPage = $boardRequestDto->getNumPerPage();
-                $stmt->bind_param("ssii", $searchWord, $dateValue, $startIndexPerPage, $numPerPage);
+                $stmt->bindValue(":searchWord", $searchWord);
+                $stmt->bindValue(":dateValue", $dateValue);
+                $stmt->bindValue(":startIndexPerPage", $startIndexPerPage);
+                $stmt->bindValue(":numPerPage", $numPerPage);
                 $stmt->execute();
-                $result = $stmt->get_result();
+                $boardData = $stmt->fetch();
 
-                $boardResponseDto = new BoardResponseDto($totalCnt, $result);
+                $boardResponseDto = new BoardResponseDto($totalCnt, $boardData);
                 return $boardResponseDto;
-            } catch (Exception $e) {
-                throw new Exception("Pagnation At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-    
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function write(BoardWriteRequest $boardWriteRequest) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "INSERT INTO board (title, body, user_id, date_value, file_name, views, likes) VALUES (?, ?, ?, ?, ?, 0, 0)";
+                $sql = "INSERT INTO board (title, body, user_id, date_value, file_name, views, likes) VALUES (:title, :body, :userId, :today, :storedFileName, 0, 0)";
                 $stmt = $conn->prepare($sql);
                 $title = $boardWriteRequest->getTitle();
                 $body = $boardWriteRequest->getBody();
                 $userId = $boardWriteRequest->getUserId();
                 $today = $boardWriteRequest->getToday();
                 $storedFileName = $boardWriteRequest->getStoredFileName();
-                $stmt->bind_param("sssss", $title, $body, $userId, $today, $storedFileName);
+                $stmt->bindValue(":title", $title);
+                $stmt->bindValue(":body", $body);
+                $stmt->bindValue(":userId", $userId);
+                $stmt->bindValue(":today", $today);
+                $stmt->bindValue(":storedFileName", $storedFileName);
                 $stmt->execute();
 
-                $boardId = $conn->insert_id;
+                $boardId = $conn->lastInsertId();
                 return $boardId;
-            } catch (Exception $e) {
-                throw new Exception("Write At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function fix(BoardFixRequest $boardFixRequest) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE board SET title = ?, body = ?, user_id = ?, date_value = ?, file_name = ? WHERE id = ?";
+                $sql = "UPDATE board SET title = :title, body = :body, user_id = :userId, date_value = :today, file_name = :storedFileName WHERE id = :boardId";
                 $stmt = $conn->prepare($sql);
                 $title = $boardFixRequest->getTitle();
                 $body = $boardFixRequest->getBody();
@@ -201,110 +178,90 @@
                 $today = $boardFixRequest->getToday();
                 $storedFileName = $boardFixRequest->getStoredFileName();
                 $boardId = $boardFixRequest->getBoardId();
-                $stmt->bind_param("sssssi", $title, $body, $userId, $today, $storedFileName, $boardId);
+                $stmt->bindValue(":title", $title);
+                $stmt->bindValue(":body", $body);
+                $stmt->bindValue(":userId", $userId);
+                $stmt->bindValue(":today", $today);
+                $stmt->bindValue(":storedFileName", $storedFileName);
+                $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Fix At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function like($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE board SET likes = likes + 1 WHERE id = ?";
+                $sql = "UPDATE board SET likes = likes + 1 WHERE id = :boardId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $stmt->get_result();
-            } catch (Exception $e) {
-                throw new Exception("Like At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function view($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "UPDATE board SET views = views + 1 WHERE id = ?";
+                $sql = "UPDATE board SET views = views + 1 WHERE id = :boardId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("View At Board - DB Exception 발생!");
+                $rowCount = $stmt->rowCount();
+                return $rowCount;
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function delete($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "delete from board where id = ?";
+                $sql = "DELETE FROM board WHERE id = :boardId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-            } catch (Exception $e) {
-                throw new Exception("Delete At Board - DB Exception 발생!");
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }
 
         public function findWithComments($boardId) {
             $conn = null;
-            $stmt = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
-                $sql = "SELECT comment.id AS id, comment.commenter_id AS commenter_id, comment.comment_date AS comment_date, comment.body AS body FROM board INNER JOIN comment ON board.id = comment.board_id WHERE board.id = ?";
+                $sql = "SELECT comment.id AS id, comment.commenter_id AS commenter_id, comment.comment_date AS comment_date, comment.body AS body FROM board INNER JOIN comment ON board.id = comment.board_id WHERE board.id = :boardId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $boardId);
+                $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $result = $stmt->get_result();
-                return $result;
-            } catch (Exception $e) {
-                throw new Exception("findWithComments At Board - DB Exception 발생!");
+                $row = $stmt->fetch();
+                return $row;
+            } catch (PDOException $e) {
+                throw $e;
             } finally {
-                if ($stmt != null) {
-                    $stmt->close();
-                }
-
                 if ($conn != null) {
-                    $conn->close();
+                    $conn = null;
                 }
             }
         }

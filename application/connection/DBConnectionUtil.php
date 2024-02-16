@@ -6,14 +6,21 @@
         }
 
         public static function getConnection() {
-            $info = DbInfo::getInfo();
-            $conn = new mysqli($info[0], $info[1], $info[2], $info[3]);
-            
-            if (mysqli_connect_errno()) {
-                die('데이터베이스 오류 발생' . mysqli_connect_error());
-            }
+            $dbHost = getenv("DB_HOST");
+            $dbName = getenv("DB_NAME");
+            $dbChar = "utf8";
+            $dbUsername = getenv("DB_USERNAME");
+            $dbPassword = getenv("DB_PASSWORD");
 
-            return $conn;
+            try {
+                $conn = new PDO("mysql:host=$dbHost;dbname=$dbName;charset=$dbChar", $dbUsername, $dbPassword);
+                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                return $conn;
+            } catch (PDOException $e) {
+                echo "<script>서버 연결 실패!".$e->getMessage()."</script>";
+                echo "<script>location.replace('/application/view/login/login.html');</script>";
+                exit();
+            }
         }
     }
 ?>
