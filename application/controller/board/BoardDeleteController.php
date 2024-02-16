@@ -2,6 +2,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
 
     checkToken();
 
@@ -19,6 +20,15 @@
         if ($findUserId != $userId) {
             throw new Exception;
         }
+
+        $s3Client = S3Manager::getClient();
+        $bucketName = S3Manager::getBucketName();
+        $fileName = $boardRepository->findFileNameById($boardId);
+        $filePath = 'path/upload/'.$fileName;
+        $s3Client->deleteObject([
+            'Bucket' => $bucketName,
+            'Key' => $filePath,
+        ]);
 
         $boardRepository->delete($boardId);
 

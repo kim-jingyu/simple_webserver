@@ -10,7 +10,7 @@
         public function download($boardId) {
             $boardRepository = new BoardRepository();
             $findUserId = $boardRepository->findUserIdById($boardId);
-            $userId = getToken($_COOKIE['JWT']['user']);
+            $userId = getToken($_COOKIE['JWT'])['user'];
 
             $fileName = $boardRepository->findFileNameById($boardId);
             if (!$fileName) {
