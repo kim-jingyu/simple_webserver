@@ -2,7 +2,10 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardWriteRequest.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardFixRequest.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/board/IndexBoardResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRequestDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
 
     class BoardService {
         private $storedFileName;
@@ -10,22 +13,26 @@
         public function __construct() {
         }
 
-        private function fileUpload($file) {
+        private function checkUser($boardRepository, $boardId) {
+            $findUserId = $boardRepository->findUserIdById($boardId);
+            $userId = getToken($_COOKIE['JWT'])['user'];
+            if ($findUserId != $userId) {
+                throw new Exception;
+            }
+        }
+
+        private function fileUpload($file, $fileName, $storedFileName) {
             // 파일 업로드
             if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                 $conn->close();
                 exit();
             }
             
-            $fileName = $file['name'];
             $fileTempName = $file['tmp_name'];
             $fileSize = $file['size'];
             $fileError = $file['error'];
             $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'text/plain', 'application/zip', 'applicatoin/msword', 'application/pdf'];
             $allowedExtensions = ['jpg', 'png', 'gif', 'txt', 'zip', 'word', 'pdf'];
-
-            $timestamp = time();
-            $this->storedFileName = $timestamp.'_'.$fileName;
 
             if ($fileError == UPLOAD_ERR_OK) {
                 // 파일 MIME 타입 검증
@@ -37,7 +44,7 @@
                     // 파일 확장자 검증
                     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                     if (in_array($fileExtension, $allowedExtensions)) {
-                        $uploadPath = 'path/upload/'.$this->storedFileName;
+                        $uploadPath = 'path/upload/'.$storedFileName;
                         // 파일 이동 및 저장
                         try {
                             $s3Client = S3Manager::getClient();
@@ -73,14 +80,29 @@
         }
 
         public function write($title, $body, $userId, $today, $file) {
-            if ($file['size'] != 0) {
-                $this->fileUpload($file);
-            }
+            try {
+                $conn = DBConnectionUtil::getConnection();
+                $conn->beginTransaction();
 
-            $boardWriteRequest = new BoardWriteRequest($title, $body, $userId, $today, $this->storedFileName);
-            $boardRepository = new BoardRepository();
-            $boardId = $boardRepository->write($boardWriteRequest);
-            return $boardId;
+                $fileName = $file['name'];
+                $timestamp = time();
+                $storedFileName = $timestamp.'_'.$fileName;
+    
+                $boardWriteRequest = new BoardWriteRequest($title, $body, $userId, $today, $storedFileName);
+                $boardRepository = new BoardRepository();
+                $boardId = $boardRepository->write($conn, $boardWriteRequest);
+
+                if ($file['size'] != 0) {
+                    $this->fileUpload($file, $fileName,$storedFileName);
+                }
+
+                $conn->commit();
+                return $boardId;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            }
+            
         }
 
         public function fix($boardId, $title, $body, $userId, $today, $file) {
@@ -88,7 +110,12 @@
             $boardFixRequest = null;
 
             try {
-                $fileName = $boardRepository->findFileNameById($boardId);
+                $conn = DBConnectionUtil::getConnection();
+                $conn->beginTransaction();
+
+                checkUser($boardRepository, $boardId);
+
+                $fileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
                     $this->fileUpload($file);
     
@@ -104,7 +131,83 @@
                 } else {
                     $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $fileName);                
                 }
-                $boardRepository->fix($boardFixRequest);
+                $boardRepository->fix($conn, $boardFixRequest);
+
+                $conn->commit();
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            }
+        }
+
+        public function getIndexBoard(BoardRequestDto $boardRequestDto) {
+            try {
+                $boardRepository = new BoardRepository();
+
+                $boardResponseDto = $boardRepository->pagenate($boardDto);
+                
+                $totalCnt = $boardResponseDto->getTotalCnt();
+                $totalPages = ceil($totalCnt / $numPerPage);
+                $boardData = $boardResponseDto->getBoardData();
+
+                $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData);
+                return $indexBoardResponse;
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        public function getIndexBoardFix($boardId) {
+            try {
+                $boardRepository = new BoardRepository();
+                checkUser($boardRepository, $boardId);
+
+                $row = $boardRepository->findAllById($boardId);
+
+                $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $row);
+                return $indexBoardFixResponse;
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
+        }
+
+        public function getIndexBoardView($boardId) {
+            try {
+                $boardRepository = new BoardRepository();
+                checkUser($boardRepository, $boardId);
+
+                // 조회수 기능
+                $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
+
+                if (!isset($_SESSION[$lastViewTimePerBoard])) {
+                    $_SESSION[$lastViewTimePerBoard] = time();
+                    $boardRepository->view($boardId);
+                } else {
+                    $lastViewTime = $_SESSION[$lastViewTimePerBoard];
+                    $currentTime = time();
+                    $gapTime = $currentTime - $lastViewTime;
+                    if ($gapTime > 5) {
+                        $boardRepository->view($boardId);
+                        $_SESSION[$lastViewTimePerBoard] = $currentTime;
+                    }
+                }
+            
+                $row = $boardRepository->findAllById($boardId);
+                
+                $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
+                return $indexBoardViewResponse;
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        public function getComment($boardId) {
+            try {
+                $boardRepository = new BoardRepository();
+                checkUser($boardRepository, $boardId);
+
+                $row = $boardRepository->findWithComments($boardId);
+                return $row;
             } catch (Exception $e) {
                 throw $e;
             }

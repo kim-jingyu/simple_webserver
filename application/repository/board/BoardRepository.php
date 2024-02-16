@@ -22,13 +22,17 @@
             } catch (PDOException $e) {
                 throw $e;
             } finally {
+                if ($stmt != null) {
+                    $stmt = null;
+                }
+
                 if ($conn != null) {
                     $conn = null;
                 }
             }
         }
 
-        public function findUserIdById($boardId) {
+        public function findUserIdById($conn, $boardId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -47,7 +51,7 @@
             }
         }
 
-        public function findFileNameById($boardId) {
+        public function findFileNameById($conn, $boardId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -66,7 +70,7 @@
             }
         }
 
-        public function updateId($newId, $oldId) {
+        public function updateId($conn, $newId, $oldId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -137,7 +141,7 @@
             }
         }
 
-        public function write(BoardWriteRequest $boardWriteRequest) {
+        public function write($conn, BoardWriteRequest $boardWriteRequest) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -166,7 +170,7 @@
             }
         }
 
-        public function fix(BoardFixRequest $boardFixRequest) {
+        public function fix($conn, BoardFixRequest $boardFixRequest) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -194,7 +198,7 @@
             }
         }
 
-        public function like($boardId) {
+        public function like($conn, $boardId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -211,7 +215,7 @@
             }
         }
 
-        public function view($boardId) {
+        public function view($conn, $boardId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();
@@ -230,7 +234,7 @@
             }
         }
 
-        public function delete($boardId) {
+        public function delete($conn, $boardId) {
             $conn = null;
             try {
                 $conn = DBConnectionUtil::getConnection();

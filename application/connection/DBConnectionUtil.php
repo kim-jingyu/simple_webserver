@@ -17,7 +17,7 @@
                 $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 return $conn;
             } catch (PDOException $e) {
-                echo "<script>서버 연결 실패!".$e->getMessage()."</script>";
+                die("서버 연결 실패!".$e->getMessage());
                 echo "<script>location.replace('/application/view/login/login.html');</script>";
                 exit();
             }

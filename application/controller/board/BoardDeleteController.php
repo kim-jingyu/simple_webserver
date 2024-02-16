@@ -3,6 +3,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
 
     checkToken();
 
@@ -15,6 +16,9 @@
 
     $boardRepository = new BoardRepository();
     try {
+        $conn = DBConnectionUtil::getConnection();
+        $conn->beginTransaction();
+
         $findUserId = $boardRepository->findUserIdById($boardId);
         $userId = getToken($_COOKIE['JWT'])['user'];
         if ($findUserId != $userId) {
@@ -32,9 +36,11 @@
 
         $boardRepository->delete($boardId);
 
+        $conn->commit();
         echo "<script>alert('삭제 완료!');</script>";
         header("location:/index.php");
     } catch (Exception $e) {
+        $conn->rollback();
         echo "<script>alert('삭제 실패!');</script>";
         header("location:/application/view/board/board_view.php?boardId=$boardId");
     }

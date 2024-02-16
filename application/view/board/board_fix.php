@@ -9,15 +9,12 @@
     $response = $boardController->getIndexBoardFix();
 
     $boardId = $response->getBoardId();
-    $result = $response->getResult();
+    $row = $response->getRow();
 
     $title = null;
     $body = null;
-    if (mysqli_num_rows($result)) {
-        $row = mysqli_fetch_assoc($result);
-        $title = $row['title'];
-        $body = $row['body'];
-    }
+    $title = $row['title'];
+    $body = $row['body'];
 ?>
 <!DOCTYPE html>
 <html lang="ko">

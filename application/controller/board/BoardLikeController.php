@@ -8,11 +8,15 @@
 
     $boardRepository = new BoardRepository();
     try {
-        $boardRepository->like($boardId);
+        $conn = DBConnectionUtil::getConnection();
+        $conn->beginTransaction();
+        $boardRepository->like($conn, $boardId);
 
+        $conn->commit();
         echo "<script>alert('좋아요!');</script>";
         echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";        
     } catch (Exception $e) {
+        $conn->rollback();
         echo "<script>alert('좋아요 실패!');</script>";
         echo "<script>location.replace('/index.php);</script>";
     }

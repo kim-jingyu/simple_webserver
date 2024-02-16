@@ -11,9 +11,8 @@
     $boardViewResp = $boardController->getIndexBoardView();
 
     $boardId = $boardViewResp->getBoardId();
-    $boardResult = $boardViewResp->getResult();
-    $boardData = $boardResult->fetch_assoc();
-    $commentResult = $boardController->getComment($boardId);
+    $boardData = $boardViewResp->getRow();
+    $commentDatas = $boardController->getComment($boardId);
 ?>
 
 <!DOCTYPE html>
@@ -46,7 +45,7 @@
         <div class="content">    
             <h2>CONTENT</h2>
             <?php
-                if (mysqli_num_rows($boardResult)) {
+                if (!empty($boardData)) {
                     echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$boardData['body'].'</textarea>';
                 }
             ?>
@@ -89,16 +88,13 @@
                 <button class='btn' type='submit'>댓글 작성</button>
             </form>
             <?php
-                $rows = mysqli_num_rows($commentResult);
                 echo '<div class="comment">';
-                if (!$rows) {
+                if (empty($commentDatas)) {
                     echo '<div class="comments">';
                     echo '<h2>No Comments</h2>';
                     echo '</div>';
                 } else {
-                    $num = 0;
-                    while ($commentData = mysqli_fetch_array($commentResult)) {
-                        $num++;
+                    foreach ($commentDatas as $commentData) {
                         echo '<div class="comments">';
                         echo '<div class="comment-top">';
                         echo '<a class="commenter">'.$commentData['commenter_id'].'</a>';

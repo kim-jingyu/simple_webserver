@@ -15,7 +15,7 @@
     $blockNow = $indexBoardResponse->getBlockNow();
     $sort = $indexBoardResponse->getSort();
     $totalPages = $indexBoardResponse->getTotalPages();
-    $result = $indexBoardResponse->getResult();
+    $boardData = $indexBoardResponse->getBoardData();
 ?>
 
 <!DOCTYPE html>
@@ -68,8 +68,8 @@
                     <th>좋아요</th>
                 </tr>
                 <?php
-                    if (mysqli_num_rows($result)) {
-                        while ($row = mysqli_fetch_array($result)) {
+                    if (!empty($boardData)) {
+                        foreach ($boardData as $row) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
                             echo '<td><a class="link" href="/application/view/board/board_view.php?boardId='.$row['id'].'">'.$row['title'].'</a></td>';
