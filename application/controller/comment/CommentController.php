@@ -1,5 +1,5 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/comment/CommentService.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
 
     class CommentController {
@@ -8,23 +8,15 @@
 
         public function write($commenterId, $body, $boardId) {
             $conn = DBConnectionUtil::getConnection();
-            $commentRepository = new CommentRepository();
+            $commentService = new CommentService();
             try {
-                $conn->beginTransaction();
-
-                $dateValue = date("Y-m-d H:i:s");
-                $commentRepository->write($conn, $commenterId, $body, $dateValue, $boardId);
-
-                $conn->commit();
-                echo "<script>alert('댓글 작성완료!');</script>";
+                $commentService->write($commenterId, $body, $boardId);
             } catch (Exception $e) {
-                $conn->rollback();
-                echo "<script>alert('댓글 작성중 문제가 발생했습니다!');</script>";
+                throw new Exception("댓글 작성중 문제가 발생했습니다!");
             } finally {
                 if ($conn != null) {
                     $conn = null;
                 }
-                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             }
         }
 
