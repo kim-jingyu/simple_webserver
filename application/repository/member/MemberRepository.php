@@ -45,9 +45,10 @@
         public function updateId($conn, $newId, $oldId) {
             $stmt = null;
             try {
-                $sql = "UPDATE member SET user_id = ? WHERE user_id = ?";
+                $sql = "UPDATE member SET user_id = :newId WHERE user_id = :oldId";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("ss", $newId, $oldId);
+                $stmt->bindValue(":newId", $newId);
+                $stmt->bindValue(":oldId", $oldId);
                 $stmt->execute();
             } catch (PDOException $e) {
                 throw $e;
@@ -61,10 +62,11 @@
         public function updatePw($conn, $newPw, $originalId) {
             $stmt = null;
             try {
-                $sql = "UPDATE member SET user_pw = ? WHERE user_id = ?";
+                $sql = "UPDATE member SET user_pw = :hasedPw WHERE user_id = :originalId";
                 $stmt = $conn->prepare($sql);
                 $hasedPw = password_hash($newPw, PASSWORD_DEFAULT);
-                $stmt->bind_param("ss", $hasedPw, $originalId);
+                $stmt->bindValue(":hasedPw", $hasedPw);
+                $stmt->bindValue(":originalId", $originalId);
                 $stmt->execute();
             } catch (PDOException $e) {
                 throw $e;
@@ -78,9 +80,9 @@
         public function delete($conn, $id) {
             $stmt = null;
             try {
-                $sql = "DELETE FROM member WHERE id = ?";
+                $sql = "DELETE FROM member WHERE id = :id";
                 $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $id);
+                $stmt->bindValue(":id", $id, PDO::PARAM_INT);
                 $stmt->execute();
             } catch (PDOException $e) {
                 throw $e;
