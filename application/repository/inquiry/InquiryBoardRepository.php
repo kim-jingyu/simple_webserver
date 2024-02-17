@@ -25,11 +25,11 @@
                 if (isset($_GET['sort'])) {
                     $sort = $inquiryBoardRequest->getSort();
                     if ($sort == 'author') {
-                        $select_sql .= " order by writer_name desc";
+                        $selectSql .= " order by writer_name desc";
                     } else if ($sort == 'date') {
-                        $select_sql .= " order by date_value desc";
+                        $selectSql .= " order by date_value desc";
                     } else {
-                        $select_sql .= " order by id asc";
+                        $selectSql .= " order by id asc";
                     }
                 }
                 $selectSql .= " LIMIT :startIdxPerPage, :numPerPage";
