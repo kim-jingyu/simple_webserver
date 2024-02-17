@@ -69,7 +69,7 @@
                 </tr>
                 <?php
                     if (!empty($boardData)) {
-                        while ($row = $boardData) {
+                        foreach ($boardData as $row) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
                             echo '<td><a class="link" href="/application/view/board/board_view.php?boardId='.$row['id'].'">'.$row['title'].'</a></td>';
