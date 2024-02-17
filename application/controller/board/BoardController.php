@@ -26,7 +26,10 @@
 
             try {
                 $boardService = new BoardService();
-                $indexBoardResponse = $boardService->getIndexBoard($boardDto);
+                $boardServiceResponse = $boardService->getIndexBoard($boardDto);
+                $totalPages = $boardServiceResponse->getTotalPages();
+                $boardData = $boardServiceResponse->getBoardData();
+                $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData);
                 return $indexBoardResponse;
             } catch (Exception $e) {
                 echo "<script>alert('게시판을 가져오는 도중에 문제가 발생했습니다!');</script>";

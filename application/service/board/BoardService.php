@@ -161,9 +161,10 @@
                 $totalPages = ceil($totalCnt / $numPerPage);
                 $boardData = $boardResponseDto->getBoardData();
 
-                $indexBoardResponse = new IndexBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData);
                 $conn->commit();
-                return $indexBoardResponse;
+
+                $boardServiceResponse = new BoardServiceResponse($totalPages, $boardData);
+                return $boardServiceResponse;
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
