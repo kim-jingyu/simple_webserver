@@ -14,8 +14,6 @@
             $conn = DBConnectionUtil::getConnection();
             $boardRepository = new BoardRepository();
 
-            
-
             try {
                 $findUserId = $boardRepository->findUserIdById($conn, $boardId);
                 $userId = getToken($_COOKIE['JWT'])['user'];

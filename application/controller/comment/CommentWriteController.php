@@ -10,11 +10,11 @@
         exit();
     }
 
-    try {
-        $commenterId = filter_var(strip_tags($_POST['commenterId']), FILTER_SANITIZE_SPECIAL_CHARS);
-        $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-        $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
-    
+    $commenterId = filter_var(strip_tags($_POST['commenterId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+    try {    
         $commentController = new CommentController();
 
         $commentController->write($commenterId, $body, $boardId);

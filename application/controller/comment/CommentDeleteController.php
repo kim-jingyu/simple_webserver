@@ -10,10 +10,10 @@
         exit();
     }
     
-    try {
-        $commentId = filter_var(strip_tags($_GET['commentId']), FILTER_SANITIZE_SPECIAL_CHARS);
-        $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $commentId = filter_var(strip_tags($_GET['commentId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
+    try {
         $commentController = new CommentController();
 
         $commentController->delete($commentId, $boardId);

@@ -10,9 +10,9 @@
         exit();
     }
 
-    try {
-        $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
 
+    try {
         $fileDownloadService = new FileDownloadService();
 
         $fileDownloadService->download($boardId);
