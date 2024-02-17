@@ -1,6 +1,4 @@
 <?php
-    require $_SERVER['DOCUMENT_ROOT'].'/application/config/db/db_info.php';
-
     class DBConnectionUtil {
         public function __construct() {
         }
@@ -18,8 +16,6 @@
                 return $conn;
             } catch (PDOException $e) {
                 die("서버 연결 실패!".$e->getMessage());
-                echo "<script>location.replace('/application/view/login/login.html');</script>";
-                exit();
             }
         }
     }
