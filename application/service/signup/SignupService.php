@@ -7,13 +7,14 @@
         public function __construct() {
         }
 
-        public function signup(MemberRepository $memberRepository, MemberSaveDto $memberSaveDto) {
+        public function signup(MemberSaveDto $memberSaveDto) {
             $conn = DBConnectionUtil::getConnection();
             try {
                 $conn->beginTransaction();
 
-                $userId = $memberRepository->findById($conn, $memberSaveDto->getId());
-                if (!empty($userId)) {
+                $memberRepository = new MemberRepository();
+                $row = $memberRepository->findById($conn, $memberSaveDto->getId());
+                if (!empty($row)) {
                     throw new IdDuplicatedException();
                 }
     
