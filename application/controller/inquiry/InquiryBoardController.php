@@ -4,27 +4,36 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquriyBoardViewResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardFixResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/inquiry/InquiryBoardService.php';
 
     class InquiryBoardController {
         public function __construct() {
         }
 
         public function getInquriyBoard() {
-            $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $dateValue = filter_var(strip_tags($_GET['dateValue']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $numPerPage = 5;
-
-            $pageNow = $_GET['page'] ? filter_var(strip_tags($_GET['page']), FILTER_SANITIZE_SPECIAL_CHARS) : 1;
-            $blockNow = floor(($pageNow - 1) / $numPerPage) * $numPerPage;
-            $startIdxPerPage = ($pageNow - 1) * $numPerPage;
-            $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $inquiryBoardRequest = new InquiryBoardRequest($searchWord, $dateValue, $numPerPage, $startIdxPerPage, $sort);
             try {
+                $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
+                $dateValue = filter_var(strip_tags($_GET['dateValue']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+                $numPerPage = 5;
+
+                $pageNow = $_GET['page'] ? filter_var(strip_tags($_GET['page']), FILTER_SANITIZE_SPECIAL_CHARS) : 1;
+                $blockNow = floor(($pageNow - 1) / $numPerPage) * $numPerPage;
+                $startIdxPerPage = ($pageNow - 1) * $numPerPage;
+                $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+                $inquiryBoardRequest = new InquiryBoardRequest($searchWord, $dateValue, $numPerPage, $startIdxPerPage, $sort);
                 
-            } catch (\Throwable $th) {
-                //throw $th;
+                $inquiryBoardService = new InquiryBoardService();
+                $inquiryBoardServiceResponse = $inquiryBoardService->getInquriyBoard($inquiryBoardRequest);
+                $totalPages = $inquiryBoardServiceResponse->getTotalPages();
+                $boardData = $inquiryBoardServiceResponse->getBoardData();
+
+                $inquiryBoardReponse = new InquiryBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData);
+                return $inquiryBoardReponse;
+            } catch (Exception $e) {
+                echo "<script>alert('게시판을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/login/login.html');</script>";
             }
         }
 

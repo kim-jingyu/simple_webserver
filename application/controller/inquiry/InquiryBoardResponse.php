@@ -6,16 +6,16 @@
         private $blockNow;
         private $sort;
         private $totalPages;
-        private $result;
+        private $boardData;
 
-        public function __construct($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $result) {
+        public function __construct($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $boardData) {
             $this->searchWord = $searchWord;
             $this->dateValue = $dateValue;
             $this->pageNow = $pageNow;
             $this->blockNow = $blockNow;
             $this->sort = $sort;
             $this->totalPages = $totalPages;
-            $this->result = $result;
+            $this->boardData = $boardData;
         }
         
         public function getSearchWord() {
@@ -42,8 +42,8 @@
             return $this->totalPages;
         }
 
-        public function getResult() {
-            return $this->result;
+        public function getBoardData() {
+            return $this->boardData;
         }
     }
 ?>
