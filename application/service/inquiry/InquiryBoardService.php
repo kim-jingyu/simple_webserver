@@ -30,10 +30,10 @@
 
         public function getInquriyBoard(InquiryBoardRequest $inquiryBoardRequest) {
             $conn = DBConnectionUtil::getConnection();
-            $inquriyBoardRepository = new InquiryBoardRepository();
             try {
                 $conn->beginTransaction();
-                $inquiryPagenateResponse = $inquiryBoardRepository->pagenate($inquiryBoardRequest);
+                $inquiryBoardRepository = new InquiryBoardRepository();
+                $inquiryPagenateResponse = $inquiryBoardRepository->pagenate($conn, $inquiryBoardRequest);
 
                 $totalCnt = $inquiryPagenateResponse->getTotalCnt();
                 $numPerPage = $inquiryBoardRequest->getNumPerPage();
