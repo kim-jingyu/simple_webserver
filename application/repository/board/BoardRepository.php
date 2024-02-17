@@ -98,7 +98,7 @@
                 if ($boardRequestDto->getSort() != null) {
                     $sort = $boardRequestDto->getSort();
                     if ($sort == 'author') {
-                        $selectSql .=  " order by user_id desc";
+                        $selectSql .=  " order by user_id asc";
                     } else if ($sort == 'date') {
                         $selectSql .= " order by date_value desc";
                     } else if ($sort == 'views') {

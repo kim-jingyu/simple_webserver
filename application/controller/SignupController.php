@@ -2,7 +2,7 @@
     require $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require $_SERVER['DOCUMENT_ROOT'].'/application/service/signup/SignupService.php';
     require $_SERVER['DOCUMENT_ROOT'].'/application/repository/member/MemberSaveDto.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/LoginIdDuplicatedException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdDuplicatedException.php';
 
     function close($message, $url) {
         echo "<script>alert('{$message}')</script>";

@@ -25,7 +25,7 @@
                 if (isset($_GET['sort'])) {
                     $sort = $inquiryBoardRequest->getSort();
                     if ($sort == 'author') {
-                        $selectSql .= " order by writer_name desc";
+                        $selectSql .= " order by writer_name asc";
                     } else if ($sort == 'date') {
                         $selectSql .= " order by date_value desc";
                     } else {
