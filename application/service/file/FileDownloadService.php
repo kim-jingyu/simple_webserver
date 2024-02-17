@@ -49,7 +49,7 @@
             } catch (PDOException $e) {
                 $conn->rollback();
                 throw $e;
-            } catch (AWSException $e) {
+            } catch (S3Exception $e) {
                 $conn->rollback();
                 throw $e;
             } finally {
