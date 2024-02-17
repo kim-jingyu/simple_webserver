@@ -92,7 +92,7 @@
                 $stmt->bindValue(":searchWord", $searchWord);
                 $stmt->bindValue(":dateValue", $dateValue);
                 $stmt->execute();
-                $totalCnt = $result->fetchColumn();
+                $totalCnt = $stmt->fetchColumn();
 
                 $selectSql = "SELECT * FROM board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 if ($boardRequestDto->getSort() != null) {

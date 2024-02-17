@@ -18,7 +18,7 @@
                 $stmt->bindValue(":searchWord", $searchWord);
                 $stmt->bindValue(":dateValue", $dateValue);
                 $stmt->execute();
-                $totalCnt = $result->fetchColumn();
+                $totalCnt = $stmt->fetchColumn();
                 
                 $selectSql = "SELECT * FROM inquiry_board WHERE title LIKE :searchWord AND date_value LIKE :dateValue";
                 
