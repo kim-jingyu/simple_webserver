@@ -207,7 +207,6 @@
 
             try {
                 $conn->beginTransaction();
-                // $this->checkUser($conn, $boardId);
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -246,7 +245,6 @@
 
             try {
                 $conn->beginTransaction();
-                $this->checkUser($conn, $boardId);
 
                 $row = $boardRepository->findWithComments($conn, $boardId);
                 $conn->commit();
