@@ -35,7 +35,7 @@
             }
         }
 
-        public function fix($body, $id, $boardId) {
+        public function fix($body, $id) {
             $conn = DBConnectionUtil::getConnection();
             $commentRepository = new CommentRepository();
             try {
@@ -75,7 +75,7 @@
             }
         }
 
-        public function delete($commentId, $boardId) {
+        public function delete($commentId) {
             $conn = DBConnectionUtil::getConnection();
             $commentRepository = new CommentRepository();
             try {

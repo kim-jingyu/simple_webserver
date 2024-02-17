@@ -14,10 +14,10 @@
             }
         }
 
-        public function fix($body, $id, $boardId) {
+        public function fix($body, $id) {
             $commentService = new CommentService();
             try {
-                $commentService->fix($body, $id, $boardId);
+                $commentService->fix($body, $id);
             } catch (Exception $e) {
                 throw new Exception("댓글 수정중 문제가 발생했습니다!");
             }
@@ -34,10 +34,10 @@
             }
         }
 
-        public function delete($commentId, $boardId) {
+        public function delete($commentId) {
             $commentService = new CommentService();
             try {
-                $commentService->delete($conn, $commentId);
+                $commentService->delete($commentId);
             } catch (Exception $e) {
                 throw new Exception("댓글 삭제중 문제가 발생했습니다!");
             }
