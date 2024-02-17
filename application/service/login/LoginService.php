@@ -1,24 +1,31 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/member/MemberRepository.php';
+    require_once $_SERVER['DOCUMENT_ROOT'] . '/application/connection/DBConnectionUtil.php';
 
     class LoginService {
         public function __construct() {
         }
 
-        public function login(MemberRepository $memberRepository, LoginDto $loginDto) {
-            $result = $memberRepository->findById($loginDto->getUserId());    
+        public function login(LoginDto $loginDto) {
+            $conn = DBConnectionUtil::getConnection();
+            $memberRepository = new MemberRepository();
+
+            try {
+                $conn->beginTransaction();
+                $member = $memberRepository->findById($conn, $loginDto->getUserId());
+                if (empty($member)) {
+                    throw new Exception("로그인 실패!");
+                }
             
-            if ($result->num_rows > 0) {
-                $member = $result->fetch_array();
                 $userPw = $loginDto->getUserPw();
                 if (password_verify($userPw, $member['user_pw'])) {
                     $jwt = createToken($member['user_id'], $member['user_name']);
                     setcookie('JWT', $jwt, time() + 30 * 60, '/');
-                    return true;
-                } 
+                }
+            } catch (Exception $e) {
+                throw $e;
             }
-            return false;
         }
     }
 ?>
