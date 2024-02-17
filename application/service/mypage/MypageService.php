@@ -3,7 +3,11 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/comment/CommentRepository.php';
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdFixFailException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/PwFixFailException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/LoginIdDuplicatedException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     
     class MypageService {
         public function __construct() {
@@ -19,6 +23,11 @@
             try {
                 $conn->beginTransaction();
 
+                $originalId = getToken($_COOKIE['JWT'])['user'];
+                if ($newId == $originalId) {
+                    throw new IdDuplicatedException("ID가 같습니다!");
+                }
+
                 $memberRepository->updateId($conn, $newId, $originalId);
                 $boardRepository->updateId($conn, $newId, $originalId);
                 $commentRepository->updateCommenterId($conn, $newId, $originalId);
@@ -31,9 +40,12 @@
 
                 $conn->commit();
                 return "ID가 수정되었습니다!";
-            } catch (Exception $e) {
+            } catch (IdDuplicatedException $e) {
                 $conn->rollback();
-                return "ID 수정에 실패했습니다!";
+                throw $e;
+            } catch (PDOException $e) {
+                $conn->rollback();
+                throw new IdFixFailException("ID 수정에 실패했습니다!");
             } finally {
                 if ($conn != null) {
                     $conn = null;
@@ -51,16 +63,19 @@
                 $row = $memberRepository->findById($conn, $originalId);
                 $originalPw = $row['user_pw'];
                 if (!password_verify($oldPw, $originalPw)) {
-                    return "비밀번호가 일치하지 않습니다!";
+                    throw new PwNotMatchedException("비밀번호가 일치하지 않습니다!");
                 }
 
                 $memberRepository->updatePw($conn, $newPw, $originalId);
 
                 $conn->commit();
                 return "PW가 수정되었습니다!";
-            } catch (Exception $e) {
+            } catch (PwNotMatchedException $e) {
                 $conn->rollback();
-                return "PW 수정에 실패했습니다!";
+                throw $e;
+            } catch (PDOException $e) {
+                $conn->rollback();
+                throw new PwFixFailException("PW 수정에 실패했습니다!");
             } finally {
                 if ($conn != null) {
                     $conn = null;

@@ -1,7 +1,7 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/member/MemberRepository.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/LoginIdDuplicatedException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdDuplicatedException.php';
 
     class SignupService {
         public function __construct() {
@@ -14,12 +14,12 @@
 
                 $userId = $memberRepository->findById($conn, $memberSaveDto->getId());
                 if (!empty($userId)) {
-                    throw new LoginIdDuplicatedException();
+                    throw new IdDuplicatedException();
                 }
     
                 $memberRepository->save($conn, $memberSaveDto);
                 $conn->commit();
-            } catch (LoginIdDuplicatedException $e) {
+            } catch (IdDuplicatedException $e) {
                 $conn->rollback();
                 throw $e;
             } catch (PDOException $e) {

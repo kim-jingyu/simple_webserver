@@ -1,5 +1,5 @@
 <?php
-    class LoginIdDuplicatedException extends Exception {
+    class PwFixFailException extends Exception {
         public function errorMessage() {
             return $this->getMessage();
         }

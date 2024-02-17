@@ -33,7 +33,7 @@
         $signupService = new SignupService();
         $succeedMessage = $signupService->signup($memberSaveDto);
         close("회원가입 성공!", "/index.php");
-    } catch (LoginIdDuplicatedException $e) {
+    } catch (IdDuplicatedException $e) {
         close("ID가 중복됩니다!", "/application/view/signup/signup.html");
     } catch (Exception $e) {
         close("회원가입 실패!", "/application/view/signup/signup.html");
