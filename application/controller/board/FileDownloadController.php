@@ -19,13 +19,11 @@
         close("파일이 다운로드 되었습니다!", $boardId);
     } catch (IdNotMatchedException $e) {
         close(e->errorMessage(), $boardId);
-        throw $e;
     } catch (FileNotExsistException $e) {
         close(e->errorMessage(), $boardId);
-        throw $e;
     } catch (PDOException $e) {
         close("파일 다운로드 실패!", $boardId);
-        throw $e;
-    }
-    
+    } catch (AWSExceptoin $e) {
+        close($e->getMessage(), $boardId);
+    }    
 ?>

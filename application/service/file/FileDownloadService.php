@@ -49,6 +49,9 @@
             } catch (PDOException $e) {
                 $conn->rollback();
                 throw $e;
+            } catch (AWSException $e) {
+                $conn->rollback();
+                throw $e;
             } finally {
                 if ($conn != null) {
                     $conn = null;
