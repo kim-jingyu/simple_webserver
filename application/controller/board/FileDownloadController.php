@@ -23,7 +23,7 @@
         close(e->errorMessage(), $boardId);
     } catch (PDOException $e) {
         close("파일 다운로드 실패!", $boardId);
-    } catch (S3Exception $e) {
+    } catch (Exception $e) {
         close($e->getMessage(), $boardId);
     }    
 ?>
