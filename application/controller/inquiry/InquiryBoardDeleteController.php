@@ -22,8 +22,10 @@
         $inquiryBoardService->delete($boardId);
 
         close("게시글이 삭제되었습니다!", "/application/view/inquiry/board.php");
+    } catch (IdNotMatchedException $e) {
+        close($e->errorMessage(), "/application/view/inquiry/board_view.php?boardId=".$boardId);
     } catch (PwNotMatchedException $e) {
-        close(e->errorMessage(), "/application/view/inquiry/board.php");
+        close(e->errorMessage(), "/application/view/inquiry/board_view.php?boardId=".$boardId);
     } catch (Exception $e) {
         close("게시글 삭제에 실패했습니다!", "/application/view/inquiry/board_view.php?boardId=".$boardId);
     }
