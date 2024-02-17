@@ -63,9 +63,7 @@
                         echo '<p class="page"> [ ';
                         if ($blockNow > 1) {
                             $prevBlockStart = $blockNow - 5;
-                            if ($prevBlockStart == 0) {
-                                $prevBlockStart = 1;
-                            }
+                            $prevBlockStart++;
                             echo '<a class="link" href="?page='.$prevBlockStart.'&search='.$searchWord.'&dateValue'.$dateValue.'">이전 페이지</a>"';
                         }
 
