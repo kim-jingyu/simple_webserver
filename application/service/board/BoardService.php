@@ -213,13 +213,13 @@
 
                 if (!isset($_SESSION[$lastViewTimePerBoard])) {
                     $_SESSION[$lastViewTimePerBoard] = time();
-                    $boardRepository->view($boardId);
+                    $boardRepository->view($conn, $boardId);
                 } else {
                     $lastViewTime = $_SESSION[$lastViewTimePerBoard];
                     $currentTime = time();
                     $gapTime = $currentTime - $lastViewTime;
                     if ($gapTime > 5) {
-                        $boardRepository->view($boardId);
+                        $boardRepository->view($conn, $boardId);
                         $_SESSION[$lastViewTimePerBoard] = $currentTime;
                     }
                 }
