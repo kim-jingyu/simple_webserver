@@ -8,6 +8,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/board/BoardServiceResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdNotMatchedException.php';
 
     class BoardService {
         private $storedFileName;
