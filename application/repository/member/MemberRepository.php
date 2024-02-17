@@ -1,6 +1,4 @@
 <?php
-    require_once $_SERVER['DOCUMENT_ROOT'] . '/application/connection/DBConnectionUtil.php';
-
     class MemberRepository {
         public function __construct() {
         }
@@ -33,8 +31,8 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bindValue(":userId", $userId);
                 $stmt->execute();
-                $userId = $stmt->fetchColumn();
-                return $userId;
+                $row = $stmt->fetch();
+                return $row;
             } catch (PDOException $e) {
                 throw $e;
             } finally {

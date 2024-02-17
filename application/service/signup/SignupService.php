@@ -19,7 +19,6 @@
     
                 $memberRepository->save($conn, $memberSaveDto);
                 $conn->commit();
-                return "회원가입 성공!";
             } catch (LoginIdDuplicatedException $e) {
                 $conn->rollback();
                 throw $e;
