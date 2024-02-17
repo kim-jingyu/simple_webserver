@@ -19,7 +19,7 @@
 
     try {
         $inquiryBoardService = new InquiryBoardService();
-        $inquiryBoardService->delete($boardId);
+        $inquiryBoardService->delete($writerName, $writerPw, $boardId);
 
         close("게시글이 삭제되었습니다!", "/application/view/inquiry/board.php");
     } catch (IdNotMatchedException $e) {
