@@ -24,8 +24,6 @@
     $userInfo = filter_var(strip_tags($_POST['userInfo']), FILTER_SANITIZE_SPECIAL_CHARS);
     
     $userAddress = isset($_POST['address']) ? filter_var(strip_tags($_POST['address']), FILTER_SANITIZE_SPECIAL_CHARS) : "";
-    $encryptionKey = 'secret_key';
-    $encryptedAddress = openssl_encrypt($userAddress, 'aes-256-cbc', $encryptionKey, OPENSSL_ZERO_PADDING, '1234567890123456');
 
     $memberSaveDto = new MemberSaveDto($userId, $hashedPw, $userName, "student", $userInfo, $userAddress);
     
