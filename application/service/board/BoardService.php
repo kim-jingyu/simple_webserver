@@ -207,7 +207,7 @@
 
             try {
                 $conn->beginTransaction();
-                $this->checkUser($conn, $boardId);
+                // $this->checkUser($conn, $boardId);
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -228,7 +228,6 @@
                 $row = $boardRepository->findAllById($conn, $boardId);
                 
                 $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
-                echo "<script>alert('".$indexBoardViewResponse."');</script>";
                 $conn->commit();
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
