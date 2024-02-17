@@ -154,7 +154,7 @@
             try {
                 $conn->beginTransaction();
 
-                $boardResponseDto = $boardRepository->pagenate($conn, $boardDto);
+                $boardResponseDto = $boardRepository->pagenate($conn, $boardRequestDto);
                 
                 $totalCnt = $boardResponseDto->getTotalCnt();
                 $totalPages = ceil($totalCnt / $numPerPage);
