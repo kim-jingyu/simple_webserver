@@ -99,7 +99,7 @@
                         }
 
                         // 다음 페이지 블록이 있으며, 다음 페이지 블록 링크 출력
-                        if ($blockNow + 5 < $totalPages) {
+                        if ($blockNow + 5 <= $totalPages) {
                             $nextBlockStart = $blockNow + 6;
                             echo '<a class="link" href="?page='.$nextBlockStart.'&search='.$searchWord.'&dateValue='.$dateValue.'">다음 페이지</a>';
                         }
