@@ -15,7 +15,7 @@
     try {
         $loginDto = new LoginDto($userId, $userPw);
         $loginService = new LoginService($loginDto);
-        $loginService->login($memberRepository, $loginDto);
+        $loginService->login($loginDto);
         close("로그인 성공!", "/index.php");
     } catch (Exception $e) {
         close("로그인 실패!", "/application/view/login/login.html");
