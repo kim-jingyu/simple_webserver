@@ -117,7 +117,7 @@
             try {
                 $conn->beginTransaction();
 
-                checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardRepository, $boardId);
 
                 $fileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
@@ -182,7 +182,7 @@
 
             try {
                 $conn->beginTransaction();
-                checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardRepository, $boardId);
 
                 $row = $boardRepository->findAllById($conn, $boardId);
 
@@ -205,7 +205,7 @@
 
             try {
                 $conn->beginTransaction();
-                checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardRepository, $boardId);
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -225,8 +225,8 @@
             
                 $row = $boardRepository->findAllById($conn, $boardId);
                 
-                $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
                 $conn->commit();
+                $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
                 $conn->rollback();
@@ -244,7 +244,7 @@
 
             try {
                 $conn->beginTransaction();
-                checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardRepository, $boardId);
 
                 $row = $boardRepository->findWithComments($conn, $boardId);
                 $conn->commit();
