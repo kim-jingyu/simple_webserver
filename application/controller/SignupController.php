@@ -23,15 +23,15 @@
     $hashedPw = password_hash($userPw, PASSWORD_DEFAULT);
     $userInfo = filter_var(strip_tags($_POST['userInfo']), FILTER_SANITIZE_SPECIAL_CHARS);
     
-    $userAddress = trim($_POST['address']);
+    $userAddress = isset($_POST['address']) ? filter_var(strip_tags($_POST['address']), FILTER_SANITIZE_SPECIAL_CHARS) : "";
     $encryptionKey = 'secret_key';
     $encryptedAddress = openssl_encrypt($userAddress, 'aes-256-cbc', $encryptionKey, OPENSSL_ZERO_PADDING, '1234567890123456');
 
-    $memberSaveDto = new MemberSaveDto($userId, $hashedPw, $userName, "student", $userInfo, $encryptedAddress);
+    $memberSaveDto = new MemberSaveDto($userId, $hashedPw, $userName, "student", $userInfo, $userAddress);
     
     try {
         $signupService = new SignupService();
-        $succeedMessage = $signupService->signup($memberSaveDto);
+        $signupService->signup($memberSaveDto);
         close("회원가입 성공!", "/index.php");
     } catch (IdDuplicatedException $e) {
         close("ID가 중복됩니다!", "/application/view/signup/signup.html");
