@@ -2,7 +2,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryBoardRepository.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/inquiry/InquiryBoardRequest.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardResponse.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquriyBoardViewResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardViewResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/controller/inquiry/InquiryBoardFixResponse.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/inquiry/InquiryBoardService.php';
 
@@ -40,10 +40,10 @@
         public function getInquiryBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
             try {
-                $nquiryBoardService = new InquiryBoardService();
+                $InquiryBoardService = new InquiryBoardService();
                 $data = $InquiryBoardService->getInquiryBoardView($boardId);
 
-                $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $data);
+                $inquiryBoardViewResponse = new InquiryBoardViewResponse($boardId, $data);
                 return $inquiryBoardViewResponse;    
             } catch (Exception $e) {
                 echo "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";

@@ -1,5 +1,5 @@
 <?php
-    class InquriyBoardViewResponse {
+    class InquiryBoardViewResponse {
         private $boardId;
         private $data;
 
