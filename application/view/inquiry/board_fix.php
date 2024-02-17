@@ -4,9 +4,8 @@
     $inquiryBoardController = new InquiryBoardController();
     $response = $inquiryBoardController->getInquiryBoardFix();
     $boardId = $response->getBoardId();
-    $result = $response->getResult();
+    $row = $response->getData();
     
-    $row = $result->fetch_assoc();
     $title = $row['title'];
     $body = $row['body'];
 ?>

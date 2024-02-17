@@ -5,8 +5,7 @@
     $response = $boardController->getInquiryBoardView();
 
     $boardId = $response->getBoardId();
-    $result = $response->getResult();
-    $row = $result->fetch_assoc();
+    $row = $response->getData();
     
     $title = $row['title'];
     $body = $row['body'];
@@ -33,7 +32,7 @@
         <div class="content">    
             <h2>CONTENT</h2>
             <?php
-                if (mysqli_num_rows($result)) {
+                if (!empty($body)) {
                     echo '<textarea class="textarea-content" rows="20" cols="40" readonly>'.$body.'</textarea>';
                 }
             ?>

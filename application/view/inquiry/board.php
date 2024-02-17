@@ -10,7 +10,7 @@
     $blockNow = $response->getBlockNow();
     $sort = $response->getSort();
     $totalPages = $response->getTotalPages();
-    $result = $response->getResult();
+    $boardData = $response->getBoardData();
 ?>
 <!DOCTYPE html>
 <html lang="ko">
@@ -51,8 +51,8 @@
                     <th>작성자</th>
                 </tr>
                 <?php
-                    if (mysqli_num_rows($result)) {
-                        while ($row = mysqli_fetch_array($result)) {
+                    if (!empty($boardData)) {
+                        foreach ($boardData as $row) {
                             echo '<tr>';
                             echo '<td>'.$row['id'].'</td>';
                             echo '<td><a class="link" href="/application/view/inquiry/board_view.php?boardId='.$row['id'].'">'.$row['title'].'</a></td>';

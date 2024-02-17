@@ -11,7 +11,7 @@
     $boardViewResp = $boardController->getIndexBoardView();
 
     $boardId = $boardViewResp->getBoardId();
-    $boardData = $boardViewResp->getRow();
+    $boardData = $boardViewResp->getData();
     $commentDatas = $boardController->getComment($boardId);
 ?>
 
