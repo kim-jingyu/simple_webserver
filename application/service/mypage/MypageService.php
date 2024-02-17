@@ -6,7 +6,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdFixFailException.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/PwFixFailException.php';
-    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/LoginIdDuplicatedException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdDuplicatedException.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     
     class MypageService {
