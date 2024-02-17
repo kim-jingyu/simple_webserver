@@ -11,8 +11,6 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdNotMatchedException.php';
 
     class BoardService {
-        private $storedFileName;
-
         public function __construct() {
         }
 
@@ -25,7 +23,7 @@
             }
         }
 
-        private function fileUpload($file, $fileName, $storedFileName) {
+        private function fileUpload($file, $fileName) {
             // 파일 업로드
             if ($_SERVER['REQUEST_METHOD'] != 'POST') {
                 $conn->close();
@@ -48,7 +46,7 @@
                     // 파일 확장자 검증
                     $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
                     if (in_array($fileExtension, $allowedExtensions)) {
-                        $uploadPath = 'path/upload/'.$storedFileName;
+                        $uploadPath = 'path/upload/'.$fileName;
                         // 파일 이동 및 저장
                         try {
                             $s3Client = S3Manager::getClient();
@@ -97,7 +95,7 @@
                 $boardId = $boardRepository->write($conn, $boardWriteRequest);
 
                 if ($file['size'] != 0) {
-                    $this->fileUpload($file, $fileName,$storedFileName);
+                    $this->fileUpload($file, $storedFileName);
                 }
 
                 $conn->commit();
@@ -120,23 +118,27 @@
 
                 $this->checkUser($conn, $boardId);
 
+                $fileName = $file['name'];
+                $timestamp = time();
+                $newFileName = $timestamp.'_'.$fileName;
+
                 $boardRepository = new BoardRepository();
 
-                $fileName = $boardRepository->findFileNameById($conn, $boardId);
+                $storedFileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
-                    $this->fileUpload($file);
+                    $this->fileUpload($file, $newFileName);
     
                     $s3Client = S3Manager::getClient();
                     $bucketName = S3Manager::getBucketName();
-                    $filePath = 'path/upload/'.$fileName;
+                    $filePath = 'path/upload/'.$storedFileName;
                     $s3Client->deleteObject([
                         'Bucket' => $bucketName,
                         'Key' => $filePath,
                     ]);
     
-                    $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $this->storedFileName);
+                    $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $newFileName);
                 } else {
-                    $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $fileName);                
+                    $boardFixRequest = new BoardFixRequest($boardId, $title, $body, $userId, $today, $storedFileName);                
                 }
                 $boardRepository->fix($conn, $boardFixRequest);
 
