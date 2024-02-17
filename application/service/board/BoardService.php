@@ -20,7 +20,7 @@
             $findUserId = $boardRepository->findUserIdById($conn, $boardId);
             $userId = getToken($_COOKIE['JWT'])['user'];
             if ($findUserId != $userId) {
-                throw new Exception;
+                throw new IdNotMatchedException("아이디 검증에 실패했습니다!");
             }
         }
 
@@ -140,7 +140,10 @@
                 $boardRepository->fix($conn, $boardFixRequest);
 
                 $conn->commit();
-            } catch (Exception $e) {
+            } catch (IdNotMatchedException $e) {
+                $conn->rollback();
+                throw $e;
+            } catch (PDOException $e) {
                 $conn->rollback();
                 throw $e;
             } finally {
@@ -191,7 +194,10 @@
                 $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $row);
                 $conn->commit();
                 return $indexBoardFixResponse;
-            } catch (Exception $e) {
+            } catch (IdNotMatchedException $e) {
+                $conn->rollback();
+                throw $e;
+            } catch (PDOException $e) {
                 $conn->rollback();
                 throw $e;
             } finally {
