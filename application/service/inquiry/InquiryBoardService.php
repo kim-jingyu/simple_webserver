@@ -155,7 +155,7 @@
 
                 $inquiryBoardUpdateRequest = new InquiryBoardUpdateRequest($boardId, $title, $body, $today);
                 $inquiryBoardRepository = new InquiryBoardRepository();
-                $inquriyBoardRepository->update($conn, $inquiryBoardUpdateRequest);
+                $inquiryBoardRepository->update($conn, $inquiryBoardUpdateRequest);
 
                 $conn->commit();
             } catch (IdNotMatchedException $e) {
