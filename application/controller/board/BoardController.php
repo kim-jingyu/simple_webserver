@@ -33,6 +33,7 @@
                 return $indexBoardResponse;
             } catch (Exception $e) {
                 echo "<script>alert('게시판을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/login/login.html');</script>";
             }
             
         }
@@ -46,6 +47,7 @@
                 return $indexBoardFixResponse;
             } catch (Exception $e) {
                 echo "<script>alert('수정폼을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             }
         }
 
@@ -58,6 +60,7 @@
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
                 echo "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             }
         }
 
@@ -79,7 +82,9 @@
             try {
                 $boardService = new BoardService();
                 $boardService->fix($boardId, $title, $body, $userId, $today, $file);
-            } catch (Exception $e) {
+            } catch (IdNotMatchedException $e) {
+                throw $e;
+            } catch (PDOException $e) {
                 throw $e;
             }
         }
@@ -91,6 +96,7 @@
                 return $rows;
             } catch (Exception $e) {
                 echo "<script>alert('댓글을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/index.php');</script>";
             }
         }
     }    
