@@ -144,7 +144,41 @@
             } catch (IdNotMatchedException $e) {
                 $conn->rollback();
                 throw $e;
-            } catch (PDOException $e) {
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
+            }
+        }
+
+        public function delete($boardId) {
+            $conn = DBConnectionUtil::getConnection();
+            $boardRepository = new BoardRepository();
+
+            try {
+                $conn->beginTransaction();
+
+                $this->checkUser($conn, $boardId);
+
+                $s3Client = S3Manager::getClient();
+                $bucketName = S3Manager::getBucketName();
+                $fileName = $boardRepository->findFileNameById($conn, $boardId);
+                $filePath = 'path/upload/'.$fileName;
+                $s3Client->deleteObject([
+                    'Bucket' => $bucketName,
+                    'Key' => $filePath,
+                ]);
+
+                $boardRepository->delete($conn, $boardId);
+
+                $conn->commit();
+            } catch (IdNotMatchedException $e) {
+                $conn->rollback();
+                throw $e;
+            } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
             } finally {

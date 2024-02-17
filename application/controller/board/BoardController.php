@@ -84,7 +84,7 @@
                 $boardService->fix($boardId, $title, $body, $userId, $today, $file);
             } catch (IdNotMatchedException $e) {
                 throw $e;
-            } catch (PDOException $e) {
+            } catch (Exception $e) {
                 throw $e;
             }
         }

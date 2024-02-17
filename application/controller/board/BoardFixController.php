@@ -23,7 +23,7 @@
         close('수정이 완료되었습니다.', $boardId);
     } catch (IdNotMatchedException $e) {
         close($e->errorMessage(), $boardId);
-    } catch (PDOException $e) {
+    } catch (Exception $e) {
         close('수정에 실패했습니다!', $boardId);
     }
 ?>
