@@ -10,10 +10,8 @@
     $boardController = new BoardController();
     $boardViewResp = $boardController->getIndexBoardView();
 
-    // $boardId = $boardViewResp->getBoardId();
-    // $boardData = $boardViewResp->getRow();
-    $boarId = 10;
-    $boardData = null;
+    $boardId = $boardViewResp->getBoardId();
+    $boardData = $boardViewResp->getRow();
     $commentDatas = $boardController->getComment($boardId);
 ?>
 

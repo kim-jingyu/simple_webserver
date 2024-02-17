@@ -7,6 +7,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/board/BoardServiceResponse.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
 
     class BoardService {
         private $storedFileName;
@@ -14,7 +15,8 @@
         public function __construct() {
         }
 
-        private function checkUser($conn, $boardRepository, $boardId) {
+        private function checkUser($conn, $boardId) {
+            $boardRepository = new BoardRepository();
             $findUserId = $boardRepository->findUserIdById($conn, $boardId);
             $userId = getToken($_COOKIE['JWT'])['user'];
             if ($findUserId != $userId) {
@@ -117,7 +119,7 @@
             try {
                 $conn->beginTransaction();
 
-                $this->checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardId);
 
                 $fileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
@@ -205,7 +207,7 @@
 
             try {
                 $conn->beginTransaction();
-                $this->checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardId);
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -226,7 +228,6 @@
                 $row = $boardRepository->findAllById($conn, $boardId);
                 
                 $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
-                print_r($indexBoardViewResponse);
                 $conn->commit();
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
@@ -245,7 +246,7 @@
 
             try {
                 $conn->beginTransaction();
-                $this->checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardId);
 
                 $row = $boardRepository->findWithComments($conn, $boardId);
                 $conn->commit();
