@@ -18,9 +18,9 @@
         $commentController = new CommentController();
 
         $commentController->write($commenterId, $body, $boardId);
-        close("댓글 작성완료!", $boarId);
+        close("댓글 작성완료!", $boardId);
     } catch (Exception $e) {
-        close(e->getMessage(), $boarId);
+        close(e->getMessage(), $boardId);
     }
     
 ?>

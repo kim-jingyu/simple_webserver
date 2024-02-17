@@ -18,8 +18,8 @@
         $commentController = new CommentController();
 
         $commentController->fix($body, $id, $boardId);
-        close("댓글 수정완료!", $boarId);
+        close("댓글 수정완료!", $boardId);
     } catch (Exception $e) {
-        close(e->getMessage(), $boarId);
+        close(e->getMessage(), $boardId);
     }
 ?>
