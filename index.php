@@ -89,7 +89,7 @@
                             echo '<a class="link" href="?page='.$prevBlockStart.'&search='.$searchWord.'&dateValue'.$dateValue.'">이전 페이지</a>';
                         }
 
-                        for ($pageNum = $blockNow; $pageNum <= min($blockNow + 5, $totalPages); $pageNum++) {
+                        for ($pageNum = $blockNow; $pageNum < min($blockNow + 5, $totalPages); $pageNum++) {
                             if ($pageNum == $pageNow) {
                                 echo $pageNum;
                             } else {
