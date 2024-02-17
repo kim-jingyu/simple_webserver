@@ -184,7 +184,7 @@
 
             try {
                 $conn->beginTransaction();
-                $this->checkUser($conn, $boardRepository, $boardId);
+                $this->checkUser($conn, $boardId);
 
                 $row = $boardRepository->findAllById($conn, $boardId);
 
