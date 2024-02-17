@@ -157,6 +157,7 @@
                 $boardResponseDto = $boardRepository->pagenate($conn, $boardRequestDto);
                 
                 $totalCnt = $boardResponseDto->getTotalCnt();
+                $numPerPage = $boardRequestDto->getNumPerPage();
                 $totalPages = ceil($totalCnt / $numPerPage);
                 $boardData = $boardResponseDto->getBoardData();
 
