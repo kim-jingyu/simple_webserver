@@ -55,10 +55,10 @@
             try {
                 $boardService = new BoardService();
                 $indexBoardViewResponse = $boardService->getIndexBoardView($boardId);
-                print_r($indexBoardFixResponse);
+                echo "<script>alert('".$indexBoardViewResponse."');</script>";
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
-                "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";
             }
         }
 
