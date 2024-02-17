@@ -119,7 +119,7 @@
                 $stmt->bindValue(":startIndexPerPage", $startIndexPerPage, PDO::PARAM_INT);
                 $stmt->bindValue(":numPerPage", $numPerPage, PDO::PARAM_INT);
                 $stmt->execute();
-                $boardData = $stmt->fetch();
+                $boardData = $stmt->fetchAll();
 
                 $boardResponseDto = new BoardResponseDto($totalCnt, $boardData);
                 return $boardResponseDto;
