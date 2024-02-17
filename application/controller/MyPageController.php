@@ -1,6 +1,10 @@
 <?php
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/jwt/JwtManager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/mypage/MypageService.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdFixFailException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/PwFixFailException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/IdDuplicatedException.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/PwNotMatchedException.php';
 
     checkToken();
 
