@@ -83,13 +83,11 @@
                         // 이전 페이지 블록이 있으며, 이전 페이지 블록 링크 출력
                         if ($blockNow > 1) {
                             $prevBlockStart = $blockNow - 5;
-                            if ($prevBlockStart == 0) {
-                                $prevBlockStart = 1;
-                            }
+                            $prevBlockStart++;
                             echo '<a class="link" href="?page='.$prevBlockStart.'&search='.$searchWord.'&dateValue'.$dateValue.'">이전 페이지</a>';
                         }
 
-                        for ($pageNum = $blockNow; $pageNum < min($blockNow + 5, $totalPages); $pageNum++) {
+                        for ($pageNum = $blockNow + 1; $pageNum < min($blockNow + 5, $totalPages); $pageNum++) {
                             if ($pageNum == $pageNow) {
                                 echo $pageNum;
                             } else {
