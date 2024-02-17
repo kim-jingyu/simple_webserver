@@ -55,7 +55,7 @@
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
     
             try {
-                $nquiryBoardService = new InquiryBoardService();
+                $InquiryBoardService = new InquiryBoardService();
                 $data = $InquiryBoardService->getInquiryBoardFix($boardId);
 
                 $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $data);
