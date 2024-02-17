@@ -16,7 +16,7 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bindValue(":id", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $row = $stmt->fetch();
+                $row = $stmt->fetchAll();
                 return $row;
             } catch (PDOException $e) {
                 throw $e;
