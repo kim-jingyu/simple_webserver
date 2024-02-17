@@ -244,8 +244,8 @@
                 $stmt = $conn->prepare($sql);
                 $stmt->bindValue(":boardId", $boardId, PDO::PARAM_INT);
                 $stmt->execute();
-                $row = $stmt->fetch();
-                return $row;
+                $rows = $stmt->fetchAll();
+                return $rows;
             } catch (PDOException $e) {
                 throw $e;
             } finally {

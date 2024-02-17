@@ -87,8 +87,8 @@
         public function getComment($boardId) {
             try {
                 $boardService = new BoardService();
-                $row = $boardService->getComment($boardId);
-                return $row;
+                $rows = $boardService->getComment($boardId);
+                return $rows;
             } catch (Exception $e) {
                 echo "<script>alert('댓글을 가져오는 도중에 문제가 발생했습니다!');</script>";
             }

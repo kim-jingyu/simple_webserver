@@ -246,9 +246,9 @@
             try {
                 $conn->beginTransaction();
 
-                $row = $boardRepository->findWithComments($conn, $boardId);
+                $rows = $boardRepository->findWithComments($conn, $boardId);
                 $conn->commit();
-                return $row;
+                return $rows;
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
