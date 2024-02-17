@@ -4,9 +4,19 @@
     require_once $_SERVER['DOCUMENT_ROOT']."/application/repository/inquiry/InquiryBoardUpdateRequest.php";
     require_once $_SERVER['DOCUMENT_ROOT']."/application/service/inquiry/InquiryBoardServiceResponse.php";
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/exception/PwNotMatchedException.php';
 
     class InquiryBoardService {
         public function __construct() {
+        }
+
+        private function checkUser($conn, $writerName, $writerPw) {
+            $inquiryBoardRepository = new InquiryBoardRepository();
+            $findPw = $inquiryBoardRepository->findPwByWriterName($conn, $writerName);
+
+            if ($findPw != $writerPw) {
+                throw new PwNotMatchedException("작성자 비밀번호가 틀렸습니다!");
+            }
         }
 
         public function getInquriyBoard(InquiryBoardRequest $inquiryBoardRequest) {
@@ -62,6 +72,31 @@
                 $data = $inquiryBoardRepository->findById($conn, $boardId);
                 $conn->commit();
                 return $data;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
+            }
+        }
+
+        public function delete($writerName, $writerPw, $boardId) {
+            $conn = DBConnectionUtil::getConnection();
+            try {
+                $conn->beginTransaction();
+
+                $this->checkUser($conn, $writerName, $writerPw);
+
+                $inquiryBoardRepository = new InquiryBoardRepository();
+                $inquiryBoardRepository->deleteById($conn, $boardId);
+
+                $conn->commit();
+                return $data;
+            } catch (PwNotMatchedException $e) {
+                $conn->rollback();
+                throw $e;
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
