@@ -226,6 +226,7 @@
                 $row = $boardRepository->findAllById($conn, $boardId);
                 
                 $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
+                print_r($indexBoardViewResponse);
                 $conn->commit();
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
