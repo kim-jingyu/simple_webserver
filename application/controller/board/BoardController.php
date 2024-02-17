@@ -12,19 +12,20 @@
         }
 
         public function getIndexBoard() {
-            $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
-            $dateValue = filter_var(strip_tags($_GET['dateValue']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $numPerPage = 5;
-            
-            $pageNow = $_GET['page'] ? filter_var(strip_tags(intval($_GET['page'])), FILTER_SANITIZE_SPECIAL_CHARS) : 1;
-            $blockNow = floor(($pageNow - 1) / $numPerPage) * $numPerPage;
-            $startIndexPerPage = ($pageNow - 1) * $numPerPage;
-            $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-            $boardDto = new BoardRequestDto($searchWord, $dateValue, $numPerPage, $startIndexPerPage, $sort);
-
             try {
+                $searchWord = filter_var(strip_tags($_GET['search']), FILTER_SANITIZE_SPECIAL_CHARS);
+                $dateValue = filter_var(strip_tags($_GET['dateValue']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+                $numPerPage = 5;
+                
+                $pageNow = $_GET['page'] ? filter_var(strip_tags(intval($_GET['page'])), FILTER_SANITIZE_SPECIAL_CHARS) : 1;
+                $blockNow = floor(($pageNow - 1) / $numPerPage) * $numPerPage;
+                $startIndexPerPage = ($pageNow - 1) * $numPerPage;
+                $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+                $boardDto = new BoardRequestDto($searchWord, $dateValue, $numPerPage, $startIndexPerPage, $sort);
+
+
                 $boardService = new BoardService();
                 $boardServiceResponse = $boardService->getIndexBoard($boardDto);
                 $totalPages = $boardServiceResponse->getTotalPages();
@@ -39,9 +40,9 @@
         }
 
         public function getIndexBoardFix() {
-            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
             try {
+                $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+
                 $boardService = new BoardService();
                 $indexBoardFixResponse = $boardService->getIndexBoardFix($boardId);
                 return $indexBoardFixResponse;
@@ -65,9 +66,9 @@
         }
 
         public function writeIndexBoard($title, $body, $userId, $file) {
-            $today = date("Y-m-d");
-
             try {
+                $today = date("Y-m-d");
+
                 $boardService = new BoardService();
                 $boardId = $boardService->write($title, $body, $userId, $today, $file);
                 return $boardId;
@@ -77,9 +78,9 @@
         }
 
         public function fixIndexBoard($boardId, $title, $body, $userId, $file) {
-            $today = date("Y-m-d");
-
             try {
+                $today = date("Y-m-d");
+
                 $boardService = new BoardService();
                 $boardService->fix($boardId, $title, $body, $userId, $today, $file);
             } catch (IdNotMatchedException $e) {

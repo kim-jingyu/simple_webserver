@@ -4,12 +4,12 @@
 
     checkToken();
 
-    $title = filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $userId = filter_var(strip_tags($_POST['userId']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $file = $_FILES['file'];
-
     try {
+        $title = filter_var(strip_tags($_POST['title']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $body = filter_var(strip_tags($_POST['body']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $userId = filter_var(strip_tags($_POST['userId']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $file = $_FILES['file'];
+
         $boardController = new BoardController();
         $boardId = $boardController->writeIndexBoard($title, $body, $userId, $file);
         echo "<script>alert('작성이 완료되었습니다.');</script>";

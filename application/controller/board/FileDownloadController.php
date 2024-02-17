@@ -10,11 +10,11 @@
         exit();
     }
 
-    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $fileDownloadService = new FileDownloadService();
-
     try {
+        $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $fileDownloadService = new FileDownloadService();
+
         $fileDownloadService->download($boardId);
         close("파일이 다운로드 되었습니다!", $boardId);
     } catch (IdNotMatchedException $e) {

@@ -2,9 +2,36 @@
     require_once $_SERVER['DOCUMENT_ROOT']."/application/repository/inquiry/InquiryBoardRepository.php";
     require_once $_SERVER['DOCUMENT_ROOT']."/application/repository/inquiry/InquiryBoardWriteRequest.php";
     require_once $_SERVER['DOCUMENT_ROOT']."/application/repository/inquiry/InquiryBoardUpdateRequest.php";
+    require_once $_SERVER['DOCUMENT_ROOT']."/application/service/inquiry/InquiryBoardServiceResponse.php";
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
 
     class InquiryBoardService {
         public function __construct() {
+        }
+
+        public function getInquriyBoard(InquiryBoardRequest $inquiryBoardRequest) {
+            $conn = DBConnectionUtil::getConnection();
+            $inquriyBoardRepository = new InquiryBoardRepository();
+            try {
+                $conn->beginTransaction();
+                $inquiryPagenateResponse = $inquiryBoardRepository->pagenate($inquiryBoardRequest);
+
+                $totalCnt = $inquiryPagenateResponse->getTotalCnt();
+                $numPerPage = $inquiryBoardRequest->getNumPerPage();
+                $totalPages = ceil($totalCnt / $numPerPage);
+                $boardData = $inquiryPagenateResponse->getBoardData();
+
+                $inquiryBoardServiceResponse = new InquiryBoardServiceResponse($totalPages, $boardData);
+                $conn->commit();
+                return $inquiryBoardServiceResponse;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
+            }
         }
 
         public function write($writerName, $writerPw, $title, $body) {

@@ -19,9 +19,9 @@
         header("location:/index.php");
         exit();
     }
-
-    $boardService = new BoardService();
+    
     try {
+        $boardService = new BoardService();
         $boardService->delete($boardId);
         close('삭제 완료!', '/index.php');
     } catch (IdNotMatchedException $e) {

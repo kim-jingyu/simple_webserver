@@ -10,11 +10,12 @@
         exit();
     }
     
-    $commentId = filter_var(strip_tags($_GET['commentId']), FILTER_SANITIZE_SPECIAL_CHARS);
-    $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $commentController = new CommentController();
     try {
+        $commentId = filter_var(strip_tags($_GET['commentId']), FILTER_SANITIZE_SPECIAL_CHARS);
+        $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $commentController = new CommentController();
+
         $commentController->delete($commentId, $boardId);
         close("댓글 삭제완료!", $boardId); 
     } catch (Exception $e) {

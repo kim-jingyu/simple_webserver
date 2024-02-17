@@ -43,7 +43,7 @@
                 $stmt->bindValue(":startIndexPerPage", $startIndexPerPage, PDO::PARAM_INT);
                 $stmt->bindValue(":numPerPage", $numPerPage, PDO::PARAM_INT);
                 $stmt->execute();
-                $boardData = $stmt->fetch();
+                $boardData = $stmt->fetchAll();
 
                 $inquiryPagenateResponse = new InquiryPagenateResponse($totalCnt, $boardData);
                 return $inquiryPagenateResponse;

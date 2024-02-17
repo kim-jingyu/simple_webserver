@@ -4,10 +4,11 @@
 
     checkToken();
 
-    $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
-    $boardRepository = new BoardRepository();
     try {
+        $boardId = filter_var(strip_tags($_POST['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+
+        $boardRepository = new BoardRepository();
+
         $conn = DBConnectionUtil::getConnection();
         $conn->beginTransaction();
         $boardRepository->like($conn, $boardId);

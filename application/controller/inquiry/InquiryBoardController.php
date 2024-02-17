@@ -21,15 +21,11 @@
             $sort = filter_var(strip_tags($_GET['sort']), FILTER_SANITIZE_SPECIAL_CHARS);
 
             $inquiryBoardRequest = new InquiryBoardRequest($searchWord, $dateValue, $numPerPage, $startIdxPerPage, $sort);
-            $inquiryBoardRepository = new InquiryBoardRepository();
-            $inquiryPagenateResponse = $inquiryBoardRepository->pagenate($inquiryBoardRequest);
-
-            $totalCnt = $inquiryPagenateResponse->getTotalCnt();
-            $totalPages = ceil($totalCnt / $numPerPage);
-            $result = $inquiryPagenateResponse->getResult();
-
-            $inquiryBoardResponse = new InquiryBoardResponse($searchWord, $dateValue, $pageNow, $blockNow, $sort, $totalPages, $result);
-            return $inquiryBoardResponse;
+            try {
+                
+            } catch (\Throwable $th) {
+                //throw $th;
+            }
         }
 
         public function getInquiryBoardView() {
