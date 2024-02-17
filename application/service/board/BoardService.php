@@ -6,6 +6,7 @@
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/repository/board/BoardRequestDto.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/config/aws/S3Manager.php';
     require_once $_SERVER['DOCUMENT_ROOT'].'/application/connection/DBConnectionUtil.php';
+    require_once $_SERVER['DOCUMENT_ROOT'].'/application/service/board/BoardServiceResponse.php';
 
     class BoardService {
         private $storedFileName;
