@@ -49,9 +49,6 @@
             } catch (PDOException $e) {
                 $conn->rollback();
                 throw $e;
-            } catch (Exception $e) {
-                echo "<script>alert('파일 다운로드 실패!');</script>";
-                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
             } finally {
                 if ($conn != null) {
                     $conn = null;
