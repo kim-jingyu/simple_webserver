@@ -40,8 +40,8 @@
         public function getInquiryBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
             try {
-                $InquiryBoardService = new InquiryBoardService();
-                $data = $InquiryBoardService->getInquiryBoardView($boardId);
+                $inquiryBoardService = new InquiryBoardService();
+                $data = $inquiryBoardService->getInquiryBoardView($boardId);
 
                 $inquiryBoardViewResponse = new InquiryBoardViewResponse($boardId, $data);
                 return $inquiryBoardViewResponse;    
@@ -55,8 +55,8 @@
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
     
             try {
-                $InquiryBoardService = new InquiryBoardService();
-                $data = $InquiryBoardService->getInquiryBoardFix($boardId);
+                $inquiryBoardService = new InquiryBoardService();
+                $data = $inquiryBoardService->getInquiryBoardFix($boardId);
 
                 $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $data);
                 return $inquiryBoardFixResponse;
