@@ -121,21 +121,25 @@
         }
 
         public function write($writerName, $writerPw, $title, $body) {
-            $today = date("Y-m-d");
-
-            $inquiryBoardWriteRequest = new InquiryBoardWriteRequest($title, $body, $writerName, $writerPw, $today);
-            $inquriyBoardRepository = new InquiryBoardRepository();
-
+            $conn = DBConnectionUtil::getConnection();
             try {
-                $boardId = $inquriyBoardRepository->save($inquiryBoardWriteRequest);
+                $conn->beginTransaction();
 
-                echo "<script>alert('작성이 완료되었습니다.');</script>";
-                echo "<script>location.replace('/application/view/inquiry/board_view.php?boardId=$boardId');</script>";
+                $today = date("Y-m-d");
+
+                $inquiryBoardWriteRequest = new InquiryBoardWriteRequest($title, $body, $writerName, $writerPw, $today);
+                $inquriyBoardRepository = new InquiryBoardRepository();
+                $boardId = $inquriyBoardRepository->save($conn, $inquiryBoardWriteRequest);
+
+                $conn->commit();
+                return $boardId;
             } catch (Exception $e) {
-                echo "<script>alert('작성 중 오류가 발생했습니다.');</script>";
-                echo "<script>location.replace('/application/view/inquiry/board_write.php');</script>";
+                $conn->rollback();
+                throw $e;
             } finally {
-                exit();
+                if ($conn != null) {
+                    $conn = null;
+                }
             }
         }
 
