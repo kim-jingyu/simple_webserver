@@ -32,7 +32,7 @@
                         $select_sql .= " order by id asc";
                     }
                 }
-                $selectSql .= " LIMIT :startIndexPerPage, :numPerPage";
+                $selectSql .= " LIMIT :startIdxPerPage, :numPerPage";
 
                 $startIdxPerPage = $inquiryBoardRequest->getStartIdxPerPage();
                 $numPerPage = $inquiryBoardRequest->getNumPerPage();
@@ -40,7 +40,7 @@
                 $stmt = $conn->prepare($selectSql);
                 $stmt->bindValue(":searchWord", $searchWord);
                 $stmt->bindValue(":dateValue", $dateValue);
-                $stmt->bindValue(":startIndexPerPage", $startIndexPerPage, PDO::PARAM_INT);
+                $stmt->bindValue(":startIdxPerPage", $startIdxPerPage, PDO::PARAM_INT);
                 $stmt->bindValue(":numPerPage", $numPerPage, PDO::PARAM_INT);
                 $stmt->execute();
                 $boardData = $stmt->fetchAll();
