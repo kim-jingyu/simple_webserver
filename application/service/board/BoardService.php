@@ -114,13 +114,13 @@
 
         public function fix($boardId, $title, $body, $userId, $today, $file) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-            $boardFixRequest = null;
-
             try {
+                $boardFixRequest = null;
                 $conn->beginTransaction();
 
                 $this->checkUser($conn, $boardId);
+
+                $boardRepository = new BoardRepository();
 
                 $fileName = $boardRepository->findFileNameById($conn, $boardId);
                 if ($file['size'] != 0) {
@@ -156,12 +156,12 @@
 
         public function delete($boardId) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-
             try {
                 $conn->beginTransaction();
 
                 $this->checkUser($conn, $boardId);
+
+                $boardRepository = new BoardRepository();
 
                 $s3Client = S3Manager::getClient();
                 $bucketName = S3Manager::getBucketName();
@@ -190,11 +190,10 @@
 
         public function getIndexBoard(BoardRequestDto $boardRequestDto) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-
             try {
                 $conn->beginTransaction();
 
+                $boardRepository = new BoardRepository();
                 $boardResponseDto = $boardRepository->pagenate($conn, $boardRequestDto);
                 
                 $totalCnt = $boardResponseDto->getTotalCnt();
@@ -218,12 +217,12 @@
 
         public function getIndexBoardFix($boardId) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-
             try {
                 $conn->beginTransaction();
+
                 $this->checkUser($conn, $boardId);
 
+                $boardRepository = new BoardRepository();
                 $row = $boardRepository->findAllById($conn, $boardId);
 
                 $indexBoardFixResponse = new IndexBoardFixResponse($boardId, $row);
@@ -244,10 +243,10 @@
 
         public function getIndexBoardView($boardId) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-
             try {
                 $conn->beginTransaction();
+
+                $boardRepository = new BoardRepository();
 
                 // 조회수 기능
                 $lastViewTimePerBoard = 'last_view_time_of_'.$boardId;
@@ -265,11 +264,9 @@
                     }
                 }
             
-                $row = $boardRepository->findAllById($conn, $boardId);
-                
-                $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $row);
+                $data = $boardRepository->findAllById($conn, $boardId);
                 $conn->commit();
-                return $indexBoardViewResponse;
+                return $data;
             } catch (Exception $e) {
                 $conn->rollback();
                 throw $e;
@@ -282,9 +279,8 @@
 
         public function getComment($boardId) {
             $conn = DBConnectionUtil::getConnection();
-            $boardRepository = new BoardRepository();
-
             try {
+                $boardRepository = new BoardRepository();
                 $conn->beginTransaction();
 
                 $rows = $boardRepository->findWithComments($conn, $boardId);

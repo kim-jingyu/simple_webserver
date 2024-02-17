@@ -34,6 +34,44 @@
             }
         }
 
+        public function getInquiryBoardView($boardId) {
+            $conn = DBConnectionUtil::getConnection();
+            try {
+                $conn->beginTransaction();
+
+                $inquiryBoardRepository = new InquiryBoardRepository();
+                $data = $inquiryBoardRepository->findById($conn, $boardId);
+                $conn->commit();
+                return $data;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
+            }
+        }
+
+        public function getInquiryBoardFix($boardId) {
+            $conn = DBConnectionUtil::getConnection();
+            try {
+                $conn->beginTransaction();
+
+                $inquiryBoardRepository = new InquiryBoardRepository();
+                $data = $inquiryBoardRepository->findById($conn, $boardId);
+                $conn->commit();
+                return $data;
+            } catch (Exception $e) {
+                $conn->rollback();
+                throw $e;
+            } finally {
+                if ($conn != null) {
+                    $conn = null;
+                }
+            }
+        }
+
         public function write($writerName, $writerPw, $title, $body) {
             $today = date("Y-m-d");
 

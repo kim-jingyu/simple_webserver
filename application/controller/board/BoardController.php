@@ -40,9 +40,8 @@
         }
 
         public function getIndexBoardFix() {
+            $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
             try {
-                $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
                 $boardService = new BoardService();
                 $indexBoardFixResponse = $boardService->getIndexBoardFix($boardId);
                 return $indexBoardFixResponse;
@@ -54,10 +53,10 @@
 
         public function getIndexBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
-
             try {
                 $boardService = new BoardService();
-                $indexBoardViewResponse = $boardService->getIndexBoardView($boardId);
+                $data = $boardService->getIndexBoardView($boardId);
+                $indexBoardViewResponse = new IndexBoardViewResponse($boardId, $data);
                 return $indexBoardViewResponse;
             } catch (Exception $e) {
                 echo "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";

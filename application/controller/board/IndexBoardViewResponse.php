@@ -1,19 +1,19 @@
 <?php
     class IndexBoardViewResponse {
         private $boardId;
-        private $row;
+        private $data;
 
-        public function __construct($boardId, $row) {
+        public function __construct($boardId, $data) {
             $this->boardId = $boardId;
-            $this->row = $row;
+            $this->data = $data;
         }
 
         public function getBoardId() {
             return $this->boardId;
         }
 
-        public function getRow() {
-            return $this->row;
+        public function getData() {
+            return $this->data;
         }
     }
 ?>

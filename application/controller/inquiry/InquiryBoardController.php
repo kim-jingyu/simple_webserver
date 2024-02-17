@@ -39,22 +39,31 @@
 
         public function getInquiryBoardView() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
+            try {
+                $nquiryBoardService = new InquiryBoardService();
+                $data = $InquiryBoardService->getInquiryBoardView($boardId);
 
-            $inquiryBoardRepository = new InquiryBoardRepository();
-            $result = $inquiryBoardRepository->findById($boardId);
-
-            $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $result);
-            return $inquiryBoardViewResponse;
+                $inquiryBoardViewResponse = new InquriyBoardViewResponse($boardId, $data);
+                return $inquiryBoardViewResponse;    
+            } catch (Exception $e) {
+                echo "<script>alert('게시글을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
+            }
         }
 
         public function getInquiryBoardFix() {
             $boardId = filter_var(strip_tags($_GET['boardId']), FILTER_SANITIZE_SPECIAL_CHARS);
     
-            $inquiryBoardRepository = new InquiryBoardRepository();
-            $result = $inquiryBoardRepository->findById($boardId);
-            
-            $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $result);
-            return $inquiryBoardFixResponse;
+            try {
+                $nquiryBoardService = new InquiryBoardService();
+                $data = $InquiryBoardService->getInquiryBoardFix($boardId);
+
+                $inquiryBoardFixResponse = new InquiryBoardFixResponse($boardId, $data);
+                return $inquiryBoardFixResponse;
+            } catch (Exception $e) {
+                echo "<script>alert('수정폼을 가져오는 도중에 문제가 발생했습니다!');</script>";
+                echo "<script>location.replace('/application/view/board/board_view.php?boardId=$boardId');</script>";
+            }
         }
     }
 ?>
