@@ -25,7 +25,7 @@
         $boardService->delete($boardId);
         close('삭제 완료!', '/index.php');
     } catch (IdNotMatchedException $e) {
-        close(e->errorMessage(), '/application/view/board/board_view.php?boardId='.$boardId);
+        close($e->errorMessage(), '/application/view/board/board_view.php?boardId='.$boardId);
     } catch (Exception $e) {
         close('삭제 실패!', '/application/view/board/board_view.php?boardId='.$boardId);
     }
